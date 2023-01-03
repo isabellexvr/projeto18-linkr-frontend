@@ -17,18 +17,21 @@ export default function MainPage() {
         <FormContainer>
           <h1>What are you going to share today?</h1>
           <PublicationForm>
-            <input
+            <UrlInput
               onChange={handleForm}
               placeholder="http://..."
               name="url"
               type="text"
             />
-            <input
+            <DescriptionInput
               onChange={handleForm}
               placeholder="Awesome article about #javascript"
-              name="name"
+              name="description"
               type="text"
             />
+            <SubmitButton>
+              <button>Publish</button>
+            </SubmitButton>
           </PublicationForm>
         </FormContainer>
       </MainPageStyle>
@@ -74,23 +77,42 @@ const PublicationForm = styled.form`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  height: 87px;
+  height: 115px;
   > input {
     width: 92%;
     border: none;
     background-color: #efefef;
     border-radius: 5px;
-    height: 30px;
     box-sizing: border-box;
-    padding: 6px 11px 8px;
     ::placeholder {
       color: #949494;
       font-weight: 300;
       font-size: 13px;
     }
   }
-  > input:last-child {
-    height: 47px;
-    padding: 10px 10px 21px;
+  > input:focus {
+    box-sizing: border-box;
+    outline: none !important;
+    border: none;
+  }
+`;
+
+const UrlInput = styled.input`
+  height: 30px;
+  padding: 6px 11px 8px;
+`;
+
+const DescriptionInput = styled.input`
+  height: 47px;
+  padding: 10px 10px 21px;
+`;
+
+const SubmitButton = styled.div`
+  background-color: orange;
+  > button {
+    background-color: #1877f2;
+    border-radius: 5px;
+    width: 112px;
+    height: 22px;
   }
 `;
