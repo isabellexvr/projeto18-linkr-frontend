@@ -1,34 +1,36 @@
 import styled from "styled-components";
 import { FiHeart } from "react-icons/fi";
+import Link from "./Link";
 
 const texto = "Muito #foda dahora esse link aqui rapeize!! #sabadaco #kasino";
 
 export default function Post() {
   return (
-    <PostStyle>
-      <LeftContainer>
-        <UserProfilePicture
-          alt="user-profile"
-          src="https://i.pinimg.com/originals/64/8b/da/648bda8b742f5f713e94f17ff1b49252.jpg"
-        />
-        <LikeIcon />
-        <LikesCount>12 likes</LikesCount>
-      </LeftContainer>
-      <RightContainer>
-        <UserName>Raposinha Fofa</UserName>
-
-        <Description>
-          {texto.split(" ").map((e) => {
-            if (e[0] === "#") {
-              return <strong>{" " + e + " "}</strong>;
-            } else {
-              return " " + e + " ";
-            }
-          })}
-        </Description>
-        <LinkStyle></LinkStyle>
-      </RightContainer>
-    </PostStyle>
+    <>
+      <PostStyle>
+        <LeftContainer>
+          <UserProfilePicture
+            alt="user-profile"
+            src="https://i.pinimg.com/originals/64/8b/da/648bda8b742f5f713e94f17ff1b49252.jpg"
+          />
+          <LikeIcon />
+          <LikesCount>12 likes</LikesCount>
+        </LeftContainer>
+        <RightContainer>
+          <UserName>Raposinha Fofa</UserName>
+          <Description>
+            {texto.split(" ").map((e) => {
+              if (e[0] === "#") {
+                return <strong>{" " + e + " "}</strong>;
+              } else {
+                return " " + e + " ";
+              }
+            })}
+          </Description>
+          <Link />
+        </RightContainer>
+      </PostStyle>
+    </>
   );
 }
 
@@ -84,9 +86,8 @@ const Description = styled.p`
   font-weight: 400;
   font-size: 15px;
   color: #b7b7b7;
+  line-height: 18px;
   > strong {
     font-weight: 700;
   }
 `;
-
-const LinkStyle = styled.div``;
