@@ -1,6 +1,6 @@
 import { ResetCss } from "../src/Assets/ResetCss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import MainPage from "./Components/Pages/MainPage";
+import MainPage from "./Pages/MainPage";
 
 function App() {
   return (

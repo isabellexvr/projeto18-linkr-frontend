@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import Header from "../Constants/Header";
+import Header from "../Components/Constants/Header";
 import { useState } from "react";
-import PostForm from "../Constants/PostForm";
+import PostForm from "../Components/MainPage/PostForm";
 
 export default function MainPage() {
   const [form, setForm] = useState({});
@@ -15,7 +15,7 @@ export default function MainPage() {
       <Header />
       <MainPageStyle>
         <PageTitle>timeline</PageTitle>
-        <PostForm handleForm={handleForm}/>
+        <PostForm handleForm={handleForm} />
       </MainPageStyle>
     </>
   );
@@ -37,4 +37,3 @@ const PageTitle = styled.h1`
   display: flex;
   align-items: center;
 `;
-
