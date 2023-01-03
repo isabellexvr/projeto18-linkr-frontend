@@ -9,7 +9,7 @@ export default function PostForm({ handleForm }) {
           onChange={handleForm}
           placeholder="http://..."
           name="url"
-          type="text"
+          type="url"
         />
         <DescriptionInput
           onChange={handleForm}

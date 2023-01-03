@@ -9,6 +9,7 @@ export default function MainPage() {
 
   function handleForm({ target: { value, name } }) {
     setForm({ ...form, [name]: value });
+    console.log(form)
   }
 
   return (

@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { FiHeart } from "react-icons/fi";
-import urlMetadata from "url-metadata";
 
 const texto = "Muito #foda dahora esse link aqui rapeize!! #sabadaco #kasino";
 
@@ -27,19 +26,6 @@ export default function Post() {
             }
           })}
         </Description>
-        <button
-          onClick={() => {
-            urlMetadata("https://youtube.com/")
-              .then((a) => {
-                console.log(a);
-              })
-              .catch((e) => {
-                console.log(e);
-              });
-          }}
-        >
-          testing
-        </button>
         <LinkStyle></LinkStyle>
       </RightContainer>
     </PostStyle>
