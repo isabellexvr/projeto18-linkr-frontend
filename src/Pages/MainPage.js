@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Header from "../Components/Constants/Header";
 import { useState } from "react";
 import PostForm from "../Components/MainPage/PostForm";
+import Post from "../Components/MainPage/Post";
 
 export default function MainPage() {
   const [form, setForm] = useState({});
@@ -16,6 +17,7 @@ export default function MainPage() {
       <MainPageStyle>
         <PageTitle>timeline</PageTitle>
         <PostForm handleForm={handleForm} />
+        <Post/>
       </MainPageStyle>
     </>
   );
