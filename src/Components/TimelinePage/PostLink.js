@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 
 export default function PostLink({
   linkTitle,
@@ -7,10 +6,10 @@ export default function PostLink({
   linkUrl,
   linkImage,
 }) {
-  const navigate = useNavigate();
+
   return (
-    <>
-      <LinkStyle >
+    <Redirect href={linkUrl} target="_blank">
+      <LinkStyle>
         <UrlTextInfo>
           <UrlTitle>{linkTitle}</UrlTitle>
           <UrlDescription>{linkDescription.substring(0, 80)}</UrlDescription>
@@ -18,9 +17,13 @@ export default function PostLink({
         </UrlTextInfo>
         <UrlImage alt="url" src={linkImage} />
       </LinkStyle>
-    </>
+    </Redirect>
   );
 }
+
+const Redirect = styled.a`
+  text-decoration: none;
+`
 
 const LinkStyle = styled.div`
   margin-top: 13px;
