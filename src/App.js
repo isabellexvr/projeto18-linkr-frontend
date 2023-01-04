@@ -1,6 +1,6 @@
 import { ResetCss } from "../src/Assets/ResetCss";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import MainPage from "./Pages/MainPage";
+import TimelinePage from "./Pages/TimelinePage";
 
 function App() {
   return (
@@ -8,7 +8,7 @@ function App() {
       <ResetCss />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<MainPage />} />
+          <Route path="/timeline" element={<TimelinePage />} />
         </Routes>
       </BrowserRouter>
     </>

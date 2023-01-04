@@ -1,30 +1,23 @@
 import styled from "styled-components";
 import Header from "../Components/Constants/Header";
-import { useState } from "react";
-import PostForm from "../Components/MainPage/PostForm";
-import Post from "../Components/MainPage/Post";
+import PostForm from "../Components/TimelinePage/PostForm";
+import Post from "../Components/TimelinePage/Post";
 
-export default function MainPage() {
-  const [form, setForm] = useState({});
-
-  function handleForm({ target: { value, name } }) {
-    setForm({ ...form, [name]: value });
-    console.log(form)
-  }
+export default function TimelinePage() {
 
   return (
     <>
       <Header />
-      <MainPageStyle>
+      <TimelinePageStyle>
         <PageTitle>timeline</PageTitle>
-        <PostForm handleForm={handleForm} />
+        <PostForm />
         <Post/>
-      </MainPageStyle>
+      </TimelinePageStyle>
     </>
   );
 }
 
-const MainPageStyle = styled.div`
+const TimelinePageStyle = styled.div`
   margin-top: 70px;
   height: 150vh;
   background-color: #333333;
