@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { FiHeart } from "react-icons/fi";
 import PostLink from "./PostLink";
-
-//https://www.rpgnext.com.br/blog/
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const postsExample = [
   {
@@ -37,35 +37,79 @@ const postsExample = [
 ];
 
 export default function Post() {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  /*   useEffect((()=>{
+
+    axios.get("https://linkr-api-9ik9.onrender.com/posts")
+    .then(a=>{setPosts(a.data)})
+    .catch(e=>{
+      setError(true)
+      console.log(e.response.data)
+    })
+  }),[]) */
+
   return (
     <>
-      {postsExample.map((e) => (
-        <PostStyle>
-          <LeftContainer>
-            <UserProfilePicture alt="user-profile" src={e.userImage} />
-            <LikeIcon />
-            <LikesCount>{e.likesCount} likes</LikesCount>
-          </LeftContainer>
-          <RightContainer>
-            <UserName>{e.userName}</UserName>
-            <Description>
-              {e.postDescription.split(" ").map((e) => {
-                if (e[0] === "#") {
-                  return <strong>{" " + e + " "}</strong>;
-                } else {
-                  return " " + e + " ";
-                }
-              })}
-            </Description>
-            <PostLink
-              linkTitle={e.linkInfo.linkTitle}
-              linkDescription={e.linkInfo.linkDescription}
-              linkUrl={e.linkInfo.linkUrl}
-              linkImage={e.linkInfo.linkImage}
-            />
-          </RightContainer>
-        </PostStyle>
-      ))}
+      {posts.length > 0 && !error && !loading && (
+        <>
+          {postsExample.map((e, i) => (
+            <PostStyle key={i}>
+              <LeftContainer>
+                <UserProfilePicture alt="user-profile" src={e.userImage} />
+                <LikeIcon />
+                <LikesCount>{e.likesCount} likes</LikesCount>
+              </LeftContainer>
+              <RightContainer>
+                <UserName>{e.userName}</UserName>
+                <Description>
+                  {e.postDescription.split(" ").map((e, i) => {
+                    if (e[0] === "#") {
+                      return <strong key={i}>{" " + e + " "}</strong>;
+                    } else {
+                      return " " + e + " ";
+                    }
+                  })}
+                </Description>
+                <PostLink
+                  linkTitle={e.linkInfo.linkTitle}
+                  linkDescription={e.linkInfo.linkDescription}
+                  linkUrl={e.linkInfo.linkUrl}
+                  linkImage={e.linkInfo.linkImage}
+                />
+              </RightContainer>
+            </PostStyle>
+          ))}
+        </>
+      )}
+      {!error && loading && (
+        <>
+          <LoadingMessage>
+            <div>
+              <h1>Loading posts...</h1>
+            </div>
+          </LoadingMessage>
+        </>
+      )}
+      {!error && !loading && posts.length < 1 && (
+        <NoPostsMessage>
+          <h1>There are no posts yet.</h1>
+        </NoPostsMessage>
+      )}
+      {error && (
+        <ErrorMessage>
+          <div>
+            <h1>ERROR</h1>
+            <h2>
+              An error occured while trying to fetch the posts, please refresh
+              the page clicking the button down below.
+            </h2>
+            <button>Reload</button>
+          </div>
+        </ErrorMessage>
+      )}
     </>
   );
 }
@@ -76,6 +120,79 @@ const PostStyle = styled.div`
   background-color: #171717;
   margin-top: 16px;
   display: flex;
+`;
+
+const LoadingMessage = styled.div`
+  margin-top: 25px;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  > div {
+    height: 50px;
+    width: 60%;
+    border-radius: 15px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    > h1 {
+      font-family: "Lato";
+      font-weight: 600;
+      font-size: 18px;
+    }
+  }
+`;
+
+const ErrorMessage = styled.div`
+  margin-top: 25px;
+  font-family: "Lato";
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  > div {
+    height: 125px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    > h1 {
+      color: red;
+      font-weight: 800;
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+    > h2 {
+      font-size: 14px;
+      margin-bottom: 10px;
+      width: 90%;
+      text-align: justify;
+    }
+    > button {
+      background-color: #1877f2;
+      border-radius: 5px;
+      width: 112px;
+      height: 22px;
+      border: none;
+      color: #ffffff;
+      font-family: "Lato";
+      font-weight: 700;
+      font-size: 13px;
+    }
+  }
+`;
+
+const NoPostsMessage = styled.div`
+  margin-top: 25px;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  > h1 {
+    font-family: "Lato";
+    font-weight: 600;
+    font-size: 18px;
+    color: #efefef;
+  }
 `;
 
 const LeftContainer = styled.div`
