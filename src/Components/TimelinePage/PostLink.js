@@ -6,7 +6,6 @@ export default function PostLink({
   linkUrl,
   linkImage,
 }) {
-
   return (
     <Redirect href={linkUrl} target="_blank">
       <LinkStyle>
@@ -23,14 +22,17 @@ export default function PostLink({
 
 const Redirect = styled.a`
   text-decoration: none;
-`
+`;
 
 const LinkStyle = styled.div`
   margin-top: 13px;
-  height: 115px;
+  height: 155px;
   border: 1px solid #4d4d4d;
   border-radius: 11px;
   display: flex;
+  @media (max-width: 600px) {
+    height: 115px;
+  }
 `;
 
 const UrlTextInfo = styled.div`
@@ -39,7 +41,10 @@ const UrlTextInfo = styled.div`
   width: 69.42%;
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
+  @media (max-width: 600px) {
   justify-content: center;
+  }
 `;
 
 const UrlTitle = styled.h1`

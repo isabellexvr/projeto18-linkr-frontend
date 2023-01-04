@@ -27,7 +27,7 @@ const TimelinePageStyle = styled.div`
 `;
 
 const PageTitle = styled.h1`
-  @media(max-width: 425px){
+  @media(max-width: 600px){
     width: 100%;
   align-items: center;
   }

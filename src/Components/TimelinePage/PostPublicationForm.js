@@ -95,7 +95,7 @@ const FormContainer = styled.div`
       color: #707070;
     }
   }
-  @media (max-width: 900px) {
+  @media (max-width: 600px) {
     width: 100%;
     border-radius: 0;
     height: 164px;
@@ -114,7 +114,7 @@ const FormContainer = styled.div`
 `;
 
 const DesktopForm = styled.div`
-  @media (max-width: 900px) {
+  @media (max-width: 600px) {
     display: none;
   }
   width: 86px;
@@ -127,7 +127,7 @@ const DesktopForm = styled.div`
 `;
 
 const PublicationForm = styled.form`
-  @media (max-width: 425px) {
+  @media (max-width: 600px) {
     align-items: center;
     margin-top: 0;
   }
@@ -161,8 +161,8 @@ const UrlInput = styled.input`
 `;
 
 const DescriptionInput = styled.input`
-margin-top: 5px;
-  @media (max-width: 425px) {
+  margin-top: 5px;
+  @media (max-width: 600px) {
     height: 47px;
   }
   height: 66px;
@@ -170,12 +170,8 @@ margin-top: 5px;
 `;
 
 const SubmitButton = styled.div`
-margin-top: 5px;
-  @media (max-width: 425px) {
-    > button {
-      height: 22px;
-    }
-  }
+
+  margin-top: 5px;
   height: 35px;
   width: 92%;
   display: flex;
@@ -191,8 +187,14 @@ margin-top: 5px;
     font-family: "Lato";
     font-weight: 700;
     font-size: 13px;
+    cursor: pointer;
     :disabled {
       background-color: #80b1ed;
+    }
+  }
+  @media (max-width: 600px) {
+    > button {
+      height: 22px;
     }
   }
 `;
