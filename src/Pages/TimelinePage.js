@@ -1,23 +1,23 @@
 import styled from "styled-components";
 import Header from "../Components/Constants/Header";
-import PostForm from "../Components/MainPage/PostForm";
-import Post from "../Components/MainPage/Post";
+import PostForm from "../Components/TimelinePage/PostForm";
+import Post from "../Components/TimelinePage/Post";
 
-export default function MainPage() {
+export default function TimelinePage() {
 
   return (
     <>
       <Header />
-      <MainPageStyle>
+      <TimelinePageStyle>
         <PageTitle>timeline</PageTitle>
         <PostForm />
         <Post/>
-      </MainPageStyle>
+      </TimelinePageStyle>
     </>
   );
 }
 
-const MainPageStyle = styled.div`
+const TimelinePageStyle = styled.div`
   margin-top: 70px;
   height: 150vh;
   background-color: #333333;
