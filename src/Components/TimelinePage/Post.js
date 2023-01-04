@@ -45,8 +45,8 @@ export default function Post() {
 
   return (
     <>
-      {postsExample.map((e) => (
-        <PostStyle>
+      {postsExample.map((e, i) => (
+        <PostStyle key={i}>
           <LeftContainer>
             <UserProfilePicture alt="user-profile" src={e.userImage} />
             <LikeIcon />
@@ -55,9 +55,9 @@ export default function Post() {
           <RightContainer>
             <UserName>{e.userName}</UserName>
             <Description>
-              {e.postDescription.split(" ").map((e) => {
+              {e.postDescription.split(" ").map((e, i) => {
                 if (e[0] === "#") {
-                  return <strong>{" " + e + " "}</strong>;
+                  return <strong key={i}>{" " + e + " "}</strong>;
                 } else {
                   return " " + e + " ";
                 }

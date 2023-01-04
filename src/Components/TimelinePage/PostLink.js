@@ -1,20 +1,22 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
-export default function PostLink({linkTitle, linkDescription, linkUrl, linkImage}) {
+export default function PostLink({
+  linkTitle,
+  linkDescription,
+  linkUrl,
+  linkImage,
+}) {
+  const navigate = useNavigate();
   return (
     <>
-      <LinkStyle>
+      <LinkStyle >
         <UrlTextInfo>
           <UrlTitle>{linkTitle}</UrlTitle>
-          <UrlDescription>
-            {linkDescription.substring(0,80)}
-          </UrlDescription>
+          <UrlDescription>{linkDescription.substring(0, 80)}</UrlDescription>
           <Url>{linkUrl}</Url>
         </UrlTextInfo>
-        <UrlImage
-          alt="url"
-          src={linkImage}
-        />
+        <UrlImage alt="url" src={linkImage} />
       </LinkStyle>
     </>
   );
