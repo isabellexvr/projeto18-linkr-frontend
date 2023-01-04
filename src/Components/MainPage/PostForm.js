@@ -1,10 +1,33 @@
 import styled from "styled-components";
+import { useState } from "react";
+import axios from "axios";
 
-export default function PostForm({ handleForm }) {
+//https://linkr-api-9ik9.onrender.com
+
+export default function PostForm() {
+  const [form, setForm] = useState({});
+
+  function handleForm({ target: { value, name } }) {
+    setForm({ ...form, [name]: value });
+  }
+
+  function sendForm(e) {
+    e.preventDefault();
+    console.log(form);
+    axios
+      .post("http://localhost:4000/post", form)
+      .then((a) => {
+        console.log(a.data);
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+      });
+  }
+
   return (
     <FormContainer>
       <h1>What are you going to share today?</h1>
-      <PublicationForm>
+      <PublicationForm onSubmit={sendForm}>
         <UrlInput
           onChange={handleForm}
           placeholder="http://..."

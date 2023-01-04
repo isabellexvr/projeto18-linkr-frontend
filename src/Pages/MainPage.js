@@ -1,23 +1,16 @@
 import styled from "styled-components";
 import Header from "../Components/Constants/Header";
-import { useState } from "react";
 import PostForm from "../Components/MainPage/PostForm";
 import Post from "../Components/MainPage/Post";
 
 export default function MainPage() {
-  const [form, setForm] = useState({});
-
-  function handleForm({ target: { value, name } }) {
-    setForm({ ...form, [name]: value });
-    console.log(form)
-  }
 
   return (
     <>
       <Header />
       <MainPageStyle>
         <PageTitle>timeline</PageTitle>
-        <PostForm handleForm={handleForm} />
+        <PostForm />
         <Post/>
       </MainPageStyle>
     </>
