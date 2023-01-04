@@ -33,6 +33,7 @@ export default function PostForm() {
           placeholder="http://..."
           name="url"
           type="url"
+          required
         />
         <DescriptionInput
           onChange={handleForm}
