@@ -1,24 +1,29 @@
 import styled from "styled-components";
 
-export default function PostLink({linkTitle, linkDescription, linkUrl, linkImage}) {
+export default function PostLink({
+  linkTitle,
+  linkDescription,
+  linkUrl,
+  linkImage,
+}) {
+
   return (
-    <>
+    <Redirect href={linkUrl} target="_blank">
       <LinkStyle>
         <UrlTextInfo>
           <UrlTitle>{linkTitle}</UrlTitle>
-          <UrlDescription>
-            {linkDescription.substring(0,80)}
-          </UrlDescription>
+          <UrlDescription>{linkDescription.substring(0, 80)}</UrlDescription>
           <Url>{linkUrl}</Url>
         </UrlTextInfo>
-        <UrlImage
-          alt="url"
-          src={linkImage}
-        />
+        <UrlImage alt="url" src={linkImage} />
       </LinkStyle>
-    </>
+    </Redirect>
   );
 }
+
+const Redirect = styled.a`
+  text-decoration: none;
+`
 
 const LinkStyle = styled.div`
   margin-top: 13px;

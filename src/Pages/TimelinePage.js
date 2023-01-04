@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Header from "../Components/Constants/Header";
-import PostForm from "../Components/TimelinePage/PostForm";
+import PostPublicationForm from "../Components/TimelinePage/PostPublicationForm";
 import Post from "../Components/TimelinePage/Post";
 
 export default function TimelinePage() {
@@ -10,7 +10,7 @@ export default function TimelinePage() {
       <Header />
       <TimelinePageStyle>
         <PageTitle>timeline</PageTitle>
-        <PostForm />
+        <PostPublicationForm />
         <Post/>
       </TimelinePageStyle>
     </>
