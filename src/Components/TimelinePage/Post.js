@@ -37,7 +37,7 @@ const postsExample = [
 ];
 
 export default function Post() {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState(["projetao"]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
