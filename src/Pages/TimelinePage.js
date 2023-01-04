@@ -21,15 +21,24 @@ const TimelinePageStyle = styled.div`
   margin-top: 70px;
   height: 150vh;
   background-color: #333333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const PageTitle = styled.h1`
+  @media(max-width: 425px){
+    width: 100%;
+  align-items: center;
+  }
+  display: flex;
+  align-items: center;
+  width: 44%;
   font-family: "Oswald";
   font-size: 33px;
   color: white;
   font-weight: 700;
   margin-left: 17px;
   height: 87px;
-  display: flex;
-  align-items: center;
+
 `;
