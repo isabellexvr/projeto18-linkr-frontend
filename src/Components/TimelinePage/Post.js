@@ -37,7 +37,8 @@ const postsExample = [
 ];
 
 export default function Post() {
-  const [posts, setPosts] = useState(["teste"]);
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
   /*   useEffect((()=>{
@@ -52,7 +53,7 @@ export default function Post() {
 
   return (
     <>
-      {posts.length > 0 && !error && (
+      {posts.length > 0 && !error && !loading && (
         <>
           {postsExample.map((e, i) => (
             <PostStyle key={i}>
@@ -83,7 +84,7 @@ export default function Post() {
           ))}
         </>
       )}
-      {posts.length < 1 && !error && (
+      {!error && loading && (
         <>
           <LoadingMessage>
             <div>
@@ -92,19 +93,22 @@ export default function Post() {
           </LoadingMessage>
         </>
       )}
+      {!error && !loading && posts.length < 1 && (
+        <NoPostsMessage>
+          <h1>There are no posts yet.</h1>
+        </NoPostsMessage>
+      )}
       {error && (
-        <>
-          <ErrorMessage>
-            <div>
-              <h1>ERROR</h1>
-              <h2>
-                An error occured while trying to fetch the posts, please refresh
-                the page clicking the button down below.
-              </h2>
-              <button>Reload</button>
-            </div>
-          </ErrorMessage>
-        </>
+        <ErrorMessage>
+          <div>
+            <h1>ERROR</h1>
+            <h2>
+              An error occured while trying to fetch the posts, please refresh
+              the page clicking the button down below.
+            </h2>
+            <button>Reload</button>
+          </div>
+        </ErrorMessage>
       )}
     </>
   );
@@ -175,6 +179,19 @@ const ErrorMessage = styled.div`
       font-weight: 700;
       font-size: 13px;
     }
+  }
+`;
+
+const NoPostsMessage = styled.div`
+  margin-top: 25px;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  > h1 {
+    font-family: "Lato";
+    font-weight: 600;
+    font-size: 18px;
+    color: #efefef;
   }
 `;
 
