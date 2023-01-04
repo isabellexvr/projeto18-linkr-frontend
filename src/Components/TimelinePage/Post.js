@@ -38,17 +38,21 @@ const postsExample = [
 
 export default function Post() {
   const [posts, setPosts] = useState(["teste"]);
+  const [error, setError] = useState(false);
 
   /*   useEffect((()=>{
 
     axios.get("https://linkr-api-9ik9.onrender.com/posts")
     .then(a=>{setPosts(a.data)})
-    .catch(e=>{console.log(e.response.data)})
+    .catch(e=>{
+      setError(true)
+      console.log(e.response.data)
+    })
   }),[]) */
 
   return (
     <>
-      {posts.length > 0 && (
+      {posts.length > 0 && !error && (
         <>
           {postsExample.map((e, i) => (
             <PostStyle key={i}>
@@ -79,13 +83,27 @@ export default function Post() {
           ))}
         </>
       )}
-      {posts.length < 1 && (
+      {posts.length < 1 && !error && (
         <>
           <LoadingMessage>
             <div>
               <h1>Loading posts...</h1>
             </div>
           </LoadingMessage>
+        </>
+      )}
+      {error && (
+        <>
+          <ErrorMessage>
+            <div>
+              <h1>ERROR</h1>
+              <h2>
+                An error occured while trying to fetch the posts, please refresh
+                the page clicking the button down below.
+              </h2>
+              <button>Reload</button>
+            </div>
+          </ErrorMessage>
         </>
       )}
     </>
@@ -117,6 +135,45 @@ const LoadingMessage = styled.div`
       font-family: "Lato";
       font-weight: 600;
       font-size: 18px;
+    }
+  }
+`;
+
+const ErrorMessage = styled.div`
+  margin-top: 25px;
+  font-family: "Lato";
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  > div {
+    height: 125px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    > h1 {
+      color: red;
+      font-weight: 800;
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+    > h2 {
+      font-size: 14px;
+      margin-bottom: 10px;
+      width: 90%;
+      text-align: justify;
+    }
+    > button {
+      background-color: #1877f2;
+      border-radius: 5px;
+      width: 112px;
+      height: 22px;
+      border: none;
+      color: #ffffff;
+      font-family: "Lato";
+      font-weight: 700;
+      font-size: 13px;
     }
   }
 `;
