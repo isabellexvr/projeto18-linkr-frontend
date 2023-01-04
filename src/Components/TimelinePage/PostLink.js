@@ -16,7 +16,6 @@ export default function PostLink({linkTitle, linkDescription, linkUrl, linkImage
           src={linkImage}
         />
       </LinkStyle>
-      
     </>
   );
 }
@@ -33,6 +32,9 @@ const UrlTextInfo = styled.div`
   padding: 7px 11px 8px;
   box-sizing: border-box;
   width: 69.42%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const UrlTitle = styled.h1`
@@ -62,8 +64,6 @@ const Url = styled.h2`
   font-size: 11px;
   line-height: 11px;
   height: auto;
-  background-color: yellow;
-  width: 50px;
   object-fit: contain;
   color: #cecece;
 `;

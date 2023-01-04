@@ -2,8 +2,6 @@ import styled from "styled-components";
 import { FiHeart } from "react-icons/fi";
 import PostLink from "./PostLink";
 
-const texto = "Muito #foda dahora esse link aqui rapeize!! #sabadaco #kasino";
-
 //https://www.rpgnext.com.br/blog/
 
 const postsExample = [
