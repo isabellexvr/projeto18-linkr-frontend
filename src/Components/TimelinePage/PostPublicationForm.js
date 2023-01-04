@@ -4,7 +4,7 @@ import axios from "axios";
 
 //https://linkr-api-9ik9.onrender.com
 
-export default function PostForm() {
+export default function PostPublicationForm() {
   const [form, setForm] = useState({});
   const [loading, setLoading] = useState(false);
 

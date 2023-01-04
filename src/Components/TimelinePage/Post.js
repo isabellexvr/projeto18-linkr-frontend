@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { FiHeart } from "react-icons/fi";
 import PostLink from "./PostLink";
-
-//https://www.rpgnext.com.br/blog/
+import axios from "axios";
+import { useEffect } from "react";
 
 const postsExample = [
   {
@@ -37,6 +37,12 @@ const postsExample = [
 ];
 
 export default function Post() {
+
+/*   useEffect((()=>{
+
+    axios.get("https://localhost:4000/posts")
+  }),[]) */
+
   return (
     <>
       {postsExample.map((e) => (
