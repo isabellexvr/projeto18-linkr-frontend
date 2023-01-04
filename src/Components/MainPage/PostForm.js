@@ -6,6 +6,7 @@ import axios from "axios";
 
 export default function PostForm() {
   const [form, setForm] = useState({});
+  const [loading, setLoading] = useState(false);
 
   function handleForm({ target: { value, name } }) {
     setForm({ ...form, [name]: value });
@@ -14,37 +15,56 @@ export default function PostForm() {
   function sendForm(e) {
     e.preventDefault();
     console.log(form);
+    setLoading(true);
+
     axios
       .post("http://localhost:4000/post", form)
       .then((a) => {
         console.log(a.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err.response.data);
+        setLoading(false);
+        alert("Houve um erro ao publicar o seu link.");
       });
   }
 
   return (
     <FormContainer>
       <h1>What are you going to share today?</h1>
-      <PublicationForm onSubmit={sendForm}>
-        <UrlInput
-          onChange={handleForm}
-          placeholder="http://..."
-          name="url"
-          type="url"
-          required
-        />
-        <DescriptionInput
-          onChange={handleForm}
-          placeholder="Awesome article about #javascript"
-          name="description"
-          type="text"
-        />
-        <SubmitButton>
-          <button>Publish</button>
-        </SubmitButton>
-      </PublicationForm>
+      {!loading && (
+        <PublicationForm onSubmit={sendForm}>
+          <UrlInput
+            onChange={handleForm}
+            placeholder="http://..."
+            name="url"
+            type="url"
+            required
+          />
+          <DescriptionInput
+            onChange={handleForm}
+            placeholder="Awesome article about #javascript"
+            name="description"
+            type="text"
+          />
+          <SubmitButton>
+            <button>Publish</button>
+          </SubmitButton>
+        </PublicationForm>
+      )}
+      {loading && (
+        <PublicationForm>
+          <UrlInput disabled placeholder="http://..." />
+          <DescriptionInput
+            disabled
+            placeholder="Awesome article about #javascript"
+          />
+          <SubmitButton>
+            <button disabled>Publishing...</button>
+          </SubmitButton>
+        </PublicationForm>
+      )}
     </FormContainer>
   );
 }
@@ -116,5 +136,8 @@ const SubmitButton = styled.div`
     font-family: "Lato";
     font-weight: 700;
     font-size: 13px;
+    :disabled{
+      background-color: #80b1ed;
+    }
   }
 `;
