@@ -1,20 +1,19 @@
 import styled from "styled-components";
 
-export default function Link() {
+export default function PostLink({linkTitle, linkDescription, linkUrl, linkImage}) {
   return (
     <>
       <LinkStyle>
         <UrlTextInfo>
-          <UrlTitle>Como aplicar o Material UI em um projeto React</UrlTitle>
+          <UrlTitle>{linkTitle}</UrlTitle>
           <UrlDescription>
-            Hey! I have moved this tutorial to my personal blog. Same content,
-            new location. Sorry about making you click through to another page.
+            {linkDescription.substring(0,80)}
           </UrlDescription>
-          <Url>https://medium.com/@pshrmn/a-simple-react-router</Url>
+          <Url>{linkUrl}</Url>
         </UrlTextInfo>
         <UrlImage
           alt="url"
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQof8DNWmxkNJX59_VKPdsAF_805yD2vsfKuMr_XedMSNyWgYyZG-bjw05w1zAXGrnPgew&usqp=CAU"
+          src={linkImage}
         />
       </LinkStyle>
       
@@ -59,11 +58,13 @@ const UrlDescription = styled.p`
 
 const Url = styled.h2`
   font-family: "Lato";
-  font-style: normal;
   font-weight: 400;
   font-size: 11px;
   line-height: 11px;
-
+  height: auto;
+  background-color: yellow;
+  width: 50px;
+  object-fit: contain;
   color: #cecece;
 `;
 
