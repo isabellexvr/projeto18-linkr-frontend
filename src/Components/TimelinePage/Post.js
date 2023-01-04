@@ -4,6 +4,7 @@ import PostLink from "./PostLink";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { ReactTagify } from "react-tagify";
+import { useNavigate } from "react-router-dom";
 
 const postsExample = [
   {
@@ -38,6 +39,8 @@ const postsExample = [
 ];
 
 export default function Post() {
+  const navigate = useNavigate();
+
   const [posts, setPosts] = useState([""]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -74,7 +77,9 @@ export default function Post() {
                 <Description>
                   <ReactTagify
                     tagStyle={tagStyle}
-                    tagClicked={(tag) => console.log("oi")}
+                    tagClicked={(tag) =>
+                      navigate(`/hashtag/${tag.substring(1)}`)
+                    }
                   >
                     {e.postDescription}
                   </ReactTagify>
