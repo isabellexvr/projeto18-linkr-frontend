@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { FiHeart } from "react-icons/fi";
 import PostLink from "./PostLink";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const postsExample = [
   {
@@ -37,41 +37,57 @@ const postsExample = [
 ];
 
 export default function Post() {
+  const [posts, setPosts] = useState(["teste"]);
 
-/*   useEffect((()=>{
+  /*   useEffect((()=>{
 
-    axios.get("https://localhost:4000/posts")
+    axios.get("https://linkr-api-9ik9.onrender.com/posts")
+    .then(a=>{setPosts(a.data)})
+    .catch(e=>{console.log(e.response.data)})
   }),[]) */
 
   return (
     <>
-      {postsExample.map((e, i) => (
-        <PostStyle key={i}>
-          <LeftContainer>
-            <UserProfilePicture alt="user-profile" src={e.userImage} />
-            <LikeIcon />
-            <LikesCount>{e.likesCount} likes</LikesCount>
-          </LeftContainer>
-          <RightContainer>
-            <UserName>{e.userName}</UserName>
-            <Description>
-              {e.postDescription.split(" ").map((e, i) => {
-                if (e[0] === "#") {
-                  return <strong key={i}>{" " + e + " "}</strong>;
-                } else {
-                  return " " + e + " ";
-                }
-              })}
-            </Description>
-            <PostLink
-              linkTitle={e.linkInfo.linkTitle}
-              linkDescription={e.linkInfo.linkDescription}
-              linkUrl={e.linkInfo.linkUrl}
-              linkImage={e.linkInfo.linkImage}
-            />
-          </RightContainer>
-        </PostStyle>
-      ))}
+      {posts.length > 0 && (
+        <>
+          {postsExample.map((e, i) => (
+            <PostStyle key={i}>
+              <LeftContainer>
+                <UserProfilePicture alt="user-profile" src={e.userImage} />
+                <LikeIcon />
+                <LikesCount>{e.likesCount} likes</LikesCount>
+              </LeftContainer>
+              <RightContainer>
+                <UserName>{e.userName}</UserName>
+                <Description>
+                  {e.postDescription.split(" ").map((e, i) => {
+                    if (e[0] === "#") {
+                      return <strong key={i}>{" " + e + " "}</strong>;
+                    } else {
+                      return " " + e + " ";
+                    }
+                  })}
+                </Description>
+                <PostLink
+                  linkTitle={e.linkInfo.linkTitle}
+                  linkDescription={e.linkInfo.linkDescription}
+                  linkUrl={e.linkInfo.linkUrl}
+                  linkImage={e.linkInfo.linkImage}
+                />
+              </RightContainer>
+            </PostStyle>
+          ))}
+        </>
+      )}
+      {posts.length < 1 && (
+        <>
+          <LoadingMessage>
+            <div>
+              <h1>Loading posts...</h1>
+            </div>
+          </LoadingMessage>
+        </>
+      )}
     </>
   );
 }
@@ -82,6 +98,27 @@ const PostStyle = styled.div`
   background-color: #171717;
   margin-top: 16px;
   display: flex;
+`;
+
+const LoadingMessage = styled.div`
+  margin-top: 25px;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  > div {
+    height: 50px;
+    width: 60%;
+    border-radius: 15px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    > h1 {
+      font-family: "Lato";
+      font-weight: 600;
+      font-size: 18px;
+    }
+  }
 `;
 
 const LeftContainer = styled.div`
