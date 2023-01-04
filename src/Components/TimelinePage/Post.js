@@ -120,6 +120,13 @@ const PostStyle = styled.div`
   background-color: #171717;
   margin-top: 16px;
   display: flex;
+  @media (min-width: 900px){
+    width: 611px;
+    height: 276px;
+    border-radius: 16px;
+    margin-top: 100px;
+    margin-bottom: -80px;
+  }
 `;
 
 const LoadingMessage = styled.div`
