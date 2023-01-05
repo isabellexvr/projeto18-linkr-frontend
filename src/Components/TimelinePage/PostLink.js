@@ -31,7 +31,7 @@ const LinkStyle = styled.div`
   border-radius: 11px;
   display: flex;
   @media (max-width: 600px) {
-    height: 115px;
+    height: 37vw;
   }
 `;
 

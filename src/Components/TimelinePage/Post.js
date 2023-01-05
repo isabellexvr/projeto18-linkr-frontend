@@ -126,7 +126,7 @@ export default function Post() {
 }
 
 const PostStyle = styled.div`
-  height: 232px;
+  height: 70vw;
   width: 100%;
   background-color: #171717;
   margin-top: 16px;
