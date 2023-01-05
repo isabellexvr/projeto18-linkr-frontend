@@ -1,7 +1,7 @@
 import { useParams } from "react-router";
 import styled from "styled-components";
 import Header from "../Components/Constants/Header";
-import Post from "../Components/TimelinePage/Post";
+import PostHashTags from "../Components/TimelinePage/PostsHashTags";
 import Trending from "../Components/TimelinePage/Trending";
 
 export default function HashTagsPage() {
@@ -13,7 +13,7 @@ export default function HashTagsPage() {
             <HashTagPage>
                 <PageTitle>#{hashtag}</PageTitle>
                 <PostMobile>
-                    <Post />
+                    <PostHashTags/>
                 </PostMobile>
                 <Trending />
             </HashTagPage>
