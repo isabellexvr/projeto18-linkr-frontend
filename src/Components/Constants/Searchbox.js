@@ -8,22 +8,17 @@ function Searchbox(props) {
 	const [search, setSearch] = useState("");
 	const [result, setResult] = useState([]);
 
-	//token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsInVzZXJQaWN0dXJlIjoiaHR0cHM6Ly91cGxvYWQud2lraW1lZGlhLm9yZy93aWtpcGVkaWEvY29tbW9ucy90aHVtYi9hL2E2L0Fub255bW91c19lbWJsZW0uc3ZnLzY0MHB4LUFub255bW91c19lbWJsZW0uc3ZnLnBuZyIsImlhdCI6MTY3MjkyMzE3MX0.hOgLHkYrvQQOa2vJJzzq61WqySUJxt_T7_VMp80yUmU
-
 	useEffect(() => {
 		if (search.length !== 0) {
 			const config = {
-				method: "POST",
+				method: "GET",
 				headers: {
 					Authorization:
-						"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsInVzZXJQaWN0dXJlIjoiaHR0cHM6Ly91cGxvYWQud2lraW1lZGlhLm9yZy93aWtpcGVkaWEvY29tbW9ucy90aHVtYi9hL2E2L0Fub255bW91c19lbWJsZW0uc3ZnLzY0MHB4LUFub255bW91c19lbWJsZW0uc3ZnLnBuZyIsImlhdCI6MTY3MjkyMzE3MX0.hOgLHkYrvQQOa2vJJzzq61WqySUJxt_T7_VMp80yUmU",
-				},
-				data: {
-					username: search,
+						"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsInVzZXJQaWN0dXJlIjoiaHR0cHM6Ly91cGxvYWQud2lraW1lZGlhLm9yZy93aWtpcGVkaWEvY29tbW9ucy90aHVtYi9hL2E2L0Fub255bW91c19lbWJsZW0uc3ZnLzY0MHB4LUFub255bW91c19lbWJsZW0uc3ZnLnBuZyIsImlhdCI6MTY3MjkzNzg1NH0.DbN4kK85604ZviFjspBQP7RSC2OkuB5qqSALVEd-4CM",
 				},
 			};
 
-			axios("http://127.0.0.1:4000/user", config)
+			axios(`https://linkr-api-9ik9.onrender.com/user/${search}`, config)
 				.then((res) => setResult(res.data))
 				.catch((err) => console.log(err));
 		}
@@ -44,11 +39,11 @@ function Searchbox(props) {
 			</InputWrapper>
 			{search.length !== 0 &&
 				result.length !== 0 &&
-				result.map((user) => (
-					<ResultWrapper>
+				result.map((user, index) => (
+					<ResultWrapper key={index}>
 						<ProfilePicture
 							src={user.pictureUrl}
-							alt='user-profile-picture'
+							alt={`${user.username} profile picture`}
 						/>
 						<Username>{user.username}</Username>
 					</ResultWrapper>
@@ -60,14 +55,12 @@ function Searchbox(props) {
 const ComponentWrapper = styled.div`
 	display: flex;
 	flex-flow: column nowrap;
-	position: absolute;
-	top: 13px;
-	left: 30%;
 	width: fit-content;
 	height: fit-content;
 	background-color: #e7e7e7;
 	border-radius: 8px;
 	overflow-y: scroll;
+	margin-top: 15px;
 `;
 
 const InputWrapper = styled.div`
@@ -75,7 +68,6 @@ const InputWrapper = styled.div`
 		width: 563px;
 	}
 	display: inherit;
-	position: relative;
 	align-items: center;
 	height: 45px;
 	width: 350px;
@@ -86,6 +78,7 @@ const InputWrapper = styled.div`
 const ResultWrapper = styled.div`
 	display: inherit;
 	flex-flow: row nowrap;
+	align-items: center;
 	margin: 16px 17px;
 `;
 
@@ -127,7 +120,6 @@ const StyledInput = styled(DebounceInput)`
 	font-family: "Lato", sans-serif;
 	border: none;
 	border-radius: 8px;
-	background-color: #fff;
 	text-indent: 16px;
 	&::placeholder {
 		color: #c6c6c6;
