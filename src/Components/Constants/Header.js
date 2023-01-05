@@ -2,8 +2,10 @@ import styled from "styled-components";
 import logo from "../../Assets/linkr.png";
 import { AiOutlineDown } from "react-icons/ai";
 import Searchbox from "./Searchbox";
+import useWindowDimensions from "../Services/windowDimensions";
 
 export default function Header() {
+	const { width } = useWindowDimensions();
 	return (
 		<HeaderStyle>
 			<Container>
@@ -13,7 +15,7 @@ export default function Header() {
 						src={logo}
 					/>
 				</div>
-				<Searchbox />
+				{width >= 840 && <Searchbox />}
 				<UserContainer>
 					<AiOutlineDown />
 					<UserProfilePicture
@@ -33,7 +35,7 @@ const HeaderStyle = styled.div`
 	width: 100%;
 	display: flex;
 	justify-content: center;
-	align-items: center;
+	/* align-items: center; */
 	position: fixed;
 	top: 0;
 	left: 0;
