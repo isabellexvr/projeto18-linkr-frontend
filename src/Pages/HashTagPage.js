@@ -29,7 +29,6 @@ const HashTagPage = styled.div`
     display: flex;
   justify-content: center;
   }
- 
 `;
 
 const PostMobile = styled.div`

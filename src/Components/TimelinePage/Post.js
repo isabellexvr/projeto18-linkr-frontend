@@ -126,7 +126,7 @@ export default function Post() {
 }
 
 const PostStyle = styled.div`
-  height: 232px;
+  height: 70vw;
   width: 100%;
   background-color: #171717;
   margin-top: 16px;
@@ -135,8 +135,6 @@ const PostStyle = styled.div`
     width: 611px;
     height: 276px;
     border-radius: 16px;
-    margin-top: 100px;
-    margin-bottom: -80px;
   }
 `;
 
@@ -214,6 +212,7 @@ const NoPostsMessage = styled.div`
 `;
 
 const LeftContainer = styled.div`
+  margin-top: 17px;
   display: flex;
   flex-direction: column;
   width: 18.4%;
@@ -239,6 +238,7 @@ const LikesCount = styled.h2`
 `;
 
 const RightContainer = styled.div`
+  margin-top: 18px;
   display: flex;
   flex-direction: column;
   font-family: "Lato";
@@ -246,6 +246,7 @@ const RightContainer = styled.div`
 `;
 
 const UserName = styled.h1`
+
   font-weight: 400;
   font-size: 17px;
   color: white;
@@ -258,7 +259,4 @@ const Description = styled.p`
   font-size: 15px;
   color: #b7b7b7;
   line-height: 18px;
-  > strong {
-    font-weight: 700;
-  }
 `;
