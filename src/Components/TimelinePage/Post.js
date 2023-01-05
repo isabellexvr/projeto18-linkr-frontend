@@ -3,6 +3,8 @@ import { FiHeart } from "react-icons/fi";
 import PostLink from "./PostLink";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { ReactTagify } from "react-tagify";
+import { useNavigate } from "react-router-dom";
 
 const postsExample = [
   {
@@ -37,9 +39,17 @@ const postsExample = [
 ];
 
 export default function Post() {
+  const navigate = useNavigate();
+
   const [posts, setPosts] = useState(["projetao"]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+
+  const tagStyle = {
+    color: "white",
+    fontWeight: 800,
+    cursor: "pointer",
+  };
 
   /*   useEffect((()=>{
 
@@ -65,13 +75,14 @@ export default function Post() {
               <RightContainer>
                 <UserName>{e.userName}</UserName>
                 <Description>
-                  {e.postDescription.split(" ").map((e, i) => {
-                    if (e[0] === "#") {
-                      return <strong key={i}>{" " + e + " "}</strong>;
-                    } else {
-                      return " " + e + " ";
+                  <ReactTagify
+                    tagStyle={tagStyle}
+                    tagClicked={(tag) =>
+                      navigate(`/hashtag/${tag.substring(1)}`)
                     }
-                  })}
+                  >
+                    {e.postDescription}
+                  </ReactTagify>
                 </Description>
                 <PostLink
                   linkTitle={e.linkInfo.linkTitle}
@@ -120,7 +131,7 @@ const PostStyle = styled.div`
   background-color: #171717;
   margin-top: 16px;
   display: flex;
-  @media (min-width: 900px){
+  @media (min-width: 900px) {
     width: 611px;
     height: 276px;
     border-radius: 16px;

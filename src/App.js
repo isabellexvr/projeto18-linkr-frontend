@@ -10,7 +10,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/timeline" element={<TimelinePage />} />
-          <Route path="/hashtags/:hashtags" element={<HashTagsPage />} />
+          <Route path="/hashtag/:hashtag" element={<HashTagsPage />} />
         </Routes>
       </BrowserRouter>
     </>
