@@ -11,9 +11,20 @@ export default function SignIn() {
   function login(event) {
     event.preventDefault();
 
-    const URL = "https://linkr-api-9ik9.onrender.com/";
+    // const URL = "https://linkr-api-9ik9.onrender.com/";
+    const URL = "http://localhost:4000/sign-in";
 
     const promise = axios.post(URL, form);
+
+    promise.then((res) => {
+      navigate("/timeline");
+      console.log(res.data);
+    });
+
+    promise.catch((err) => {
+      console.log(err.response.data);
+      alert(err.response.data);
+    });
   }
 
   return (
@@ -32,7 +43,6 @@ export default function SignIn() {
           <ContainerForm onSubmit={login}>
             <input
               type="email"
-              required
               placeholder=" e-mail"
               name="email"
               value={form.email}
@@ -40,7 +50,6 @@ export default function SignIn() {
             />
             <input
               type="password"
-              required
               placeholder=" password"
               name="password"
               value={form.password}
