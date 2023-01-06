@@ -16,9 +16,9 @@ export default function PostPublicationForm() {
     e.preventDefault();
     console.log(form);
     setLoading(true);
-    setTimeout(setLoading(false), 2000);
+    setInterval(()=>setLoading(false),2000)
 
-    axios
+/*     axios
       .post("http://localhost:4000/post", form, {
         headers: {
             Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJQaWN0dXJlIjoiaHR0cHM6Ly8zLmJwLmJsb2dzcG90LmNvbS8tUlB0eVhTR0tKRzQvVUVlemoxODBndUkvQUFBQUFBQUFBdWMvckVuX0xwSThEZnMvczE2MDAvZ2F0by1uZWdyby5qcGciLCJzZXNzaW9uSWQiOjEsImlhdCI6MTY3MzAyNzY0NH0.FWLjPwjA4qkV8-5pX-HIu7xi2B_50sdtxOMAMMbVfFw
@@ -33,7 +33,7 @@ export default function PostPublicationForm() {
         console.log(err.response.data);
         setLoading(false);
         alert("Houve um erro ao publicar o seu link.");
-      });
+      }); */
   }
 
   return (
