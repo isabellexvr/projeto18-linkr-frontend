@@ -226,10 +226,12 @@ const LeftContainer = styled.div`
 `;
 
 const UserProfilePicture = styled.img`
-  width: 40px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   margin-top: 9px;
   margin-bottom: 17px;
+  object-fit: cover;
 `;
 
 const LikeIcon = styled(FiHeart)`
