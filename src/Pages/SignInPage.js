@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import logo from "../Assets/linkr.png";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "../Components/Form/useForm";
 import axios from "axios";
 
@@ -48,7 +48,9 @@ export default function SignIn() {
             />
             <Button type="submit">Log In</Button>
           </ContainerForm>
-          <RedirecitonText>First time? Create an account!</RedirecitonText>
+          <Link to="sign-up">
+            <RedirecitonText>First time? Create an account!</RedirecitonText>
+          </Link>
         </ContainerInformation>
       </SecondContainer>
     </ManagingContainers>
