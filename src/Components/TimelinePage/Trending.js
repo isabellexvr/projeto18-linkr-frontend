@@ -5,7 +5,7 @@ import Trend from "./Trend";
 
 export default function Trending() {
   const [trends, setTrends] = useState([]);
-
+ 
   useEffect(() => {
     const URL = "http://localhost:4000/trends";
     const promise = axios.get(URL);
@@ -19,15 +19,18 @@ export default function Trending() {
   }, []);
 
   return (
-    <TrendTopics>
+    
+      <TrendTopics>
       <h1>Trending</h1>
       <Line></Line>
-      <Trends>
-        {trends.map((t, id) => (
-          <Trend t={t} key={id} />
-        ))}
-      </Trends>
+        <Trends >
+          {trends.map((t, id) => (
+               <Trend t={t} key={id} />
+          ))}
+        </Trends>
     </TrendTopics>
+
+    
   );
 }
 

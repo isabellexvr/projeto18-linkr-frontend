@@ -1,12 +1,26 @@
+import { useNavigate } from "react-router-dom";
+import { ReactTagify } from "react-tagify"
 import styled from "styled-components"
 
 
-export default function Trend({t}) {
-  
+export default function Trend({ t }) {
+    const navigate = useNavigate();
+
+    const tagStyle = {
+        color: "white",
+        fontWeight: 800,
+        cursor: "pointer",
+      };
+      
     return (
         <>
             <TrendName>
-                #{t.tag}
+                <ReactTagify tagStyle={tagStyle}
+                    tagClicked={(tag) =>
+                        navigate(`/hashtag/${tag.substring(1)}`)
+                    }>
+                    #{t.tag}
+                </ReactTagify>
             </TrendName>
         </>
     )
