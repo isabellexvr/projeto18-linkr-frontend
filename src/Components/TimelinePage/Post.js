@@ -6,43 +6,9 @@ import { useEffect, useState } from "react";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 
-const postsExample = [
-  {
-    userName: "Maluco Random",
-    userImage:
-      "https://i.pinimg.com/originals/64/8b/da/648bda8b742f5f713e94f17ff1b49252.jpg",
-    likesCount: "12",
-    postDescription:
-      "Muito #foda dahora esse link aqui rapeize!! #sabadaco #kasino",
-    linkInfo: {
-      linkTitle: "Kasino no Sabadaço - AE KASINÃO / KASINAUM",
-      linkDescription:
-        'SIGA NO TWITTER: @_YuriRodrigues(Todos os direitos reservados à TV Bandeirantes)Partes de destaque (fora o GC eterno "NA SEQUÊNCIA - Thammy e as revelações n...',
-      linkUrl:
-        "https://www.youtube.com/watch?v=umBWV2QC0xo&ab_channel=YuriRodrigues",
-      linkImage: "https://i.ytimg.com/vi/umBWV2QC0xo/hqdefault.jpg",
-    },
-  },
-  {
-    userName: "Nerdola Geek",
-    userImage: "https://cf.shopee.com.br/file/0a4dba0f50d3862f3118154895d987bc",
-    likesCount: "15",
-    postDescription: "Mais um dia #curtindo #RPG",
-    linkInfo: {
-      linkTitle: "Blog - RPG Next",
-      linkDescription: "Blog com conteúdo com RPG.",
-      linkUrl: "https://www.rpgnext.com.br/blog/",
-      linkImage:
-        "https://i1.wp.com/www.rpgnext.com.br/wp-content/uploads/2015/09/canyon-BLOG-image.jpg?fit=1920%2C720&ssl=1",
-    },
-  },
-];
-
-export default function Post() {
+export default function Post({ loading, setLoading }) {
   const navigate = useNavigate();
-
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
   const tagStyle = {
@@ -57,14 +23,16 @@ export default function Post() {
     axios
       .get("http://localhost:4000/all-posts")
       .then((a) => {
-        console.log(a.data)
+        console.log(a.data);
+        setLoading(false);
         setPosts(a.data);
       })
       .catch((e) => {
+        setLoading(false);
         setError(true);
         console.log(e);
       });
-  }, []);
+  }, [loading]);
 
   return (
     <>
@@ -136,6 +104,7 @@ const PostStyle = styled.div`
   background-color: #171717;
   margin-top: 16px;
   display: flex;
+
   @media (min-width: 900px) {
     width: 611px;
     height: 276px;
@@ -226,10 +195,12 @@ const LeftContainer = styled.div`
 `;
 
 const UserProfilePicture = styled.img`
-  width: 40px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   margin-top: 9px;
   margin-bottom: 17px;
+  object-fit: cover;
 `;
 
 const LikeIcon = styled(FiHeart)`
@@ -243,7 +214,6 @@ const LikesCount = styled.h2`
 `;
 
 const RightContainer = styled.div`
-  margin-top: 18px;
   display: flex;
   flex-direction: column;
   font-family: "Lato";
