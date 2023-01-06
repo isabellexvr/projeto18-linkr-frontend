@@ -6,11 +6,9 @@ import { useEffect, useState } from "react";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 
-export default function Post() {
+export default function Post({ loading, setLoading }) {
   const navigate = useNavigate();
-
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
   const tagStyle = {
@@ -25,16 +23,16 @@ export default function Post() {
     axios
       .get("http://localhost:4000/all-posts")
       .then((a) => {
-        console.log(a.data)
-        setLoading(false)
+        console.log(a.data);
+        setLoading(false);
         setPosts(a.data);
       })
       .catch((e) => {
-        setLoading(false)
+        setLoading(false);
         setError(true);
         console.log(e);
       });
-  }, []);
+  }, [setPosts, loading, setLoading]);
 
   return (
     <>
@@ -194,7 +192,6 @@ const LeftContainer = styled.div`
   width: 18.4%;
   align-items: center;
   color: white;
-
 `;
 
 const UserProfilePicture = styled.img`

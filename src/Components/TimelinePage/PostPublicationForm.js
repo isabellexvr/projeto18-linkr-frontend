@@ -4,9 +4,9 @@ import axios from "axios";
 
 //https://linkr-api-9ik9.onrender.com
 
-export default function PostPublicationForm() {
+export default function PostPublicationForm({ loading, setLoading }) {
   const [form, setForm] = useState({});
-  const [loading, setLoading] = useState(false);
+
 
   function handleForm({ target: { value, name } }) {
     setForm({ ...form, [name]: value });
@@ -16,15 +16,14 @@ export default function PostPublicationForm() {
     e.preventDefault();
     console.log(form);
     setLoading(true);
-    setInterval(()=>setLoading(false),2000)
 
-/*     axios
+    axios
       .post("http://localhost:4000/post", form, {
         headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJQaWN0dXJlIjoiaHR0cHM6Ly8zLmJwLmJsb2dzcG90LmNvbS8tUlB0eVhTR0tKRzQvVUVlemoxODBndUkvQUFBQUFBQUFBdWMvckVuX0xwSThEZnMvczE2MDAvZ2F0by1uZWdyby5qcGciLCJzZXNzaW9uSWQiOjEsImlhdCI6MTY3MzAyNzY0NH0.FWLjPwjA4qkV8-5pX-HIu7xi2B_50sdtxOMAMMbVfFw
-            `
-        }
-    })
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJQaWN0dXJlIjoiaHR0cHM6Ly8zLmJwLmJsb2dzcG90LmNvbS8tUlB0eVhTR0tKRzQvVUVlemoxODBndUkvQUFBQUFBQUFBdWMvckVuX0xwSThEZnMvczE2MDAvZ2F0by1uZWdyby5qcGciLCJzZXNzaW9uSWQiOjEsImlhdCI6MTY3MzAyNzY0NH0.FWLjPwjA4qkV8-5pX-HIu7xi2B_50sdtxOMAMMbVfFw
+            `,
+        },
+      })
       .then((a) => {
         console.log(a.data);
         setLoading(false);
@@ -33,7 +32,7 @@ export default function PostPublicationForm() {
         console.log(err.response.data);
         setLoading(false);
         alert("Houve um erro ao publicar o seu link.");
-      }); */
+      });
   }
 
   return (
