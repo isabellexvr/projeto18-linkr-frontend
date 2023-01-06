@@ -3,6 +3,7 @@ import logo from "../Assets/linkr.png";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "../Components/Form/useForm";
 import axios from "axios";
+import { useState } from "react";
 
 export default function SignUp() {
   const [form, handleForm] = useForm({
@@ -11,16 +12,29 @@ export default function SignUp() {
     username: "",
     pictureUrl: "",
   });
+
   const navigate = useNavigate();
 
   function register(event) {
     event.preventDefault();
 
+    if (
+      form.email === "" ||
+      form.password === "" ||
+      form.username === "" ||
+      form.pictureUrl === ""
+    ) {
+      alert("Preencha todos os campos do formulário, por favor.");
+      return;
+    }
+
     const URL = "https://linkr-api-9ik9.onrender.com/sign-up";
 
     const promise = axios.post(URL, form);
 
-    promise.then(() => navigate("/sign-in"));
+    promise.then(() => {
+      navigate("/sign-in");
+    });
 
     promise.catch((err) => {
       console.log(err.response.data);
@@ -44,7 +58,6 @@ export default function SignUp() {
           <ContainerForm onSubmit={register}>
             <input
               type="email"
-              required
               placeholder=" e-mail"
               name="email"
               value={form.email}
@@ -52,7 +65,6 @@ export default function SignUp() {
             />
             <input
               type="password"
-              required
               placeholder=" password"
               name="password"
               value={form.password}
@@ -60,7 +72,6 @@ export default function SignUp() {
             />
             <input
               type="text"
-              required
               placeholder=" username"
               name="username"
               value={form.username}
@@ -68,7 +79,6 @@ export default function SignUp() {
             />
             <input
               type="url"
-              required
               placeholder=" picture url"
               name="pictureUrl"
               value={form.pictureUrl}
