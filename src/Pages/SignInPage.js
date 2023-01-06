@@ -31,7 +31,7 @@ export default function SignIn() {
     <ManagingContainers>
       <MainContainer>
         <LogoContainer>
-          <Logo src={logo} alt="Logo Linkr" />
+          <Logo>linkr</Logo>
           <Slogan>
             <h1>save, share and discover</h1>
             <h1>the best links on the web</h1>
@@ -114,13 +114,14 @@ const SecondContainer = styled.div`
   } ;
 `;
 
-const Logo = styled.img`
-  height: 100px;
-  width: 200px;
-  margin-bottom: 30px;
+const Logo = styled.div`
+  margin-bottom: 5px;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 120px;
+  font-family: "Passion One";
   @media (max-width: 800px) {
-    height: 70px;
-    width: 120px;
+    font-size: 70px;
     margin-bottom: 10px;
   } ;
 `;
