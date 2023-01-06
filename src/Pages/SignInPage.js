@@ -11,16 +11,27 @@ export default function SignIn() {
   function login(event) {
     event.preventDefault();
 
-    const URL = "https://linkr-api-9ik9.onrender.com/";
+    // const URL = "https://linkr-api-9ik9.onrender.com/";
+    const URL = "http://localhost:4000/sign-in";
 
     const promise = axios.post(URL, form);
+
+    promise.then((res) => {
+      navigate("/timeline");
+      console.log(res.data);
+    });
+
+    promise.catch((err) => {
+      console.log(err.response.data);
+      alert(err.response.data);
+    });
   }
 
   return (
     <ManagingContainers>
       <MainContainer>
         <LogoContainer>
-          <Logo src={logo} alt="Logo Linkr" />
+          <Logo>linkr</Logo>
           <Slogan>
             <h1>save, share and discover</h1>
             <h1>the best links on the web</h1>
@@ -32,7 +43,6 @@ export default function SignIn() {
           <ContainerForm onSubmit={login}>
             <input
               type="email"
-              required
               placeholder=" e-mail"
               name="email"
               value={form.email}
@@ -40,7 +50,6 @@ export default function SignIn() {
             />
             <input
               type="password"
-              required
               placeholder=" password"
               name="password"
               value={form.password}
@@ -105,13 +114,14 @@ const SecondContainer = styled.div`
   } ;
 `;
 
-const Logo = styled.img`
-  height: 100px;
-  width: 200px;
-  margin-bottom: 30px;
+const Logo = styled.div`
+  margin-bottom: 5px;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 120px;
+  font-family: "Passion One";
   @media (max-width: 800px) {
-    height: 70px;
-    width: 120px;
+    font-size: 70px;
     margin-bottom: 10px;
   } ;
 `;
