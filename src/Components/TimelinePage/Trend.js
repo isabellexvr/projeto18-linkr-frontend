@@ -5,6 +5,7 @@ import styled from "styled-components"
 
 export default function Trend({ t }) {
     const navigate = useNavigate();
+    console.log(t);
 
     const tagStyle = {
         color: "white",
@@ -19,7 +20,7 @@ export default function Trend({ t }) {
                     tagClicked={(tag) =>
                         navigate(`/hashtag/${tag.substring(1)}`)
                     }>
-                    #{t.tag}
+                    {t}
                 </ReactTagify>
             </TrendName>
         </>

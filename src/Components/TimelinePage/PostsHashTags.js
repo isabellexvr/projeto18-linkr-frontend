@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { ReactTagify } from "react-tagify";
 import { useNavigate, useParams } from "react-router-dom";
+import PostLink from "./PostLink";
 
 // const postsExample = [
 //   {
@@ -44,6 +45,7 @@ export default function PostHashTags() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  // const token = JSON.parse(localStorage.getItem("token"));
 
   const tagStyle = {
     color: "white",
@@ -51,16 +53,22 @@ export default function PostHashTags() {
     cursor: "pointer",
   };
 
-    useEffect((()=>{
-    const promisse = axios.get(`http://localhost:4000/hashtags/${hashtag}`)
+  useEffect((() => {
+    const promisse = axios.get(`http://localhost:4000/hashtags/${hashtag}`,
+      // {
+      //   headers: {
+      //     'Authorization': `token ${token}`
+      //   }
+      // }
+      )
     promisse.then((res) => {
-        setPosts(res.data);
-      });
-      promisse.catch((err) => {
-        console.log(err.response.data);
-      });
-  }),[hashtag]);
-console.log(posts)
+      setPosts(res.data);
+    });
+    promisse.catch((err) => {
+      console.log(err.response.data);
+    });
+  }), [hashtag]);
+  console.log(posts)
   return (
     <>
       {posts.length > 0 && !error && !loading && (
@@ -84,9 +92,12 @@ console.log(posts)
                     {e.description}
                   </ReactTagify>
                 </Description>
-                {/* <PostLink
-                  linkTitle={e.url}
-                /> */}
+                <PostLink
+                  linkTitle={e.linkTitle}
+                  linkDescription={e.linkDescription}
+                  linkUrl={e.linkUrl}
+                  linkImage={e.linkImg}
+                />
               </RightContainer>
             </PostStyle>
           ))}

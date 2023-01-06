@@ -25,7 +25,7 @@ export default function Trending() {
       <Line></Line>
         <Trends >
           {trends.map((t, id) => (
-               <Trend t={t} key={id} />
+               <Trend t={"#" + t.tag} key={id} />
           ))}
         </Trends>
     </TrendTopics>
