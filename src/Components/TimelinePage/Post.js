@@ -32,7 +32,7 @@ export default function Post({ loading, setLoading }) {
         setError(true);
         console.log(e);
       });
-  }, [setPosts, loading, setLoading]);
+  }, [loading]);
 
   return (
     <>

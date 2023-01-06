@@ -26,6 +26,9 @@ export default function PostPublicationForm({ loading, setLoading }) {
       })
       .then((a) => {
         console.log(a.data);
+        alert(a.data)
+        setLoading(false);
+        setLoading(true);
         setLoading(false);
       })
       .catch((err) => {
