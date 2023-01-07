@@ -32,7 +32,7 @@ export default function Post({ loading, setLoading }) {
         setError(true);
         console.log(e);
       });
-  }, [loading, setLoading, posts]);
+  }, [loading, setLoading]);
 
   return (
     <>
@@ -41,7 +41,7 @@ export default function Post({ loading, setLoading }) {
           {posts.map((e, i) => (
             <PostStyle key={i}>
               <LeftContainer>
-                <UserProfilePicture alt="user-profile" src={e.userImage} />
+                <UserProfilePicture alt='user-profile' src={e.userImage} />
                 <LikeIcon />
                 <LikesCount>{e.likesCount} likes</LikesCount>
               </LeftContainer>
@@ -52,8 +52,7 @@ export default function Post({ loading, setLoading }) {
                     tagStyle={tagStyle}
                     tagClicked={(tag) =>
                       navigate(`/hashtag/${tag.substring(1)}`)
-                    }
-                  >
+                    }>
                     {e.postDescription}
                   </ReactTagify>
                 </Description>
