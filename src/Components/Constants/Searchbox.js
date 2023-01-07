@@ -33,7 +33,12 @@ function Searchbox(props) {
 					onChange={(event) => setSearch(event.target.value)}
 					placeholder='Search for people'
 				/>
-				<div style={{ position: "absolute", right: "17px" }}>
+				<div
+					style={{
+						display: "flex",
+						alignItems: "center",
+						marginRight: "17px",
+					}}>
 					<SearchIcon />
 				</div>
 			</InputWrapper>
