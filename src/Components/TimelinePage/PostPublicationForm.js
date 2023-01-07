@@ -7,7 +7,6 @@ import axios from "axios";
 export default function PostPublicationForm({ loading, setLoading }) {
   const [form, setForm] = useState({});
 
-
   function handleForm({ target: { value, name } }) {
     setForm({ ...form, [name]: value });
   }
@@ -25,8 +24,8 @@ export default function PostPublicationForm({ loading, setLoading }) {
         },
       })
       .then((a) => {
-        console.log(a.data);
-        alert(a.data)
+        alert(a.data);
+        setForm({});
         setLoading(false);
         setLoading(true);
         setLoading(false);
