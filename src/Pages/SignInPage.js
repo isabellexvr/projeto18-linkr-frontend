@@ -13,16 +13,19 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "../Components/Form/useForm";
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../Components/Context/authContext";
 
 export default function SignIn() {
   const [form, handleForm] = useForm({ email: "", password: "" });
   const navigate = useNavigate();
   const { token, setToken, setAndPersistToken } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
 
   function login(event) {
     event.preventDefault();
+
+    setLoading(true);
 
     // const URL = "https://linkr-api-9ik9.onrender.com/";
     const URL = "http://localhost:4000/sign-in";
@@ -32,11 +35,13 @@ export default function SignIn() {
     promise.then((res) => {
       navigate("/timeline");
       setAndPersistToken(res.data);
+      setLoading(false);
       console.log(res.data);
     });
 
     promise.catch((err) => {
       console.log(err.response.data);
+      setLoading(false);
       alert(err.response.data);
     });
   }
@@ -69,7 +74,9 @@ export default function SignIn() {
               value={form.password}
               onChange={handleForm}
             />
-            <Button type="submit">Log In</Button>
+            <Button type="submit" disabled={loading ? true : false}>
+              Log In
+            </Button>
           </ContainerForm>
           <Link to="sign-up">
             <RedirecitonText>First time? Create an account!</RedirecitonText>
