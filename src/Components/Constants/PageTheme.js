@@ -19,7 +19,6 @@ export const PageTitle = styled.h1`
 export const StyledMain = styled.div`
 	display: flex;
 	justify-content: center;
-	height: 150vh;
 	padding-top: 122px;
 	background-color: #333333;
 `;
