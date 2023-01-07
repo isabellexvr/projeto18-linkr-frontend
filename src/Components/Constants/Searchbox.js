@@ -1,24 +1,29 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { DebounceInput } from "react-debounce-input";
 import { AiOutlineSearch } from "react-icons/ai";
 import styled from "styled-components";
 import axios from "axios";
+import { AuthContext } from "../Context/authContext";
 
-function Searchbox(props) {
+function Searchbox() {
 	const [search, setSearch] = useState("");
 	const [result, setResult] = useState([]);
+
+	const { token } = useContext(AuthContext);
 
 	useEffect(() => {
 		if (search.length !== 0) {
 			const config = {
 				method: "GET",
 				headers: {
-					Authorization:
-						"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsInVzZXJQaWN0dXJlIjoiaHR0cHM6Ly91cGxvYWQud2lraW1lZGlhLm9yZy93aWtpcGVkaWEvY29tbW9ucy90aHVtYi9hL2E2L0Fub255bW91c19lbWJsZW0uc3ZnLzY0MHB4LUFub255bW91c19lbWJsZW0uc3ZnLnBuZyIsImlhdCI6MTY3MjkzNzg1NH0.DbN4kK85604ZviFjspBQP7RSC2OkuB5qqSALVEd-4CM",
+					Authorization: `Bearer ${token}`,
 				},
 			};
 
-			axios(`https://linkr-api-9ik9.onrender.com/user/${search}`, config)
+			axios(
+				`https://linkr-api-9ik9.onrender.com/user?username=${search}`,
+				config
+			)
 				.then((res) => setResult(res.data))
 				.catch((err) => console.log(err));
 		}
@@ -33,7 +38,12 @@ function Searchbox(props) {
 					onChange={(event) => setSearch(event.target.value)}
 					placeholder='Search for people'
 				/>
-				<div style={{ position: "absolute", right: "17px" }}>
+				<div
+					style={{
+						display: "flex",
+						alignItems: "center",
+						marginRight: "17px",
+					}}>
 					<SearchIcon />
 				</div>
 			</InputWrapper>
