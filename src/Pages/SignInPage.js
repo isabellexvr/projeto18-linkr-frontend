@@ -1,12 +1,14 @@
 import styled from "styled-components";
-import logo from "../Assets/linkr.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "../Components/Form/useForm";
 import axios from "axios";
+import { useContext } from "react";
+import { AuthContext } from "../Components/Context/authContext";
 
 export default function SignIn() {
   const [form, handleForm] = useForm({ email: "", password: "" });
   const navigate = useNavigate();
+  const { token, setToken, setAndPersistToken } = useContext(AuthContext);
 
   function login(event) {
     event.preventDefault();
@@ -18,6 +20,7 @@ export default function SignIn() {
 
     promise.then((res) => {
       navigate("/timeline");
+      setAndPersistToken(res.data);
       console.log(res.data);
     });
 
