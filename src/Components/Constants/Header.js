@@ -1,16 +1,27 @@
 import styled from "styled-components";
-import { AiOutlineDown } from "react-icons/ai";
+import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import Searchbox from "./Searchbox";
 import useWindowDimensions from "../Services/windowDimensions";
 import { AuthContext } from "../../Components/Context/authContext";
 import jwtDecode from "jwt-decode";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
   const { width } = useWindowDimensions();
   const { token } = useContext(AuthContext);
+  const [showLogout, setShowLogout] = useState(false);
+  const navigate = useNavigate();
 
   const payload = jwtDecode(token);
+
+  console.log(payload);
+
+  function handleLogout() {
+    localStorage.removeItem("token");
+    navigate("/");
+    console.log("check token:", token);
+  }
 
   return (
     <HeaderStyle>
@@ -18,7 +29,14 @@ export default function Header() {
         <Logo>linkr</Logo>
         {width >= 840 && <Searchbox />}
         <UserContainer>
-          <AiOutlineDown />
+          {showLogout ? (
+            <ContainerProfile>
+              <AiOutlineUp onClick={() => setShowLogout(false)} />
+              <Logout onClick={handleLogout}>Logout</Logout>
+            </ContainerProfile>
+          ) : (
+            <AiOutlineDown onClick={() => setShowLogout(true)} />
+          )}
           <UserProfilePicture alt="user-profile" src={payload.userPicture} />
         </UserContainer>
       </Container>
@@ -43,7 +61,6 @@ const Container = styled.div`
   width: 91.7%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
 `;
 
 const UserContainer = styled.div`
@@ -65,4 +82,23 @@ const Logo = styled.div`
   font-weight: 700;
   font-size: 50px;
   font-family: "Passion One";
+  display: flex;
+  align-items: center;
+`;
+
+const Logout = styled.div`
+  color: #ffffff;
+  background-color: black;
+  margin-top: 30px;
+`;
+
+const ContainerProfile = styled.div`
+  display: flex;
+  flex-direction: column;
+  > svg {
+    color: white;
+    font-size: 28px;
+    margin-right: 12px;
+    margin-top: 50px;
+  }
 `;

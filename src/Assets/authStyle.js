@@ -121,6 +121,7 @@ const Button = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: ${({ disabled }) => (disabled ? "0.5" : "1.0")};
   @media (max-width: 800px) {
     height: 55px;
   } ;

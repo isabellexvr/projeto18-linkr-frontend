@@ -1,15 +1,4 @@
-import {
-  ManagingContainers,
-  MainContainer,
-  LogoContainer,
-  SecondContainer,
-  Logo,
-  Slogan,
-  ContainerInformation,
-  ContainerForm,
-  Button,
-  RedirecitonText,
-} from "../Assets/authStyle";
+import * as S from "../Assets/authStyle";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "../Components/Form/useForm";
 import axios from "axios";
@@ -24,42 +13,43 @@ export default function SignIn() {
 
   function login(event) {
     event.preventDefault();
-
     setLoading(true);
 
     // const URL = "https://linkr-api-9ik9.onrender.com/";
     const URL = "http://localhost:4000/sign-in";
 
-    const promise = axios.post(URL, form);
+    setTimeout(() => {
+      const promise = axios.post(URL, form);
 
-    promise.then((res) => {
-      navigate("/timeline");
-      setAndPersistToken(res.data);
-      setLoading(false);
-      console.log(res.data);
-    });
+      promise.then((res) => {
+        navigate("/timeline");
+        setAndPersistToken(res.data);
+        setLoading(false);
+        console.log(res.data);
+      });
 
-    promise.catch((err) => {
-      console.log(err.response.data);
-      setLoading(false);
-      alert(err.response.data);
-    });
+      promise.catch((err) => {
+        console.log(err.response.data);
+        setLoading(false);
+        alert(err.response.data);
+      });
+    }, 1000);
   }
 
   return (
-    <ManagingContainers>
-      <MainContainer>
-        <LogoContainer>
-          <Logo>linkr</Logo>
-          <Slogan>
+    <S.ManagingContainers>
+      <S.MainContainer>
+        <S.LogoContainer>
+          <S.Logo>linkr</S.Logo>
+          <S.Slogan>
             <h1>save, share and discover</h1>
             <h1>the best links on the web</h1>
-          </Slogan>
-        </LogoContainer>
-      </MainContainer>
-      <SecondContainer>
-        <ContainerInformation>
-          <ContainerForm onSubmit={login}>
+          </S.Slogan>
+        </S.LogoContainer>
+      </S.MainContainer>
+      <S.SecondContainer>
+        <S.ContainerInformation>
+          <S.ContainerForm onSubmit={login}>
             <input
               type="email"
               placeholder=" e-mail"
@@ -74,15 +64,17 @@ export default function SignIn() {
               value={form.password}
               onChange={handleForm}
             />
-            <Button type="submit" disabled={loading ? true : false}>
+            <S.Button type="submit" disabled={loading}>
               Log In
-            </Button>
-          </ContainerForm>
+            </S.Button>
+          </S.ContainerForm>
           <Link to="sign-up">
-            <RedirecitonText>First time? Create an account!</RedirecitonText>
+            <S.RedirecitonText>
+              First time? Create an account!
+            </S.RedirecitonText>
           </Link>
-        </ContainerInformation>
-      </SecondContainer>
-    </ManagingContainers>
+        </S.ContainerInformation>
+      </S.SecondContainer>
+    </S.ManagingContainers>
   );
 }

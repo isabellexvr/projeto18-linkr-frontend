@@ -1,15 +1,4 @@
-import {
-  ManagingContainers,
-  MainContainer,
-  LogoContainer,
-  SecondContainer,
-  Logo,
-  Slogan,
-  ContainerInformation,
-  ContainerForm,
-  Button,
-  RedirecitonText,
-} from "../Assets/authStyle";
+import * as S from "../Assets/authStyle";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "../Components/Form/useForm";
 import axios from "axios";
@@ -22,11 +11,13 @@ export default function SignUp() {
     username: "",
     pictureUrl: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
   function register(event) {
     event.preventDefault();
+    setLoading(true);
 
     if (
       form.email === "" ||
@@ -35,37 +26,42 @@ export default function SignUp() {
       form.pictureUrl === ""
     ) {
       alert("Preencha todos os campos do formulário, por favor.");
+      setLoading(false);
       return;
     }
 
     const URL = "https://linkr-api-9ik9.onrender.com/sign-up";
 
-    const promise = axios.post(URL, form);
+    setTimeout(() => {
+      const promise = axios.post(URL, form);
 
-    promise.then(() => {
-      navigate("/sign-in");
-    });
+      promise.then(() => {
+        setLoading(false);
+        navigate("/");
+      });
 
-    promise.catch((err) => {
-      console.log(err.response.data);
-      alert(err.response.data);
-    });
+      promise.catch((err) => {
+        console.log(err.response.data);
+        setLoading(false);
+        alert(err.response.data);
+      });
+    }, 1000);
   }
 
   return (
-    <ManagingContainers>
-      <MainContainer>
-        <LogoContainer>
-          <Logo>linkr</Logo>
-          <Slogan>
+    <S.ManagingContainers>
+      <S.MainContainer>
+        <S.LogoContainer>
+          <S.Logo>linkr</S.Logo>
+          <S.Slogan>
             <h1>save, share and discover</h1>
             <h1>the best links on the web</h1>
-          </Slogan>
-        </LogoContainer>
-      </MainContainer>
-      <SecondContainer>
-        <ContainerInformation>
-          <ContainerForm onSubmit={register}>
+          </S.Slogan>
+        </S.LogoContainer>
+      </S.MainContainer>
+      <S.SecondContainer>
+        <S.ContainerInformation>
+          <S.ContainerForm onSubmit={register}>
             <input
               type="email"
               placeholder=" e-mail"
@@ -94,13 +90,15 @@ export default function SignUp() {
               value={form.pictureUrl}
               onChange={handleForm}
             />
-            <Button type="submit">Sign Up</Button>
-          </ContainerForm>
+            <S.Button type="submit" disabled={loading}>
+              Sign Up
+            </S.Button>
+          </S.ContainerForm>
           <Link to="/">
-            <RedirecitonText>Switch back to log in</RedirecitonText>
+            <S.RedirecitonText>Switch back to log in</S.RedirecitonText>
           </Link>
-        </ContainerInformation>
-      </SecondContainer>
-    </ManagingContainers>
+        </S.ContainerInformation>
+      </S.SecondContainer>
+    </S.ManagingContainers>
   );
 }
