@@ -5,6 +5,7 @@ import HashTagsPage from "./Pages/HashTagPage";
 import SignInPage from "./Pages/SignInPage";
 import SignUpPage from "./Pages/SignUpPage";
 import Context from "./Components/Context/authContext";
+import ProfilePage from "./Pages/ProfilePage";
 
 function App() {
 	return (
@@ -28,6 +29,10 @@ function App() {
 						<Route
 							path='/sign-up'
 							element={<SignUpPage />}
+						/>
+						<Route
+							path='/user/:id'
+							element={<ProfilePage />}
 						/>
 					</Routes>
 				</Context>

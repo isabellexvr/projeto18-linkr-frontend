@@ -1,28 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "../Components/Constants/Header";
-import Post from "../Components/TimelinePage/Post";
+import Post from "../Components/Post/Post";
 import Trending from "../Components/TimelinePage/Trending";
 import {
 	PageStyle,
 	PageTitle,
 	StyledMain,
 } from "../Components/Constants/PageTheme";
+import { AuthContext } from "../Components/Context/authContext";
 
 function ProfilePage() {
 	const { id } = useParams();
+	const { token } = useContext(AuthContext);
+	const [user, setUser] = useState(null);
 
 	useEffect(() => {
 		const config = {
 			method: "GET",
 			headers: {
-				Authorization:
-					"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsInVzZXJQaWN0dXJlIjoiaHR0cHM6Ly91cGxvYWQud2lraW1lZGlhLm9yZy93aWtpcGVkaWEvY29tbW9ucy90aHVtYi9hL2E2L0Fub255bW91c19lbWJsZW0uc3ZnLzY0MHB4LUFub255bW91c19lbWJsZW0uc3ZnLnBuZyIsInNlc3Npb25JZCI6MTEsImlhdCI6MTY3MzAxNDA2Mn0.Fq_h5mwLDmmdcmvcBwYSTQN7-1uDeN5_1dlYiLraw6k",
+				Authorization: `Bearer ${token}`,
 			},
 		};
 		axios(`http://localhost:4000/user/${id}`, config)
-			.then((res) => console.log(res.data))
+			.then((res) => setUser(res.data))
 			.catch((err) => console.log(err));
 	}, []);
 
@@ -31,8 +33,15 @@ function ProfilePage() {
 			<Header />
 			<StyledMain>
 				<PageStyle>
-					<PageTitle>USERNAME</PageTitle>
-					<Post />
+					<PageTitle>{user && user.username}'s posts</PageTitle>
+					{user &&
+						user.posts.map((post, index) => (
+							<Post
+								username={user.username}
+								userImage={user.userImage}
+								post={post}
+							/>
+						))}
 				</PageStyle>
 				<Trending />
 			</StyledMain>
