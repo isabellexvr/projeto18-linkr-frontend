@@ -7,7 +7,6 @@ export function postLikeFunction(postId, token, setDisabled) {
       Authorization: `Bearer ${token}`,
     },
   };
-  console.log(token);
   axios(`http://localhost:4000/like/${postId}`, config)
     .then((res) => {
       setDisabled(false);
@@ -23,7 +22,6 @@ export function dislikeFunction(postId, token, setDisabled) {
       Authorization: `Bearer ${token}`,
     },
   };
-  console.log(token);
   axios(`http://localhost:4000/unlike/${postId}`, config)
     .then((res) => {
       setDisabled(false);

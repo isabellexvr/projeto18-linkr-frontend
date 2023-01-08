@@ -1,11 +1,9 @@
 import styled from "styled-components";
-import { BsHeart, BsHeartFill } from "react-icons/bs";
 import PostLink from "./PostLink";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
-import { postLikeFunction, dislikeFunction } from "../Services/LikeFunctions";
 import jwtDecode from "jwt-decode";
 import {
   LoadingMessage,
@@ -16,6 +14,7 @@ import { useContext } from "react";
 import { AuthContext } from "../Context/authContext";
 import { Tooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
+import { LikeButton, LikedButton } from "./SmallComponents/LikeButtons";
 
 export default function Post({ loading, setLoading }) {
   const navigate = useNavigate();
@@ -32,6 +31,10 @@ export default function Post({ loading, setLoading }) {
     cursor: "pointer",
   };
 
+  function newFunction(e) {
+    console.log(e);
+  }
+
   //https://linkr-api-9ik9.onrender.com/
 
   useEffect(() => {
@@ -47,7 +50,9 @@ export default function Post({ loading, setLoading }) {
         setError(true);
         console.log(e);
       });
-  }, []);
+  }, [loading, setLoading, liked]);
+
+  let x = [];
 
   //se e.likedBy.length > 0, procura o id do user com: e.likedBy.find((l) => l.userId === userId) pra poder mostrar vermelho
 
@@ -63,65 +68,57 @@ export default function Post({ loading, setLoading }) {
                   <>
                     {e.likedBy.find((l) => l.userId === userId) && (
                       <>
-                        <LikedIcon
-                          isRequesting={disabled}
-                          onClick={() => {
-                            setDisabled(true);
-                            setLiked(liked.filter((a) => a !== e.postId));
-                            dislikeFunction(
-                              e.postId,
-                              JSON.parse(token),
-                              setDisabled
-                            );
-                          }}
-                        />
+                        {LikedButton(
+                          setDisabled,
+                          disabled,
+                          token,
+                          setLiked,
+                          liked,
+                          e
+                        )}
                       </>
                     )}
                     {!e.likedBy.find((l) => l.userId === userId) && (
                       <>
-                        <LikeIcon
-                          isRequesting={disabled}
-                          onClick={() => {
-                            setDisabled(true);
-                            setLiked([...liked, e.postId]);
-                            postLikeFunction(
-                              e.postId,
-                              JSON.parse(token),
-                              setDisabled
-                            );
-                          }}
-                        />
+                        {LikeButton(
+                          setDisabled,
+                          disabled,
+                          token,
+                          setLiked,
+                          liked,
+                          e
+                        )}
                       </>
                     )}
                   </>
                 )}
                 {e.likedBy.length < 1 && (
                   <>
-                    <LikeIcon
-                      isRequesting={disabled}
-                      onClick={() => {
-                        setDisabled(true);
-                        setLiked([...liked, e.postId]);
-                        postLikeFunction(
-                          e.postId,
-                          JSON.parse(token),
-                          setDisabled
-                        );
-                      }}
-                    />
+                    {LikeButton(
+                      setDisabled,
+                      disabled,
+                      token,
+                      setLiked,
+                      liked,
+                      e
+                    )}
                   </>
                 )}
                 <LikesCount id="likesCount">{e.likesCount} likes</LikesCount>
+                <div>{newFunction(e)}</div>
                 <Tooltip
                   anchorId="likesCount"
                   clickable
                   style={{
                     backgroundColor: "rgba(255, 255, 255, 0.9)",
                     color: "#222",
-                    opacity: "0.15",
+                    width: "200px",
+                    fontSize: "19px",
+                    overflow: "clip",
                   }}
+                  delayShow="200"
                 >
-                  <Balloon>oi</Balloon>
+                  <Balloon>Liked by {newFunction(e.likedBy)}</Balloon>
                 </Tooltip>
               </LeftContainer>
               <RightContainer>
@@ -185,21 +182,6 @@ const UserProfilePicture = styled.img`
   object-fit: cover;
 `;
 
-const LikeIcon = styled(BsHeart)`
-  margin-bottom: 12px;
-  font-size: 22px;
-  cursor: pointer;
-  pointer-events: ${(props) => (props.isRequesting ? "none" : "initial")};
-`;
-
-const LikedIcon = styled(BsHeartFill)`
-  margin-bottom: 12px;
-  font-size: 22px;
-  color: red;
-  cursor: pointer;
-  pointer-events: ${(props) => (props.isRequesting ? "none" : "initial")};
-`;
-
 const LikesCount = styled.h2`
   text-align: center;
   font-size: 12px;
@@ -228,4 +210,6 @@ const Description = styled.p`
   line-height: 18px;
 `;
 
-const Balloon = styled.div``;
+const Balloon = styled.div`
+  overflow: clip;
+`;
