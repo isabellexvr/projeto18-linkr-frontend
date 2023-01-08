@@ -11,11 +11,14 @@ import {
 } from "../Components/Constants/PageTheme";
 import { NoPostsMessage } from "../Components/Post/PostStyledComponents";
 import { AuthContext } from "../Components/Context/authContext";
+import useWindowDimensions from "../Components/Services/windowDimensions";
+import Searchbox from "../Components/Constants/Searchbox";
 
 function ProfilePage() {
   const { id } = useParams();
   const { token } = useContext(AuthContext);
   const [user, setUser] = useState(null);
+  const { width } = useWindowDimensions();
 
   useEffect(() => {
     const config = {
@@ -24,7 +27,7 @@ function ProfilePage() {
         Authorization: `Bearer ${token}`,
       },
     };
-    axios(`https://linkr-api-9ik9.onrender.com/user/${id}`, config)
+    axios(`http://localhost:4000/user/${id}`, config)
       .then((res) => {
         if (res.data.posts[0].id === null) {
           delete res.data.posts;
@@ -37,8 +40,9 @@ function ProfilePage() {
   return (
     <>
       <Header />
-      <StyledMain>
+      <StyledMain width={width}>
         <PageStyle>
+          {width < 840 && <Searchbox />}
           <PageTitle>{user && user.username}'s posts</PageTitle>
           {user && user.posts ? (
             user.posts.map((post, index) => (
