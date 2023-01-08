@@ -34,7 +34,7 @@ export default function Post({ loading, setLoading }) {
         setLoading(false);
         setPosts(a.data);
         console.log(a.data)
-        
+
       })
       .catch((e) => {
         setLoading(false);
@@ -150,12 +150,11 @@ export default function Post({ loading, setLoading }) {
 }
 
 const PostStyle = styled.div`
-  height: 70vw;
+  height: 232px;
   width: 100%;
   background-color: #171717;
   margin-top: 16px;
   display: flex;
-
   @media (min-width: 900px) {
     width: 611px;
     height: 276px;
@@ -276,6 +275,7 @@ const LikesCount = styled.h2`
 
 const RightContainer = styled.div`
   display: flex;
+  justify-content: center;
   flex-direction: column;
   font-family: "Lato";
   width: 76.8%;
