@@ -31,9 +31,10 @@ export default function Post({ loading, setLoading }) {
     axios
       .get("http://localhost:4000/all-posts")
       .then((a) => {
-        console.log(a.data);
         setLoading(false);
         setPosts(a.data);
+        console.log(a.data)
+        
       })
       .catch((e) => {
         setLoading(false);
@@ -42,7 +43,7 @@ export default function Post({ loading, setLoading }) {
       });
   }, [loading, setLoading, setLiked, liked]);
 
-  console.log(disabled);
+  //se e.likedBy.length > 0, procura o id do user com: e.likedBy.find((l) => l.userId === userId) pra poder mostrar vermelho
 
   return (
     <>
@@ -52,9 +53,9 @@ export default function Post({ loading, setLoading }) {
             <PostStyle key={i}>
               <LeftContainer>
                 <UserProfilePicture alt="user-profile" src={e.userImage} />
-                {liked.length > 0 && (
+                {e.likedBy.length > 0 && (
                   <>
-                    {liked.includes(e.postId) && (
+                    {e.likedBy.find((l) => l.userId === userId) && (
                       <>
                         <LikedIcon
                           isRequesting={disabled}
@@ -64,12 +65,9 @@ export default function Post({ loading, setLoading }) {
                             dislikeFunction(e.postId, token, setDisabled);
                           }}
                         />
-                        <LikesCount>
-                          {Number(e.likesCount) + 1} likes
-                        </LikesCount>
                       </>
                     )}
-                    {!liked.includes(e.postId) && (
+                    {!e.likedBy.find((l) => l.userId === userId) && (
                       <>
                         <LikeIcon
                           isRequesting={disabled}
@@ -79,12 +77,11 @@ export default function Post({ loading, setLoading }) {
                             postLikeFunction(e.postId, token, setDisabled);
                           }}
                         />
-                        <LikesCount>{e.likesCount} likes</LikesCount>
                       </>
                     )}
                   </>
                 )}
-                {liked.length < 1 && (
+                {e.likedBy.length < 1 && (
                   <>
                     <LikeIcon
                       isRequesting={disabled}
@@ -94,9 +91,9 @@ export default function Post({ loading, setLoading }) {
                         postLikeFunction(e.postId, token, setDisabled);
                       }}
                     />
-                    <LikesCount>{e.likesCount} likes</LikesCount>
                   </>
                 )}
+                <LikesCount>{e.likesCount} likes</LikesCount>
               </LeftContainer>
               <RightContainer>
                 <UserName>{e.userName}</UserName>
