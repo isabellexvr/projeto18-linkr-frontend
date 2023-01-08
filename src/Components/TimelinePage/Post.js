@@ -24,8 +24,34 @@ export default function Post({ loading, setLoading }) {
   const [disabled, setDisabled] = useState(false);
   const { token } = useContext(AuthContext);
   const { userId } = jwtDecode(token);
-
+ 
   //https://linkr-api-9ik9.onrender.com/
+
+  function handleLikedBy(arr) {
+    let string;
+
+      if (arr.find(e => e.userId === userId)) {
+        if (arr.length > 2) {
+          string = `Você ${arr[arr.length - 1].username} e outras ${arr.length - 2} pessoas`;
+          return string;
+        } if (arr.length === 2) {
+          string = `Você e ${arr[arr.length - 1].username} curtiram`;
+          return string;
+        } else {
+          return string = 'Você curtiu';
+        }
+      }
+
+    if (arr.length > 2) {
+      string = `${arr[arr.length - 1].username} , ${arr[arr.length - 2].username} e outras ${arr.length - 2} pessoas`;
+      return string;
+    } else if (arr.length === 2) {
+      string = `${arr[arr.length - 1].username} , ${arr[arr.length - 2].username} curtiram`;
+      return string;
+    } else {
+      return string = `${arr[arr.length - 1].username}, curtiu`;
+    }
+  }
 
   useEffect(() => {
     axios
@@ -33,12 +59,10 @@ export default function Post({ loading, setLoading }) {
       .then((a) => {
         setLoading(false);
         setPosts(a.data);
-        console.log(a.data);
       })
       .catch((e) => {
         setLoading(false);
         setError(true);
-        console.log(e);
       });
   }, [loading, setLoading, liked]);
 
@@ -55,23 +79,23 @@ export default function Post({ loading, setLoading }) {
                     <>
                       {e.likedBy.find((l) => l.userId === userId) && (
                         <>
-                          {<LikedButton setDisabled = {setDisabled}
-                            disabled = {disabled}
-                            token = {token}
-                            setLiked = {setLiked}
-                            liked = {liked}
-                            e = {e}/>       
+                          {<LikedButton setDisabled={setDisabled}
+                            disabled={disabled}
+                            token={token}
+                            setLiked={setLiked}
+                            liked={liked}
+                            e={e} />
                           }
                         </>
                       )}
                       {!e.likedBy.find((l) => l.userId === userId) && (
                         <>
-                          {<LikeButton setDisabled = {setDisabled}
-                            disabled = {disabled}
-                            token = {token}
-                            setLiked = {setLiked}
-                            liked = {liked}
-                            e = {e}/>       
+                          {<LikeButton setDisabled={setDisabled}
+                            disabled={disabled}
+                            token={token}
+                            setLiked={setLiked}
+                            liked={liked}
+                            e={e} />
                           }
                         </>
                       )}
@@ -79,13 +103,13 @@ export default function Post({ loading, setLoading }) {
                   )}
                   {e.likedBy.length < 1 && (
                     <>
-                        {<LikeButton setDisabled = {setDisabled}
-                            disabled = {disabled}
-                            token = {token}
-                            setLiked = {setLiked}
-                            liked = {liked}
-                            e = {e}/>       
-                          }
+                      {<LikeButton setDisabled={setDisabled}
+                        disabled={disabled}
+                        token={token}
+                        setLiked={setLiked}
+                        liked={liked}
+                        e={e} />
+                      }
                     </>
                   )}
                   <TooltipWrapper tooltipId={e.id}>
@@ -93,7 +117,7 @@ export default function Post({ loading, setLoading }) {
                       {e.likesCount} likes
                     </LikesCount>
                   </TooltipWrapper>
-                  <Tooltip id={e.id} content={e.likesCount}/>
+                  <Tooltip id={e.id} content={handleLikedBy(e.likedBy)} />
                 </LeftContainer>
                 <RightContainer>
                   <UserName>{e.userName}</UserName>
