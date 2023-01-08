@@ -103,7 +103,7 @@ export default function PostHashTags() {
 }
 
 const PostStyle = styled.div`
-  height: 30vw;
+  height: 100%;
   width: 100%;
   background-color: #171717;
   margin-top: 100px;

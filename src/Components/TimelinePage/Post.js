@@ -103,8 +103,7 @@ export default function Post({ loading, setLoading }) {
                     tagClicked={(tag) =>
                       navigate(`/hashtag/${tag.substring(1)}`)
                     }
-                  >
-                    {e.postDescription}
+                  > 
                   </ReactTagify>
                 </Description>
                 <PostLink

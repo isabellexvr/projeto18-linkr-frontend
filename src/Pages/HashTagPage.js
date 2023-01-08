@@ -23,11 +23,12 @@ export default function HashTagsPage() {
 
 const HashTagPage = styled.div`
   margin-top: 70px;
-  height: 150vh;
+  height: 100%;
   background-color: #333333;
   @media(min-width: 900px){
     display: flex;
   justify-content: center;
+  height: 100vh;
   }
 `;
 
