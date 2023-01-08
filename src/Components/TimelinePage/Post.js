@@ -68,7 +68,11 @@ export default function Post({ loading, setLoading }) {
                           onClick={() => {
                             setDisabled(true);
                             setLiked(liked.filter((a) => a !== e.postId));
-                            dislikeFunction(e.postId, token, setDisabled);
+                            dislikeFunction(
+                              e.postId,
+                              JSON.parse(token),
+                              setDisabled
+                            );
                           }}
                         />
                       </>
@@ -80,7 +84,11 @@ export default function Post({ loading, setLoading }) {
                           onClick={() => {
                             setDisabled(true);
                             setLiked([...liked, e.postId]);
-                            postLikeFunction(e.postId, token, setDisabled);
+                            postLikeFunction(
+                              e.postId,
+                              JSON.parse(token),
+                              setDisabled
+                            );
                           }}
                         />
                       </>
@@ -94,7 +102,11 @@ export default function Post({ loading, setLoading }) {
                       onClick={() => {
                         setDisabled(true);
                         setLiked([...liked, e.postId]);
-                        postLikeFunction(e.postId, token, setDisabled);
+                        postLikeFunction(
+                          e.postId,
+                          JSON.parse(token),
+                          setDisabled
+                        );
                       }}
                     />
                   </>
