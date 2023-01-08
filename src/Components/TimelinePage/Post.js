@@ -6,9 +6,16 @@ import { useEffect, useState } from "react";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 import { postLikeFunction, dislikeFunction } from "../Services/LikeFunctions";
+import jwtDecode from "jwt-decode";
+import {
+  LoadingMessage,
+  NoPostsMessage,
+  ErrorMessage,
+} from "./SmallComponents/AlternativeMessages";
 import { useContext } from "react";
 import { AuthContext } from "../Context/authContext";
-import jwtDecode from "jwt-decode";
+import { Tooltip } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
 
 export default function Post({ loading, setLoading }) {
   const navigate = useNavigate();
@@ -33,15 +40,14 @@ export default function Post({ loading, setLoading }) {
       .then((a) => {
         setLoading(false);
         setPosts(a.data);
-        console.log(a.data)
-
+        console.log(a.data);
       })
       .catch((e) => {
         setLoading(false);
         setError(true);
         console.log(e);
       });
-  }, [loading, setLoading, setLiked, liked]);
+  }, []);
 
   //se e.likedBy.length > 0, procura o id do user com: e.likedBy.find((l) => l.userId === userId) pra poder mostrar vermelho
 
@@ -93,7 +99,18 @@ export default function Post({ loading, setLoading }) {
                     />
                   </>
                 )}
-                <LikesCount>{e.likesCount} likes</LikesCount>
+                <LikesCount id="likesCount">{e.likesCount} likes</LikesCount>
+                <Tooltip
+                  anchorId="likesCount"
+                  clickable
+                  style={{
+                    backgroundColor: "rgba(255, 255, 255, 0.9)",
+                    color: "#222",
+                    opacity: "0.15",
+                  }}
+                >
+                  <Balloon>oi</Balloon>
+                </Tooltip>
               </LeftContainer>
               <RightContainer>
                 <UserName>{e.userName}</UserName>
@@ -118,33 +135,9 @@ export default function Post({ loading, setLoading }) {
           ))}
         </>
       )}
-      {!error && loading && (
-        <>
-          <LoadingMessage>
-            <div>
-              <h1>Loading posts...</h1>
-            </div>
-          </LoadingMessage>
-        </>
-      )}
-      {!error && !loading && posts.length < 1 && (
-        <NoPostsMessage>
-          <h1>There are no posts yet.</h1>
-          <button onClick={() => Location.reload()}>Reload</button>
-        </NoPostsMessage>
-      )}
-      {error && (
-        <ErrorMessage>
-          <div>
-            <h1>ERROR</h1>
-            <h2>
-              An error occured while trying to fetch the posts, please refresh
-              the page clicking the button down below.
-            </h2>
-            <button onClick={() => Location.reload()}>Reload</button>
-          </div>
-        </ErrorMessage>
-      )}
+      {!error && loading && <LoadingMessage />}
+      {!error && !loading && posts.length < 1 && <NoPostsMessage />}
+      {error && <ErrorMessage />}
     </>
   );
 }
@@ -159,79 +152,6 @@ const PostStyle = styled.div`
     width: 611px;
     height: 276px;
     border-radius: 16px;
-  }
-`;
-
-const LoadingMessage = styled.div`
-  margin-top: 25px;
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  > div {
-    height: 50px;
-    width: 60%;
-    border-radius: 15px;
-    background-color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    > h1 {
-      font-family: "Lato";
-      font-weight: 600;
-      font-size: 18px;
-    }
-  }
-`;
-
-const ErrorMessage = styled.div`
-  margin-top: 25px;
-  font-family: "Lato";
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  > div {
-    height: 125px;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    > h1 {
-      color: red;
-      font-weight: 800;
-      font-size: 20px;
-      margin-bottom: 5px;
-    }
-    > h2 {
-      font-size: 14px;
-      margin-bottom: 10px;
-      width: 90%;
-      text-align: justify;
-    }
-    > button {
-      background-color: #1877f2;
-      border-radius: 5px;
-      width: 112px;
-      height: 22px;
-      border: none;
-      color: #ffffff;
-      font-family: "Lato";
-      font-weight: 700;
-      font-size: 13px;
-    }
-  }
-`;
-
-const NoPostsMessage = styled.div`
-  margin-top: 25px;
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  > h1 {
-    font-family: "Lato";
-    font-weight: 600;
-    font-size: 18px;
-    color: #efefef;
   }
 `;
 
@@ -295,3 +215,5 @@ const Description = styled.p`
   color: #b7b7b7;
   line-height: 18px;
 `;
+
+const Balloon = styled.div``;
