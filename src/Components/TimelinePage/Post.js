@@ -25,16 +25,6 @@ export default function Post({ loading, setLoading }) {
   const { token } = useContext(AuthContext);
   const { userId } = jwtDecode(token);
 
-  const tagStyle = {
-    color: "white",
-    fontWeight: 800,
-    cursor: "pointer",
-  };
-
-  function newFunction(e) {
-    console.log(e);
-  }
-
   //https://linkr-api-9ik9.onrender.com/
 
   useEffect(() => {
@@ -52,12 +42,9 @@ export default function Post({ loading, setLoading }) {
       });
   }, [loading, setLoading, liked]);
 
-  let x = [];
-
-  //se e.likedBy.length > 0, procura o id do user com: e.likedBy.find((l) => l.userId === userId) pra poder mostrar vermelho
-
   return (
     <>
+    <Tooltip anchorId="likesCount"/>
       {posts.length > 0 && !error && !loading && (
         <>
           {posts.map((e, i) => (
@@ -104,8 +91,8 @@ export default function Post({ loading, setLoading }) {
                     )}
                   </>
                 )}
-                <LikesCount id="likesCount">{e.likesCount} likes</LikesCount>
-                <div>{newFunction(e)}</div>
+                {/*                 <LikesCount id="likesCount">{e.likesCount} likes</LikesCount>
+                <div></div>
                 <Tooltip
                   anchorId="likesCount"
                   clickable
@@ -117,15 +104,25 @@ export default function Post({ loading, setLoading }) {
                     overflow: "clip",
                   }}
                   delayShow="200"
-                >
-                  <Balloon>Liked by {newFunction(e.likedBy)}</Balloon>
-                </Tooltip>
+                /> */}
+                <LikesCount
+                  id="likesCount"
+                  data-tooltip-content={e.likesCount}
+                  data-tooltip-place="top">
+                  {e.likesCount} likes
+                </LikesCount>
+                
+                <Tooltip anchorId="likesCount"/>
               </LeftContainer>
               <RightContainer>
                 <UserName>{e.userName}</UserName>
                 <Description>
                   <ReactTagify
-                    tagStyle={tagStyle}
+                    tagStyle={{
+                      color: "white",
+                      fontWeight: 800,
+                      cursor: "pointer",
+                    }}
                     tagClicked={(tag) =>
                       navigate(`/hashtag/${tag.substring(1)}`)
                     }
