@@ -1,15 +1,23 @@
 import styled from "styled-components";
-import { FiHeart } from "react-icons/fi";
+import { BsHeart, BsHeartFill } from "react-icons/bs";
 import PostLink from "./PostLink";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
+import { postLikeFunction, dislikeFunction } from "../Services/LikeFunctions";
+import { useContext } from "react";
+import { AuthContext } from "../Context/authContext";
+import jwtDecode from "jwt-decode";
 
 export default function Post({ loading, setLoading }) {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(false);
+  const [liked, setLiked] = useState([]);
+  const [disabled, setDisabled] = useState(false);
+  const { token } = useContext(AuthContext);
+  const { userId } = jwtDecode(token);
 
   const tagStyle = {
     color: "white",
@@ -32,7 +40,9 @@ export default function Post({ loading, setLoading }) {
         setError(true);
         console.log(e);
       });
-  }, [loading, setLoading, posts]);
+  }, [loading, setLoading, setLiked, liked]);
+
+  console.log(disabled);
 
   return (
     <>
@@ -42,8 +52,51 @@ export default function Post({ loading, setLoading }) {
             <PostStyle key={i}>
               <LeftContainer>
                 <UserProfilePicture alt="user-profile" src={e.userImage} />
-                <LikeIcon />
-                <LikesCount>{e.likesCount} likes</LikesCount>
+                {liked.length > 0 && (
+                  <>
+                    {liked.includes(e.postId) && (
+                      <>
+                        <LikedIcon
+                          isRequesting={disabled}
+                          onClick={() => {
+                            setDisabled(true);
+                            setLiked(liked.filter((a) => a !== e.postId));
+                            dislikeFunction(e.postId, token, setDisabled);
+                          }}
+                        />
+                        <LikesCount>
+                          {Number(e.likesCount) + 1} likes
+                        </LikesCount>
+                      </>
+                    )}
+                    {!liked.includes(e.postId) && (
+                      <>
+                        <LikeIcon
+                          isRequesting={disabled}
+                          onClick={() => {
+                            setDisabled(true);
+                            setLiked([...liked, e.postId]);
+                            postLikeFunction(e.postId, token, setDisabled);
+                          }}
+                        />
+                        <LikesCount>{e.likesCount} likes</LikesCount>
+                      </>
+                    )}
+                  </>
+                )}
+                {liked.length < 1 && (
+                  <>
+                    <LikeIcon
+                      isRequesting={disabled}
+                      onClick={() => {
+                        setDisabled(true);
+                        setLiked([...liked, e.postId]);
+                        postLikeFunction(e.postId, token, setDisabled);
+                      }}
+                    />
+                    <LikesCount>{e.likesCount} likes</LikesCount>
+                  </>
+                )}
               </LeftContainer>
               <RightContainer>
                 <UserName>{e.userName}</UserName>
@@ -58,10 +111,10 @@ export default function Post({ loading, setLoading }) {
                   </ReactTagify>
                 </Description>
                 <PostLink
-                  linkTitle={e.linkInfo.linkTitle}
-                  linkDescription={e.linkInfo.linkDescription}
-                  linkUrl={e.linkInfo.linkUrl}
-                  linkImage={e.linkInfo.linkImage}
+                  linkTitle={e.linkTitle}
+                  linkDescription={e.linkDescription}
+                  linkUrl={e.linkUrl}
+                  linkImage={e.linkImage}
                 />
               </RightContainer>
             </PostStyle>
@@ -80,6 +133,7 @@ export default function Post({ loading, setLoading }) {
       {!error && !loading && posts.length < 1 && (
         <NoPostsMessage>
           <h1>There are no posts yet.</h1>
+          <button onClick={() => Location.reload()}>Reload</button>
         </NoPostsMessage>
       )}
       {error && (
@@ -90,7 +144,7 @@ export default function Post({ loading, setLoading }) {
               An error occured while trying to fetch the posts, please refresh
               the page clicking the button down below.
             </h2>
-            <button>Reload</button>
+            <button onClick={() => Location.reload()}>Reload</button>
           </div>
         </ErrorMessage>
       )}
@@ -203,9 +257,19 @@ const UserProfilePicture = styled.img`
   object-fit: cover;
 `;
 
-const LikeIcon = styled(FiHeart)`
+const LikeIcon = styled(BsHeart)`
   margin-bottom: 12px;
   font-size: 22px;
+  cursor: pointer;
+  pointer-events: ${(props) => (props.isRequesting ? "none" : "initial")};
+`;
+
+const LikedIcon = styled(BsHeartFill)`
+  margin-bottom: 12px;
+  font-size: 22px;
+  color: red;
+  cursor: pointer;
+  pointer-events: ${(props) => (props.isRequesting ? "none" : "initial")};
 `;
 
 const LikesCount = styled.h2`
