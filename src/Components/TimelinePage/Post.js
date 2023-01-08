@@ -12,7 +12,7 @@ import {
 } from "./SmallComponents/AlternativeMessages";
 import { useContext } from "react";
 import { AuthContext } from "../Context/authContext";
-import { Tooltip } from "react-tooltip";
+import { Tooltip, TooltipWrapper, TooltipProvider } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import { LikeButton, LikedButton } from "./SmallComponents/LikeButtons";
 
@@ -44,100 +44,82 @@ export default function Post({ loading, setLoading }) {
 
   return (
     <>
-    <Tooltip anchorId="likesCount"/>
       {posts.length > 0 && !error && !loading && (
         <>
           {posts.map((e, i) => (
-            <PostStyle key={i}>
-              <LeftContainer>
-                <UserProfilePicture alt="user-profile" src={e.userImage} />
-                {e.likedBy.length > 0 && (
-                  <>
-                    {e.likedBy.find((l) => l.userId === userId) && (
-                      <>
-                        {LikedButton(
-                          setDisabled,
-                          disabled,
-                          token,
-                          setLiked,
-                          liked,
-                          e
-                        )}
-                      </>
-                    )}
-                    {!e.likedBy.find((l) => l.userId === userId) && (
-                      <>
-                        {LikeButton(
-                          setDisabled,
-                          disabled,
-                          token,
-                          setLiked,
-                          liked,
-                          e
-                        )}
-                      </>
-                    )}
-                  </>
-                )}
-                {e.likedBy.length < 1 && (
-                  <>
-                    {LikeButton(
-                      setDisabled,
-                      disabled,
-                      token,
-                      setLiked,
-                      liked,
-                      e
-                    )}
-                  </>
-                )}
-                {/*                 <LikesCount id="likesCount">{e.likesCount} likes</LikesCount>
-                <div></div>
-                <Tooltip
-                  anchorId="likesCount"
-                  clickable
-                  style={{
-                    backgroundColor: "rgba(255, 255, 255, 0.9)",
-                    color: "#222",
-                    width: "200px",
-                    fontSize: "19px",
-                    overflow: "clip",
-                  }}
-                  delayShow="200"
-                /> */}
-                <LikesCount
-                  id="likesCount"
-                  data-tooltip-content={e.likesCount}
-                  data-tooltip-place="top">
-                  {e.likesCount} likes
-                </LikesCount>
-                
-                <Tooltip anchorId="likesCount"/>
-              </LeftContainer>
-              <RightContainer>
-                <UserName>{e.userName}</UserName>
-                <Description>
-                  <ReactTagify
-                    tagStyle={{
-                      color: "white",
-                      fontWeight: 800,
-                      cursor: "pointer",
-                    }}
-                    tagClicked={(tag) =>
-                      navigate(`/hashtag/${tag.substring(1)}`)
-                    }
-                  >
-                    {e.postDescription}
-                  </ReactTagify>
-                </Description>
-                <PostLink
-                  linkTitle={e.linkTitle}
-                  linkDescription={e.linkDescription}
-                  linkUrl={e.linkUrl}
-                  linkImage={e.linkImage}
-                />
-              </RightContainer>
-            </PostStyle>
+            <TooltipProvider>
+              <PostStyle key={i}>
+                <LeftContainer>
+                  <UserProfilePicture alt="user-profile" src={e.userImage} />
+                  {e.likedBy.length > 0 && (
+                    <>
+                      {e.likedBy.find((l) => l.userId === userId) && (
+                        <>
+                          {<LikedButton setDisabled = {setDisabled}
+                            disabled = {disabled}
+                            token = {token}
+                            setLiked = {setLiked}
+                            liked = {liked}
+                            e = {e}/>       
+                          }
+                        </>
+                      )}
+                      {!e.likedBy.find((l) => l.userId === userId) && (
+                        <>
+                          {<LikeButton setDisabled = {setDisabled}
+                            disabled = {disabled}
+                            token = {token}
+                            setLiked = {setLiked}
+                            liked = {liked}
+                            e = {e}/>       
+                          }
+                        </>
+                      )}
+                    </>
+                  )}
+                  {e.likedBy.length < 1 && (
+                    <>
+                        {<LikeButton setDisabled = {setDisabled}
+                            disabled = {disabled}
+                            token = {token}
+                            setLiked = {setLiked}
+                            liked = {liked}
+                            e = {e}/>       
+                          }
+                    </>
+                  )}
+                  <TooltipWrapper tooltipId={e.id}>
+                    <LikesCount>
+                      {e.likesCount} likes
+                    </LikesCount>
+                  </TooltipWrapper>
+                  <Tooltip id={e.id} content={e.likesCount}/>
+                </LeftContainer>
+                <RightContainer>
+                  <UserName>{e.userName}</UserName>
+                  <Description>
+                    <ReactTagify
+                      tagStyle={{
+                        color: "white",
+                        fontWeight: 800,
+                        cursor: "pointer",
+                      }}
+                      tagClicked={(tag) =>
+                        navigate(`/hashtag/${tag.substring(1)}`)
+                      }
+                    >
+                      {e.postDescription}
+                    </ReactTagify>
+                  </Description>
+                  <PostLink
+                    linkTitle={e.linkTitle}
+                    linkDescription={e.linkDescription}
+                    linkUrl={e.linkUrl}
+                    linkImage={e.linkImage}
+                  />
+                </RightContainer>
+              </PostStyle>
+            </TooltipProvider>
           ))}
         </>
       )}
