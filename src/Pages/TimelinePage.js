@@ -24,7 +24,7 @@ export default function TimelinePage() {
 
 const TimelinePageStyle = styled.div`
   margin-top: 70px;
-  height: 150vh;
+  height: 100%;
   background-color: #333333;
   display: flex;
   flex-direction: column;
