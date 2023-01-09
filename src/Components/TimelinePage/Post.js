@@ -127,6 +127,7 @@ export default function Post({
       });
   }, [loading, setLoading, liked, edit, disabled]);
 
+
   return (
     <>
       {posts.length > 0 && !error && !loading && (
