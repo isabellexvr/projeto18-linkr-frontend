@@ -48,14 +48,13 @@ export default function TimelinePage() {
   function confirmModal() {
     axios
       .delete(`http://localhost:4000/posts/${deletePost}`, {
-        // headers: {
-        //   Authorization: `Bearer ${token}
-        // `,
-        // },
+        headers: {
+          Authorization: `Bearer ${token}
+        `,
+        },
       })
       .then((a) => {
-        navigate("/timeline");
-        window.location.reload(true);
+        setLoading(true);
         setIsOpen(false);
         console.log(a.data);
       })
