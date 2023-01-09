@@ -33,50 +33,68 @@ function Post(props) {
 
   const navigate = useNavigate();
   const [liked, setLiked] = useState(false);
+  const [postLikeCount, setPostLikeCount] = useState(likesCount);
+  const [tooltip, setTooltip] = useState("");
+
   const [likedIdArray, setLikedIdArray] = useState(
     likedBy?.map((user) => user.id) || []
   );
-  const [likedUsernameArray, setLikedUsernameArray] = useState(
+
+  const [likedArray, setLikedArray] = useState(
     likedBy?.filter((user) => user.id !== myUser.userId) || []
   );
-  const [postLikeCount, setPostLikeCount] = useState(likesCount);
-  const [tooltipString, setTooltipString] = useState(
-    likedUsernameArray.map((user) => user.username)
-  );
-  const [tooltip, setTooltip] = useState("");
 
   useEffect(() => {
     if (likedIdArray.includes(myUser.userId)) {
       setLiked(true);
-      setTooltipString(["Você", ...tooltipString]);
     }
-    setTooltip(createTooltip());
+    createTooltip();
   }, [likedIdArray]);
 
   function handleLikes() {
     if (liked) {
       setLiked(false);
       setPostLikeCount(postLikeCount - 1);
-      setTooltipString(tooltipString.splice(0, 1));
+      setLikedIdArray(likedIdArray.filter((id) => id !== myUser.userId));
       return dislikeFunction(id, token);
     }
     setLiked(true);
     setPostLikeCount(postLikeCount + 1);
-    setTooltipString(["Você", ...tooltipString]);
+    setLikedIdArray([...likedIdArray, myUser.userId]);
     return postLikeFunction(id, token);
   }
 
   function createTooltip() {
-    if (postLikeCount === 1) {
-      return tooltipString.toString().concat(" curtiu essa postagem.");
-    } else if (postLikeCount === 2) {
-      return tooltipString.join(" e ").concat(" curtiram essa postagem.");
-    } else if (postLikeCount > 2) {
-      return tooltipString
-        .join(", ")
-        .concat(` e mais ${postLikeCount - 2} curtiram essa postagem.`);
+    const length = likedArray.length;
+    if (liked) {
+      if (length === 1) {
+        const string = `Você e ${likedArray[0].username} curtiram essa postagem.`;
+        return setTooltip(string);
+      } else if (length > 1) {
+        const users = likedArray.slice(0, 1);
+        const string = `Você, ${users
+          .map((user) => user.username)
+          .toString()} e mais ${postLikeCount - 2} curtiram essa postagem.`;
+        return setTooltip(string);
+      }
+      return setTooltip("Você curtiu essa postagem.");
+    } else {
+      if (length === 1) {
+        const string = `${likedArray[0].username} curtiu essa postagem.`;
+        return setTooltip(string);
+      } else if (length > 1) {
+        const users = likedArray.slice(0, 2).map((user) => user.username);
+        if (length > 2) {
+          const string = users
+            .join(", ")
+            .concat(`e mais ${postLikeCount - 2} curtiram essa postagem.`);
+          return setTooltip(string);
+        }
+        const string = users.join(" e ").concat("curtiram essa postagem");
+        return setTooltip(string);
+      }
+      return setTooltip("Ninguém curtiu essa postagem");
     }
-    return "Ninguém curtiu essa postagem.";
   }
 
   return (
