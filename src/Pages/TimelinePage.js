@@ -8,38 +8,36 @@ import { useContext, useState } from "react";
 import Modal from "react-modal";
 import axios from "axios";
 import { AuthContext } from "../Components/Context/authContext";
+import { useNavigate } from "react-router-dom";
 
 export default function TimelinePage() {
   const [loading, setLoading] = useState(false);
   const { width } = useWindowDimensions();
   const { token } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const customStyles = {
     content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      width: '597px',
-      height: '262px',
-      background: '#333333',
-      borderRadius: '50px',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      width: "41.40%",
+      height: "25.5%",
+      background: "#333333",
+      borderRadius: "50px",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
     },
   };
-
-  let subtitle;
   const [modalIsOpen, setIsOpen] = useState(false);
   const [deletePost, setDeletePost] = useState("");
 
   function openModal() {
     setIsOpen(true);
-  }
-
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    subtitle.style.color = 'green';
   }
 
   function closeModal() {
@@ -55,16 +53,17 @@ export default function TimelinePage() {
         // },
       })
       .then((a) => {
+        navigate("/timeline");
+        window.location.reload(true);
+        setIsOpen(false);
         console.log(a.data);
-       setIsOpen(false);
       })
       .catch((err) => {
+        setIsOpen(false);
+        alert("Não foi possível deletar o post");
         console.log(err);
       });
-
   }
-
-  Modal.setAppElement(document.getElementById('root'));
 
   return (
     <>
@@ -73,23 +72,32 @@ export default function TimelinePage() {
         {width < 840 && <Searchbox />}
         <PageTitle>timeline</PageTitle>
         <PostPublicationForm loading={loading} setLoading={setLoading} />
-        <Post loading={loading} setLoading={setLoading} modalIsOpen={modalIsOpen} setIsOpen={setIsOpen}
-          setDeletePost={setDeletePost} />
-        <div>
-          <button onClick={openModal}>Open Modal</button>
-          <Modal
-            isOpen={modalIsOpen}
-            onAfterOpen={afterOpenModal}
-            onRequestClose={closeModal}
-            style={customStyles}
-            contentLabel="Example Modal"
-          >
-            <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Are you sure you want
-              to delete this post?</h2>
-            <button onClick={closeModal}>close</button>
-            <button onClick={confirmModal}>confirm</button>
-          </Modal>
-        </div>
+        <Post
+          loading={loading}
+          setLoading={setLoading}
+          modalIsOpen={modalIsOpen}
+          setIsOpen={setIsOpen}
+          setDeletePost={setDeletePost}
+          openModal={openModal}
+        />
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          style={customStyles}
+          contentLabel="Example Modal"
+        >
+          <CancelContainer>
+            <DeleteMessage>
+              Are you sure you want to delete this post?
+            </DeleteMessage>
+            <div>
+              <CancelButton onClick={closeModal}>No, go back</CancelButton>
+              <ConfirmButton onClick={confirmModal}>
+                Yes, delete it
+              </ConfirmButton>
+            </div>
+          </CancelContainer>
+        </Modal>
       </TimelinePageStyle>
     </>
   );
@@ -102,6 +110,13 @@ const TimelinePageStyle = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+    @media (max-width: 600px) {
+      width: 100%;
+      >div:last-child{
+        width: 100px;
+        background-color: red;
+      }
+    }
 `;
 
 const PageTitle = styled.h1`
@@ -118,4 +133,56 @@ const PageTitle = styled.h1`
     width: 100%;
     align-items: center;
   }
+`;
+
+const CancelContainer = styled.div`
+  width: 85%;
+  height: 81%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  >div{
+    display:flex;
+    width: 90%;
+    justify-content: space-between;
+  }
+`;
+
+const CancelButton = styled.button`
+  background: #ffffff;
+  font-family: "Lato";
+  font-weight: 700;
+  font-size: 3vw;
+  color: #1877f2;
+  width: 75%;
+  height: 37px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+`;
+
+
+const ConfirmButton = styled.button`
+  background: #1877f2;
+  font-family: "Lato";
+  font-weight: 700;
+  font-size: 3vw;
+  color: #ffffff;
+  width: 75%;
+  height: 37px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+`;
+
+const DeleteMessage = styled.h1`
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 4.8vw;
+  line-height: 20px;
+  text-align: center;
+  width: 98%;
+  color: #ffffff;
 `;

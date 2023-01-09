@@ -21,7 +21,7 @@ export default function Post({
   loading,
   setLoading,
   setIsOpen,
-  setDeletePost,
+  setDeletePost, openModal,
 }) {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
@@ -109,7 +109,7 @@ export default function Post({
       });
   }, [loading, setLoading, liked, edit]);
 
-  console.log(edit);
+  console.log(posts);
 
   return (
     <>
@@ -190,6 +190,7 @@ export default function Post({
                         />
                         <TrashCan
                           onClick={() => {
+                          openModal();
                             setIsOpen(true);
                             setDeletePost(e.postId);
                           }}
