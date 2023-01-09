@@ -9,6 +9,7 @@ import { postLikeFunction, dislikeFunction } from "../Services/LikeFunctions";
 import { useContext } from "react";
 import { AuthContext } from "../Context/authContext";
 import jwtDecode from "jwt-decode";
+import { Link } from "react-router-dom";
 
 export default function Post({ loading, setLoading }) {
   const navigate = useNavigate();
@@ -95,7 +96,11 @@ export default function Post({ loading, setLoading }) {
                 <LikesCount>{e.likesCount} likes</LikesCount>
               </LeftContainer>
               <RightContainer>
-                <UserName>{e.userName}</UserName>
+                <Link
+                  style={{ textDecoration: "none" }}
+                  to={`/user/${e.userId}`}>
+                  <UserName>{e.userName}</UserName>
+                </Link>
                 <Description>
                   <ReactTagify
                     tagStyle={tagStyle}
