@@ -101,7 +101,7 @@ const StyleModal = styled.div`
 
 const HashTagPage = styled.div`
   margin-top: 70px;
-  height: 100%;
+  padding-bottom: 100vh;
   background-color: #333333;
   @media(min-width: 900px){
     display: flex;

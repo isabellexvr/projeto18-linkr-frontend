@@ -63,11 +63,11 @@ export default function PostHashTags({openModal, setDeletePost, setIsOpen}) {
 
   useEffect((() => {
     const promisse = axios.get(`http://localhost:4000/hashtag/${hashtag}`,
-      // {
-      //   headers: {
-      //     'Authorization': `token ${token}`
-      //   }
-      // }
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }
       )
     promisse.then((res) => {
       console.log(res);
