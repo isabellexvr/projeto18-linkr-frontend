@@ -146,43 +146,8 @@ export default function PostHashTags({openModal, setDeletePost, setIsOpen}) {
                 </LeftContainer>
                 <RightContainer>
                   <UserName>
-                    {/* {e.userId === userId && (
-                      <>
-                        <EditPencil
-                          onClick={() => {
-                            setEditedDescription(e.description);
-                            edit.includes(e.postId)
-                              ? setEdit([])
-                              : setEdit([...edit, e.postId]);
-                          }}
-                        />
-                        <TrashCan onClick={() => {
-                          openModal();
-                          setIsOpen(true);
-                          setDeletePost(e.postId);
-                        }}/>
-                      </>
-                    )} */}
-
                     {e.username}
                   </UserName>
-                  {/* {edit.includes(e.postId) && (
-                    <form
-                      onSubmit={(event) => sendNewDescription(event, e.postId)}
-                    >
-                      <EditDescription
-                        disabled={loading}
-                        name="description"
-                        value={editedDescription}
-                        onKeyDown={(e) =>
-                          e.key === "Escape" ? setEdit([]) : ""
-                        }
-                        onChange={(e) => {
-                          setEditedDescription(e.target.value);
-                        }}
-                      ></EditDescription>
-                    </form>
-                  )} */}
                   {!edit.includes(e.postId) && (
                     <Description>
                       <ReactTagify
