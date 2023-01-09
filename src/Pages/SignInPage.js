@@ -2,7 +2,7 @@ import * as S from "../Assets/authStyle";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "../Components/Form/useForm";
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../Components/Context/authContext";
 
 export default function SignIn() {
@@ -11,13 +11,10 @@ export default function SignIn() {
   const { token, setToken, setAndPersistToken } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    navigate("/timeline");
-  }, [token, setToken]);
-
   const isLogged = localStorage.getItem("userToken");
   if (isLogged) {
     setToken(isLogged);
+    navigate("/timeline");
     return;
   }
 
