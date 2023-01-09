@@ -153,13 +153,18 @@ const CancelButton = styled.button`
   background: #ffffff;
   font-family: "Lato";
   font-weight: 700;
-  font-size: 3vw;
+  font-size: 15px;
   color: #1877f2;
-  width: 75%;
+  width: 134px;
   height: 37px;
   border-radius: 5px;
   border: none;
   cursor: pointer;
+  @media (max-width: 600px) {
+    width: 75%;
+    height: 37px;
+    font-size: 3vw;
+  }
 `;
 
 
@@ -167,22 +172,32 @@ const ConfirmButton = styled.button`
   background: #1877f2;
   font-family: "Lato";
   font-weight: 700;
-  font-size: 3vw;
+  font-size: 15px;
   color: #ffffff;
-  width: 75%;
+  width: 134px;
   height: 37px;
   border-radius: 5px;
   border: none;
   cursor: pointer;
+  @media (max-width: 600px) {
+    width: 75%;
+    height: 37px;
+    font-size: 3vw;
+  }
 `;
 
 const DeleteMessage = styled.h1`
   font-family: "Lato";
   font-style: normal;
   font-weight: 700;
-  font-size: 4.8vw;
-  line-height: 20px;
+  font-size: 25px;
+  line-height: 30px;
   text-align: center;
-  width: 98%;
+  width: 338px;
   color: #ffffff;
+  @media (max-width: 600px) {
+    width: 98%;
+    font-size: 4.8vw;
+    line-height: 20px;
+  }
 `;
