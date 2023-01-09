@@ -177,7 +177,7 @@ export default function Post({
                   />
                 </LeftContainer>
                 <RightContainer>
-                  <UserName onClick={() => navigate(`/user/${e.id}`)}>
+                  <UserName>
                     {e.userId === userId && (
                       <>
                         <EditPencil
@@ -197,7 +197,9 @@ export default function Post({
                       </>
                     )}
 
-                    {e.userName}
+                    <p onClick={() => navigate(`/user/${e.id}`)}>
+                      {e.userName}
+                    </p>
                   </UserName>
                   {edit.includes(e.postId) && (
                     <form
