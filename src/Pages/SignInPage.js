@@ -11,13 +11,6 @@ export default function SignIn() {
   const { token, setToken, setAndPersistToken } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
 
-  const isLogged = localStorage.getItem("userToken");
-  if (isLogged) {
-    setToken(isLogged);
-    navigate("/timeline");
-    return;
-  }
-
   function login(event) {
     event.preventDefault();
     setLoading(true);
