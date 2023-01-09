@@ -40,6 +40,7 @@ function Post(props) {
   const navigate = useNavigate();
   const [liked, setLiked] = useState(false);
   const [edit, setEdit] = useState(false);
+  const [deleted, setDeleted] = useState(false);
   const [postDescription, setPostDescription] = useState(description);
   const [postLikeCount, setPostLikeCount] = useState(likesCount);
   const [tooltip, setTooltip] = useState("");
@@ -71,7 +72,6 @@ function Post(props) {
     setLikedIdArray([...likedIdArray, myUser.userId]);
     return postLikeFunction(id, token);
   }
-
   function handleEdit(e) {
     if (e.key === "Escape") return setEdit(false);
     else if (e.key === "Enter") {
@@ -90,6 +90,17 @@ function Post(props) {
         })
         .catch((err) => err.response.data);
     }
+  }
+  function handleDelete() {
+    const config = {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    axios(`https://linkr-api-9ik9.onrender.com/posts/${id}`, config)
+      .then(setDeleted(true))
+      .catch((err) => err.response.data);
   }
   function createTooltip() {
     const length = likedArray.length;
@@ -144,7 +155,7 @@ function Post(props) {
           {userId === myUser.userId && (
             <ActionsContainer>
               <EditPencil onClick={() => setEdit(true)} />
-              <TrashCan />
+              <TrashCan onClick={handleDelete} />
             </ActionsContainer>
           )}
         </TitleContainer>
