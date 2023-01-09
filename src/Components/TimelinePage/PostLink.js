@@ -26,7 +26,7 @@ const Redirect = styled.a`
 
 const LinkStyle = styled.div`
   margin-top: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 13px;
   height: 155px;
   border: 1px solid #4d4d4d;
   border-radius: 11px;

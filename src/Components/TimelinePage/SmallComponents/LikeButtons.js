@@ -18,6 +18,7 @@ export function LikedButton({
       isRequesting={disabled}
       onClick={() => {
         setDisabled(true);
+        
         setLiked(liked.filter((a) => a !== e.postId));
         dislikeFunction(e.postId, token, setDisabled);
       }}

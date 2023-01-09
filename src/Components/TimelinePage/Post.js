@@ -118,7 +118,7 @@ export default function Post({
         setLoading(false);
         setError(true);
       });
-  }, [loading, setLoading, liked, edit]);
+  }, [loading, setLoading, liked, edit, disabled]);
 
   return (
     <>
@@ -252,7 +252,7 @@ export default function Post({
 }
 
 const PostStyle = styled.div`
-  height: 232px;
+  height: 235px;
   width: 100%;
   background-color: #171717;
   margin-top: 16px;
@@ -300,7 +300,7 @@ const UserName = styled.h1`
   font-weight: 400;
   font-size: 17px;
   color: white;
-  margin-top: 10px;
+  margin-top: 13px;
   > p {
     width: 50%;
     cursor: pointer;

@@ -29,6 +29,7 @@ const EditPencil = styled(TiPencil)`
   position: absolute;
   color: white;
   right: 25px;
+  top: 0;
   cursor: pointer;
   pointer-events: ${(props) => (props.isOpened ? "none" : "initial")};
 `;
@@ -37,5 +38,6 @@ const TrashCan = styled(FaTrash)`
   color: white;
   position: absolute;
   right: 0;
+  top: 0;
   cursor: pointer;
 `;
