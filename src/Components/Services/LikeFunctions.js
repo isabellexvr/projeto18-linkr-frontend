@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export function postLikeFunction(postId, token, setDisabled) {
+export function postLikeFunction(postId, token, setDisabled = null) {
   const config = {
     method: "POST",
     headers: {
@@ -9,13 +9,15 @@ export function postLikeFunction(postId, token, setDisabled) {
   };
   axios(`http://localhost:4000/like/${postId}`, config)
     .then((res) => {
-      setDisabled(false);
+      if (setDisabled) {
+        setDisabled(false);
+      }
       console.log(res.data);
     })
     .catch((err) => console.log(err));
 }
 
-export function dislikeFunction(postId, token, setDisabled) {
+export function dislikeFunction(postId, token, setDisabled = null) {
   const config = {
     method: "DELETE",
     headers: {
@@ -24,7 +26,9 @@ export function dislikeFunction(postId, token, setDisabled) {
   };
   axios(`http://localhost:4000/unlike/${postId}`, config)
     .then((res) => {
-      setDisabled(false);
+      if (setDisabled) {
+        setDisabled(false);
+      }
       console.log(res.data);
     })
     .catch((err) => console.log(err));
