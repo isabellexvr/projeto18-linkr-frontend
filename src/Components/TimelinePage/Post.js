@@ -18,7 +18,6 @@ import { TiPencil } from "react-icons/ti";
 import { FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-
 export default function Post({ loading, setLoading }) {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
@@ -67,7 +66,7 @@ export default function Post({ loading, setLoading }) {
 
   function sendNewDescription(e, postId) {
     e.preventDefault();
-    console.log(postId)
+    console.log(postId);
 
     const config = {
       method: "PATCH",
@@ -79,7 +78,10 @@ export default function Post({ loading, setLoading }) {
       },
     };
     axios(`http://localhost:4000/posts/${postId}`, config)
-      .then((a) => console.log(a.data))
+      .then((a) => {
+        setEdit([]);
+        console.log(a.data);
+      })
       .catch((e) => console.log(e));
   }
 
@@ -94,7 +96,7 @@ export default function Post({ loading, setLoading }) {
         setLoading(false);
         setError(true);
       });
-  }, [loading, setLoading, liked]);
+  }, [loading, setLoading, liked, setEdit]);
 
   return (
     <>
@@ -154,11 +156,17 @@ export default function Post({ loading, setLoading }) {
                   <TooltipWrapper tooltipId={e.id}>
                     <LikesCount>{e.likesCount} likes</LikesCount>
                   </TooltipWrapper>
-                  <Tooltip id={e.id} content={handleLikedBy(e.likedBy)} place = "bottom"  className="example" />
+                  <Tooltip
+                    id={e.id}
+                    content={handleLikedBy(e.likedBy)}
+                    place="bottom"
+                    className="example"
+                  />
                 </LeftContainer>
                 <RightContainer>
                   <UserName>
                     <EditPencil
+                      isOpened={edit.length > 0}
                       onClick={() => {
                         setEditedDescription(e.postDescription);
                         setEdit([...edit, e.postId]);
@@ -281,6 +289,7 @@ const EditPencil = styled(TiPencil)`
   color: white;
   right: 25px;
   cursor: pointer;
+  pointer-events: ${(props) => (props.isOpened ? "none" : "initial")};
 `;
 
 const TrashCan = styled(FaTrash)`
