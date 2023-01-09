@@ -48,15 +48,15 @@ export default function Header() {
 }
 
 const HeaderStyle = styled.div`
-	height: 72px;
-	background: #151515;
-	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	position: fixed;
-	top: 0;
-	left: 0;
+  height: 72px;
+  background: #151515;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
 `;
 
 const Container = styled.div`
@@ -66,13 +66,17 @@ const Container = styled.div`
 `;
 
 const UserContainer = styled.div`
-	display: flex;
-	align-items: center;
-	> svg {
-		color: white;
-		font-size: 28px;
-		margin-right: 12px;
-	}
+
+  display: flex;
+  align-items: center;
+  width: 100px;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  > svg {
+    color: white;
+    font-size: 28px;
+  }
 `;
 
 const UserProfilePicture = styled.img`
@@ -89,18 +93,29 @@ const Logo = styled.div`
 `;
 
 const Logout = styled.div`
-	color: #ffffff;
-	background-color: black;
-	margin-top: 30px;
+
+  color: #ffffff;
+  font-family: lato;
+  background-color: #171717;
+  width: 150px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0px 0px 10px 10px;
+  position: absolute;
+  margin-top: 50px;
+  @media (max-width: 800px) {
+    width: 120px;
+  }
 `;
 
 const ContainerProfile = styled.div`
-	display: flex;
-	flex-direction: column;
-	> svg {
-		color: white;
-		font-size: 28px;
-		margin-right: 12px;
-		margin-top: 50px;
-	}
+  display: flex;
+  flex-direction: column;
+  > svg {
+    color: white;
+    font-size: 28px;
+    margin-right: 12px;
+  }
 `;
