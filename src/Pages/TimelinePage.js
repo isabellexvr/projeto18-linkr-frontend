@@ -9,6 +9,7 @@ import Modal from "react-modal";
 import axios from "axios";
 import { AuthContext } from "../Components/Context/authContext";
 import { useNavigate } from "react-router-dom";
+import Trending from "../Components/TimelinePage/Trending";
 
 export default function TimelinePage() {
   const [loading, setLoading] = useState(false);
@@ -69,7 +70,8 @@ export default function TimelinePage() {
     <>
       <Header />
       <TimelinePageStyle>
-        {width < 840 && <Searchbox />}
+        <div>
+                  {width < 840 && <Searchbox />}
         <PageTitle>timeline</PageTitle>
         <PostPublicationForm loading={loading} setLoading={setLoading} />
         <Post
@@ -80,6 +82,9 @@ export default function TimelinePage() {
           setDeletePost={setDeletePost}
           openModal={openModal}
         />
+        </div>
+
+        <Trending/>
         <Modal
           isOpen={modalIsOpen}
           onRequestClose={closeModal}
@@ -108,8 +113,7 @@ const TimelinePageStyle = styled.div`
   height: 100%;
   background-color: #333333;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
     @media (max-width: 600px) {
       width: 100%;
       >div:last-child{
