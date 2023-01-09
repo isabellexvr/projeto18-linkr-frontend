@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
+import { FaTrash } from "react-icons/fa";
+import { TiPencil } from "react-icons/ti";
 
 export const tooltipStyle = {
   fontFamily: "Lato",
@@ -95,6 +97,43 @@ export const NoPostsMessage = styled.div`
     font-size: 18px;
     color: #efefef;
   }
+`;
+
+export const EditPencil = styled(TiPencil)`
+  margin-right: 12px;
+  color: white;
+  cursor: pointer;
+  pointer-events: ${(props) => (props.isOpened ? "none" : "initial")};
+`;
+
+export const TrashCan = styled(FaTrash)`
+  color: white;
+  cursor: pointer;
+`;
+
+export const TitleContainer = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const ActionsContainer = styled.div`
+  display: flex;
+  margin-top: 22px;
+  align-items: center;
+`;
+
+export const EditContainer = styled.input`
+  all: unset;
+  width: 100%;
+  font-weight: 400;
+  font-size: 14px;
+  color: #4c4c4c;
+  background-color: #fff;
+  text-indent: 8px;
+  min-height: 32px;
+  border-radius: 7px;
 `;
 
 export const tagStyle = {
