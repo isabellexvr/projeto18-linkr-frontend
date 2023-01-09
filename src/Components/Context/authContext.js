@@ -3,14 +3,12 @@ import { createContext, useState } from "react";
 export const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
-
-
   const savedToken = localStorage.getItem("userToken");
   const [token, setToken] = useState(savedToken);
 
   function setAndPersistToken(userToken) {
     setToken(userToken);
-    localStorage.setItem("userToken", token);
+    localStorage.setItem("userToken", userToken);
   }
 
   return (
@@ -19,8 +17,7 @@ export default function AuthProvider({ children }) {
         setAndPersistToken,
         token,
         setToken,
-      }}
-    >
+      }}>
       {children}
     </AuthContext.Provider>
   );
