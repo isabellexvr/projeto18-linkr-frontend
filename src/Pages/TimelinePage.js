@@ -8,13 +8,16 @@ import { useContext, useState } from "react";
 import Modal from "react-modal";
 import axios from "axios";
 import { AuthContext } from "../Components/Context/authContext";
+import { useNavigate } from "react-router-dom";
 
 export default function TimelinePage() {
   const [loading, setLoading] = useState(false);
   const { width } = useWindowDimensions();
   const { token } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const customStyles = {
+
     content: {
       top: '50%',
       left: '50%',
@@ -26,7 +29,7 @@ export default function TimelinePage() {
       borderRadius: '50px',
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
-    },
+    }
   };
 
   let subtitle;
@@ -39,7 +42,7 @@ export default function TimelinePage() {
 
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
-    subtitle.style.color = 'green';
+    subtitle.style.color = 'green'
   }
 
   function closeModal() {
@@ -47,6 +50,7 @@ export default function TimelinePage() {
   }
 
   function confirmModal() {
+
     axios
       .delete(`http://localhost:4000/posts/${deletePost}`, {
         // headers: {
@@ -55,10 +59,14 @@ export default function TimelinePage() {
         // },
       })
       .then((a) => {
+        navigate("/timeline");
+        window.location.reload(true);
+        setIsOpen(false);
         console.log(a.data);
-       setIsOpen(false);
       })
       .catch((err) => {
+        setIsOpen(false);
+        alert("Não foi possível deletar o post");
         console.log(err);
       });
 
@@ -74,9 +82,9 @@ export default function TimelinePage() {
         <PageTitle>timeline</PageTitle>
         <PostPublicationForm loading={loading} setLoading={setLoading} />
         <Post loading={loading} setLoading={setLoading} modalIsOpen={modalIsOpen} setIsOpen={setIsOpen}
-          setDeletePost={setDeletePost} />
-        <div>
-          <button onClick={openModal}>Open Modal</button>
+          setDeletePost={setDeletePost} openModal={openModal} />
+        <StyleModal>
+          {/* <button onClick={openModal}>Open Modal</button> */}
           <Modal
             isOpen={modalIsOpen}
             onAfterOpen={afterOpenModal}
@@ -89,11 +97,15 @@ export default function TimelinePage() {
             <button onClick={closeModal}>close</button>
             <button onClick={confirmModal}>confirm</button>
           </Modal>
-        </div>
+        </StyleModal>
       </TimelinePageStyle>
     </>
   );
 }
+
+const StyleModal = styled.div`
+  h2{}
+`
 
 const TimelinePageStyle = styled.div`
   margin-top: 70px;

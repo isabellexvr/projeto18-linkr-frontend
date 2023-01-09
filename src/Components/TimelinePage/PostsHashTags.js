@@ -1,26 +1,97 @@
 import styled from "styled-components";
 import { FiHeart } from "react-icons/fi";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ReactTagify } from "react-tagify";
 import { useNavigate, useParams } from "react-router-dom";
 import PostLink from "./PostLink";
+import { Tooltip, TooltipWrapper, TooltipProvider } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
+import { LikeButton, LikedButton } from "./SmallComponents/LikeButtons";
+import { TiPencil } from "react-icons/ti";
+import { FaTrash } from "react-icons/fa";
+import { AuthContext } from "../Context/authContext";
+import jwtDecode from "jwt-decode";
 
-export default function PostHashTags() {
+export default function PostHashTags({openModal, setDeletePost, setIsOpen}) {
   const navigate = useNavigate();
   const { hashtag } = useParams();
-
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [liked, setLiked] = useState([]);
+  const [disabled, setDisabled] = useState(false);
+  const [edit, setEdit] = useState([]);
+  const [editedDescription, setEditedDescription] = useState({});
+  const { token } = useContext(AuthContext);
+  const { userId } = jwtDecode(token);
   
-  // const token = JSON.parse(localStorage.getItem("token"));
 
   const tagStyle = {
     color: "white",
     fontWeight: 800,
     cursor: "pointer",
   };
+
+  function handleLikedBy(arr) {
+    let string;
+
+    if (arr.find((e) => e.userId === userId)) {
+      if (arr.length > 2) {
+        string = `Você ${arr[arr.length - 1].username} e outras ${
+          arr.length - 2
+        } pessoas`;
+        return string;
+      }
+      if (arr.length === 2) {
+        string = `Você e ${arr[arr.length - 1].username} curtiram`;
+        return string;
+      } else {
+        return (string = "Você curtiu");
+      }
+    }
+
+    if (arr.length > 2) {
+      string = `${arr[arr.length - 1].username} , ${
+        arr[arr.length - 2].username
+      } e outras ${arr.length - 2} pessoas`;
+      return string;
+    } else if (arr.length === 2) {
+      string = `${arr[arr.length - 1].username} , ${
+        arr[arr.length - 2].username
+      } curtiram`;
+      return string;
+    } else {
+      return (string = `${arr[arr.length - 1].username}, curtiu`);
+    }
+  }
+
+  function sendNewDescription(e, postId) {
+    e.preventDefault();
+    console.log(postId);
+    setLoading(true);
+
+    const config = {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE5LCJ1c2VyUGljdHVyZSI6Imh0dHBzOi8va2JpbWFnZXMxLWEuYWthbWFpaGQubmV0L2FmY2Q4NjUzLTNiMjctNDQyMy1iZWU5LTU3MGZiMTQ0MWFlZC8zNTMvNTY5LzkwL0ZhbHNlL3ByaWRlLWFuZC1wcmVqdWRpY2UtNzEuanBnIiwic2Vzc2lvbklkIjoxNTgsImlhdCI6MTY3MzIzMDMzNH0.poYNfisvv3a4b3b4kCuUXtIqH8yDVkkn4K04VN9ivn0`,
+      },
+      data: {
+        description: editedDescription,
+      },
+    };
+    axios(`http://localhost:4000/posts/${postId}`, config)
+      .then((a) => {
+        setLoading(false);
+        setEdit([]);
+        console.log(a.data);
+      })
+      .catch((e) => {
+        console.log(e);
+        setError(true)
+        setLoading(false);
+      });
+  }
 
   useEffect((() => {
     const promisse = axios.get(`http://localhost:4000/hashtag/${hashtag}`,
@@ -31,79 +102,157 @@ export default function PostHashTags() {
       // }
       )
     promisse.then((res) => {
+      console.log(res);
       setPosts(res.data);
     });
     promisse.catch((err) => {
-      console.log(err.response.data);
+      console.log(err.response);
     });
   }), [hashtag]);
+  
   console.log(posts)
   return (
     <>
       {posts.length > 0 && !error && !loading && (
         <>
           {posts.map((e, i) => (
-            <PostStyle key={i}>
-              <LeftContainer>
-                <UserProfilePicture alt="user-profile" src={e.pictureUrl} />
-                <LikeIcon />
-                <LikesCount>{e.likes} likes</LikesCount>
-              </LeftContainer>
-              <RightContainer>
-                <UserName>{e.username}</UserName>
-                <Description>
-                  <ReactTagify
-                    tagStyle={tagStyle}
-                    tagClicked={(tag) =>
-                      navigate(`/hashtag/${tag.substring(1)}`)
-                    }
-                  >
-                    {e.description}
-                  </ReactTagify>
-                </Description>
-                <PostLink
-                  linkTitle={e.linkTitle}
-                  linkDescription={e.linkDescription}
-                  linkUrl={e.linkUrl}
-                  linkImage={e.linkImg}
-                />
-              </RightContainer>
-            </PostStyle>
+            <TooltipProvider>
+              <PostStyle key={i}>
+                <LeftContainer>
+                  <UserProfilePicture alt="user-profile" src={e.pictureUrl} />
+                  {e.likedBy.length > 0 && (
+                    <>
+                      {e.likedBy.find((l) => l.userId === userId) && (
+                        <>
+                          {
+                            <LikedButton
+                              setDisabled={setDisabled}
+                              disabled={disabled}
+                              token={token}
+                              setLiked={setLiked}
+                              liked={liked}
+                              e={e}
+                            />
+                          }
+                        </>
+                      )}
+                      {!e.likedBy.find((l) => l.userId === userId) && (
+                        <>
+                          {
+                            <LikeButton
+                              setDisabled={setDisabled}
+                              disabled={disabled}
+                              token={token}
+                              setLiked={setLiked}
+                              liked={liked}
+                              e={e}
+                            />
+                          }
+                        </>
+                      )}
+                    </>
+                  )}
+                  {e.likedBy.length < 1 && (
+                    <>
+                      {
+                        <LikeButton
+                          setDisabled={setDisabled}
+                          disabled={disabled}
+                          token={token}
+                          setLiked={setLiked}
+                          liked={liked}
+                          e={e}
+                        />
+                      }
+                    </>
+                  )}
+                  <TooltipWrapper tooltipId={e.id}>
+                    <LikesCount>{e.likes} likes</LikesCount>
+                  </TooltipWrapper>
+                  <Tooltip
+                    id={e.id}
+                    content={handleLikedBy(e.likedBy)}
+                    place="bottom"
+                    className="example"
+                  />
+                </LeftContainer>
+                <RightContainer>
+                  <UserName>
+                    {e.userId === userId && (
+                      <>
+                        <EditPencil
+                          onClick={() => {
+                            setEditedDescription(e.description);
+                            edit.includes(e.postId)
+                              ? setEdit([])
+                              : setEdit([...edit, e.postId]);
+                          }}
+                        />
+                        <TrashCan onClick={() => {
+                          openModal();
+                          setIsOpen(true);
+                          setDeletePost(e.postId);
+                        }}/>
+                      </>
+                    )}
+
+                    {e.username}
+                  </UserName>
+                  {edit.includes(e.postId) && (
+                    <form
+                      onSubmit={(event) => sendNewDescription(event, e.postId)}
+                    >
+                      <EditDescription
+                        disabled={loading}
+                        name="description"
+                        value={editedDescription}
+                        onKeyDown={(e) =>
+                          e.key === "Escape" ? setEdit([]) : ""
+                        }
+                        onChange={(e) => {
+                          setEditedDescription(e.target.value);
+                        }}
+                      ></EditDescription>
+                    </form>
+                  )}
+                  {!edit.includes(e.postId) && (
+                    <Description>
+                      <ReactTagify
+                        tagStyle={{
+                          color: "white",
+                          fontWeight: 800,
+                          cursor: "pointer",
+                        }}
+                        tagClicked={(tag) =>
+                          navigate(`/hashtag/${tag.substring(1)}`)
+                        }
+                      >
+                        {e.description}
+                      </ReactTagify>
+                    </Description>
+                  )}
+
+                  <PostLink
+                    linkTitle={e.linkTitle}
+                    linkDescription={e.linkDescription}
+                    linkUrl={e.linkUrl}
+                    linkImage={e.linkImage}
+                  />
+                </RightContainer>
+              </PostStyle>
+            </TooltipProvider>
           ))}
         </>
       )}
-      {!error && loading && (
-        <>
-          <LoadingMessage>
-            <div>
-              <h1>Loading posts...</h1>
-            </div>
-          </LoadingMessage>
-        </>
-      )}
-      {!error && !loading && posts.length < 1 && (
-        <NoPostsMessage>
-          <h1>There are no posts yet.</h1>
-        </NoPostsMessage>
-      )}
-      {error && (
-        <ErrorMessage>
-          <div>
-            <h1>ERROR</h1>
-            <h2>
-              An error occured while trying to fetch the posts, please refresh
-              the page clicking the button down below.
-            </h2>
-            <button>Reload</button>
-          </div>
-        </ErrorMessage>
-      )}
+      {!error && loading && <LoadingMessage />}
+      {!error && !loading && posts.length < 1 && <NoPostsMessage />}
+      {error && <ErrorMessage />}
     </>
   );
 }
 
 const PostStyle = styled.div`
-  height: 30vw;
+  height: 100%;
   width: 100%;
   background-color: #171717;
   margin-top: 100px;
@@ -238,3 +387,20 @@ const Description = styled.p`
   color: #b7b7b7;
   line-height: 18px;
 `;
+
+const EditPencil = styled(TiPencil)`
+  position: absolute;
+  color: white;
+  right: 25px;
+  cursor: pointer;
+  pointer-events: ${(props) => (props.isOpened ? "none" : "initial")};
+`;
+
+const TrashCan = styled(FaTrash)`
+  color: white;
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+`;
+
+const EditDescription = styled.input``;
