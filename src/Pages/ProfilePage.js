@@ -14,16 +14,15 @@ import { AuthContext } from "../Components/Context/authContext";
 import useWindowDimensions from "../Components/Services/windowDimensions";
 import Searchbox from "../Components/Constants/Searchbox";
 import { TooltipProvider } from "react-tooltip";
-import "react-tooltip/dist/react-tooltip.css";
 import jwtDecode from "jwt-decode";
 
 function ProfilePage() {
   const { id } = useParams();
   const { token } = useContext(AuthContext);
   const [user, setUser] = useState(null);
+  const [deleted, setDeleted] = useState(false);
   const { width } = useWindowDimensions();
   const myUser = jwtDecode(token);
-  console.log(user);
 
   useEffect(() => {
     const config = {
@@ -32,7 +31,7 @@ function ProfilePage() {
         Authorization: `Bearer ${token}`,
       },
     };
-    axios(`http://localhost:4000/user/${id}`, config)
+    axios(`https://linkr-api-9ik9.onrender.com/user/${id}`, config)
       .then((res) => {
         if (res.data.posts[0].id === null) {
           delete res.data.posts;
@@ -40,7 +39,7 @@ function ProfilePage() {
         setUser(res.data);
       })
       .catch((err) => console.log(err));
-  }, [id]);
+  }, [id, deleted]);
 
   return (
     <>
@@ -60,12 +59,18 @@ function ProfilePage() {
                   userImage={user.userImage}
                   userId={Number(id)}
                   post={post}
+                  deleted={deleted}
+                  setDeleted={setDeleted}
                 />
               ))
             ) : (
               <NoPostsMessage>
                 <h1>There are no posts yet.</h1>
-                <button onClick={() => window.location.reload()}>Reload</button>
+                <button
+                  style={{ width: "fit-content" }}
+                  onClick={() => window.location.reload()}>
+                  Reload
+                </button>
               </NoPostsMessage>
             )}
           </PageStyle>
