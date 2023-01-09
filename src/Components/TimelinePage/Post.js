@@ -321,14 +321,11 @@ const EditDescription = styled.input`
   font-size: 14px;
   line-height: 17px;
   color: #4c4c4c;
-`;
-
-const EditPencil = styled(TiPencil)`
-  color: white;
-  position: absolute;
-  right: 25px;
-  cursor: pointer;
-  pointer-events: ${(props) => (props.isOpened ? "none" : "initial")};
+  :focus{
+    box-sizing: border-box;
+    outline: none !important;
+    border: none;
+  }
 `;
 
 const EditionForm = styled.form`
