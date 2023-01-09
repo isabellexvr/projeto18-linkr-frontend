@@ -9,6 +9,7 @@ import { postLikeFunction, dislikeFunction } from "../Services/LikeFunctions";
 import { useContext } from "react";
 import { AuthContext } from "../Context/authContext";
 import jwtDecode from "jwt-decode";
+import { Link } from "react-router-dom";
 
 export default function Post({ loading, setLoading }) {
   const navigate = useNavigate();
