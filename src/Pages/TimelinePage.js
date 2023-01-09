@@ -56,6 +56,7 @@ export default function TimelinePage() {
       .then((a) => {
         setLoading(true);
         setIsOpen(false);
+        setDeletePost("")
         console.log(a.data);
       })
       .catch((err) => {
@@ -70,20 +71,20 @@ export default function TimelinePage() {
       <Header />
       <TimelinePageStyle>
         <div>
-                  {width < 840 && <Searchbox />}
-        <PageTitle>timeline</PageTitle>
-        <PostPublicationForm loading={loading} setLoading={setLoading} />
-        <Post
-          loading={loading}
-          setLoading={setLoading}
-          modalIsOpen={modalIsOpen}
-          setIsOpen={setIsOpen}
-          setDeletePost={setDeletePost}
-          openModal={openModal}
-        />
+          {width < 840 && <Searchbox />}
+          <PageTitle>timeline</PageTitle>
+          <PostPublicationForm loading={loading} setLoading={setLoading} />
+          <Post
+            loading={loading}
+            setLoading={setLoading}
+            modalIsOpen={modalIsOpen}
+            setIsOpen={setIsOpen}
+            setDeletePost={setDeletePost}
+            openModal={openModal}
+          />
         </div>
 
-        <Trending/>
+        <Trending />
         <Modal
           isOpen={modalIsOpen}
           onRequestClose={closeModal}
@@ -113,13 +114,13 @@ const TimelinePageStyle = styled.div`
   background-color: #333333;
   display: flex;
   justify-content: center;
-    @media (max-width: 600px) {
-      width: 100%;
-      >div:last-child{
-        width: 100px;
-        background-color: red;
-      }
+  @media (max-width: 600px) {
+    width: 100%;
+    > div:last-child {
+      width: 100px;
+      background-color: red;
     }
+  }
 `;
 
 const PageTitle = styled.h1`
@@ -145,23 +146,23 @@ const CancelContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  >div{
-    display:flex;
+  > div {
+    display: flex;
     width: 90%;
     justify-content: space-between;
   }
   @media (max-width: 600px) {
     width: 85%;
-  height: 81%;
-  display: flex;
-  flex-direction: column;
+    height: 81%;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    >div{
-    display:flex;
-    width: 90%;
-    margin-top: 20px;
-  }
+    > div {
+      display: flex;
+      width: 90%;
+      margin-top: 20px;
+    }
   }
 `;
 
@@ -182,7 +183,6 @@ const CancelButton = styled.button`
     font-size: 3vw;
   }
 `;
-
 
 const ConfirmButton = styled.button`
   background: #1877f2;
