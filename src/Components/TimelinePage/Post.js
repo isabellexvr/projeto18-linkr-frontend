@@ -16,6 +16,8 @@ import "react-tooltip/dist/react-tooltip.css";
 import { LikeButton, LikedButton } from "./SmallComponents/LikeButtons";
 import { TiPencil } from "react-icons/ti";
 import { FaTrash } from "react-icons/fa";
+import { Link } from "react-router-dom";
+
 
 export default function Post({ loading, setLoading }) {
   const navigate = useNavigate();
@@ -69,6 +71,8 @@ export default function Post({ loading, setLoading }) {
       .then((a) => {
         setLoading(false);
         setPosts(a.data);
+        console.log(a.data);
+
       })
       .catch((e) => {
         setLoading(false);
