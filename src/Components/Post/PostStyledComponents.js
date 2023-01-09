@@ -1,6 +1,16 @@
 import styled from "styled-components";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 
+export const tooltipStyle = {
+  fontFamily: "Lato",
+  fontWeight: 700,
+  fontSize: "11px",
+  lineHeight: "13.2px",
+  color: "#505050",
+  background: "rgba(255, 255, 255, 0.9)",
+  borderRadius: "3px",
+};
+
 export const PostStyle = styled.div`
   height: 70vw;
   width: 100%;
