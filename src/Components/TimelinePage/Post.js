@@ -18,7 +18,7 @@ import { TiPencil } from "react-icons/ti";
 import { FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-export default function Post({ loading, setLoading, setIsOpen, setDeletePost}) {
+export default function Post({ loading, setLoading, setIsOpen, setDeletePost, openModal}) {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(false);
@@ -103,9 +103,9 @@ export default function Post({ loading, setLoading, setIsOpen, setDeletePost}) {
         setLoading(false);
         setError(true);
       });
-  }, [loading, setLoading, liked, edit]);
+  }, [loading, setLoading, liked, edit, posts]);
 
-  console.log(edit);
+  console.log(posts);
 
   return (
     <>
@@ -185,6 +185,7 @@ export default function Post({ loading, setLoading, setIsOpen, setDeletePost}) {
                           }}
                         />
                         <TrashCan onClick={() => {
+                          openModal();
                           setIsOpen(true);
                           setDeletePost(e.postId);
                         }}/>
