@@ -18,6 +18,7 @@ import {
   DeleteButton,
 } from "./SmallComponents/EditAndDeleteButtons";
 import Description from "./SmallComponents/PostDescription";
+import URL from "../Services/APIlink";
 
 export default function Post({
   loading,
@@ -35,8 +36,6 @@ export default function Post({
   const [editedDescription, setEditedDescription] = useState({});
   const { token } = useContext(AuthContext);
   const { userId } = jwtDecode(token);
-
-  //https://linkr-api-9ik9.onrender.com/
 
   function handleFocus(e) {
     e.currentTarget.setSelectionRange(
@@ -99,7 +98,7 @@ export default function Post({
         description: editedDescription,
       },
     };
-    axios(`http://localhost:4000/posts/${postId}`, config)
+    axios(`${URL}/posts/${postId}`, config)
       .then((a) => {
         setLoading(false);
         setEdit([]);
@@ -114,7 +113,7 @@ export default function Post({
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/all-posts")
+      .get(URL + "/all-posts")
       .then((a) => {
         setLoading(false);
         setPosts(a.data);
@@ -125,7 +124,6 @@ export default function Post({
         setError(true);
       });
   }, [loading, setLoading, liked, edit, disabled, openModal]);
-
 
   return (
     <>
