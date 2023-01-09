@@ -14,7 +14,6 @@ import { AuthContext } from "../Components/Context/authContext";
 import useWindowDimensions from "../Components/Services/windowDimensions";
 import Searchbox from "../Components/Constants/Searchbox";
 import { TooltipProvider } from "react-tooltip";
-import "react-tooltip/dist/react-tooltip.css";
 import jwtDecode from "jwt-decode";
 
 function ProfilePage() {
