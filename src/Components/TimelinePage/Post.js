@@ -33,7 +33,6 @@ export default function Post({
   const [disabled, setDisabled] = useState(false);
   const [edit, setEdit] = useState([]);
   const [editedDescription, setEditedDescription] = useState({});
-
   const { token } = useContext(AuthContext);
   const { userId } = jwtDecode(token);
 
@@ -125,7 +124,7 @@ export default function Post({
         setLoading(false);
         setError(true);
       });
-  }, [loading, setLoading, liked, edit, disabled]);
+  }, [loading, setLoading, liked, edit, disabled, openModal]);
 
 
   return (
