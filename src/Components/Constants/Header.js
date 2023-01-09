@@ -51,7 +51,6 @@ const HeaderStyle = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  /* align-items: center; */
   position: fixed;
   top: 0;
   left: 0;
@@ -66,10 +65,13 @@ const Container = styled.div`
 const UserContainer = styled.div`
   display: flex;
   align-items: center;
+  width: 100px;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
   > svg {
     color: white;
     font-size: 28px;
-    margin-right: 12px;
   }
 `;
 
@@ -88,8 +90,19 @@ const Logo = styled.div`
 
 const Logout = styled.div`
   color: #ffffff;
-  background-color: black;
-  margin-top: 30px;
+  font-family: lato;
+  background-color: #171717;
+  width: 150px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0px 0px 10px 10px;
+  position: absolute;
+  margin-top: 50px;
+  @media (max-width: 800px) {
+    width: 120px;
+  }
 `;
 
 const ContainerProfile = styled.div`
@@ -99,6 +112,5 @@ const ContainerProfile = styled.div`
     color: white;
     font-size: 28px;
     margin-right: 12px;
-    margin-top: 50px;
   }
 `;
