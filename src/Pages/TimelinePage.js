@@ -22,12 +22,15 @@ export default function TimelinePage() {
       left: "50%",
       right: "auto",
       bottom: "auto",
-      width: "597px",
-      height: "262px",
+      width: "41.40%",
+      height: "25.5%",
       background: "#333333",
       borderRadius: "50px",
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
     },
   };
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -62,8 +65,6 @@ export default function TimelinePage() {
       });
   }
 
-  Modal.setAppElement(document.getElementById("root"));
-
   return (
     <>
       <Header />
@@ -79,28 +80,28 @@ export default function TimelinePage() {
           setDeletePost={setDeletePost}
           openModal={openModal}
         />
-        <StyleModal>
-          {/* <button onClick={openModal}>Open Modal</button> */}
-          <Modal
-            isOpen={modalIsOpen}
-            onRequestClose={closeModal}
-            style={customStyles}
-            contentLabel="Example Modal"
-          >
-            <h2>Are you sure you want to delete this post?</h2>
-            <button onClick={closeModal}>close</button>
-            <button onClick={confirmModal}>confirm</button>
-          </Modal>
-        </StyleModal>
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          style={customStyles}
+          contentLabel="Example Modal"
+        >
+          <CancelContainer>
+            <DeleteMessage>
+              Are you sure you want to delete this post?
+            </DeleteMessage>
+            <div>
+              <CancelButton onClick={closeModal}>No, go back</CancelButton>
+              <ConfirmButton onClick={confirmModal}>
+                Yes, delete it
+              </ConfirmButton>
+            </div>
+          </CancelContainer>
+        </Modal>
       </TimelinePageStyle>
     </>
   );
 }
-
-const StyleModal = styled.div`
-  h2 {
-  }
-`;
 
 const TimelinePageStyle = styled.div`
   margin-top: 70px;
@@ -109,6 +110,13 @@ const TimelinePageStyle = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+    @media (max-width: 600px) {
+      width: 100%;
+      >div:last-child{
+        width: 100px;
+        background-color: red;
+      }
+    }
 `;
 
 const PageTitle = styled.h1`
@@ -125,4 +133,56 @@ const PageTitle = styled.h1`
     width: 100%;
     align-items: center;
   }
+`;
+
+const CancelContainer = styled.div`
+  width: 85%;
+  height: 81%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  >div{
+    display:flex;
+    width: 90%;
+    justify-content: space-between;
+  }
+`;
+
+const CancelButton = styled.button`
+  background: #ffffff;
+  font-family: "Lato";
+  font-weight: 700;
+  font-size: 3vw;
+  color: #1877f2;
+  width: 75%;
+  height: 37px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+`;
+
+
+const ConfirmButton = styled.button`
+  background: #1877f2;
+  font-family: "Lato";
+  font-weight: 700;
+  font-size: 3vw;
+  color: #ffffff;
+  width: 75%;
+  height: 37px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+`;
+
+const DeleteMessage = styled.h1`
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 4.8vw;
+  line-height: 20px;
+  text-align: center;
+  width: 98%;
+  color: #ffffff;
 `;
