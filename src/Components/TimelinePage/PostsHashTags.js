@@ -23,7 +23,7 @@ export default function PostHashTags() {
   };
 
   useEffect((() => {
-    const promisse = axios.get(`http://localhost:4000/hashtags/${hashtag}`,
+    const promisse = axios.get(`http://localhost:4000/hashtag/${hashtag}`,
       // {
       //   headers: {
       //     'Authorization': `token ${token}`

@@ -117,7 +117,7 @@ export default function Post({ loading, setLoading }) {
                       {e.likesCount} likes
                     </LikesCount>
                   </TooltipWrapper>
-                  <Tooltip id={e.id} content={handleLikedBy(e.likedBy)} />
+                  <Tooltip id={e.id} content={handleLikedBy(e.likedBy)} place = "bottom"  className="example" />
                 </LeftContainer>
                 <RightContainer>
                   <UserName>{e.userName}</UserName>
