@@ -14,14 +14,18 @@ import { AuthContext } from "../Context/authContext";
 import { Tooltip, TooltipWrapper, TooltipProvider } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import { LikeButton, LikedButton } from "./SmallComponents/LikeButtons";
-import { TiPencil } from "react-icons/ti";
-import { FaTrash } from "react-icons/fa";
+import {
+  EditButton,
+  DeleteButton,
+} from "./SmallComponents/EditAndDeleteButtons";
+import Description from "./SmallComponents/PostDescription";
 
 export default function Post({
   loading,
   setLoading,
   setIsOpen,
-  setDeletePost, openModal,
+  setDeletePost,
+  openModal,
 }) {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
@@ -119,7 +123,7 @@ export default function Post({
             <TooltipProvider>
               <PostStyle key={i}>
                 <LeftContainer>
-                  <UserProfilePicture alt='user-profile' src={e.userImage} />
+                  <UserProfilePicture alt="user-profile" src={e.userImage} />
                   {e.likedBy.length > 0 && (
                     <>
                       {e.likedBy.find((l) => l.userId === userId) && (
@@ -172,67 +176,52 @@ export default function Post({
                   <Tooltip
                     id={e.id}
                     content={handleLikedBy(e.likedBy)}
-                    place='bottom'
-                    className='example'
+                    place="bottom"
+                    className="example"
                   />
                 </LeftContainer>
                 <RightContainer>
                   <UserName>
                     {e.userId === userId && (
                       <>
-                        <EditPencil
-                          onClick={() => {
-                            setEditedDescription(e.postDescription);
-                            edit.includes(e.postId)
-                              ? setEdit([])
-                              : setEdit([...edit, e.postId]);
-                          }}
+                        <EditButton
+                          setEditedDescription={setEditedDescription}
+                          e={e}
+                          edit={edit}
+                          setEdit={setEdit}
                         />
-                        <TrashCan
-                          onClick={() => {
-                          openModal();
-                            setIsOpen(true);
-                            setDeletePost(e.postId);
-                          }}
+                        <DeleteButton
+                          openModal={openModal}
+                          setIsOpen={setIsOpen}
+                          setDeletePost={setDeletePost}
+                          e={e}
                         />
                       </>
                     )}
-
                     <p onClick={() => navigate(`/user/${e.id}`)}>
                       {e.userName}
                     </p>
                   </UserName>
                   {edit.includes(e.postId) && (
                     <form
-                      onSubmit={(event) => sendNewDescription(event, e.postId)}>
+                      onSubmit={(event) => sendNewDescription(event, e.postId)}
+                    >
                       <EditDescription
                         disabled={loading}
-                        name='description'
+                        name="description"
                         value={editedDescription}
                         onKeyDown={(e) =>
                           e.key === "Escape" ? setEdit([]) : ""
                         }
                         onChange={(e) => {
                           setEditedDescription(e.target.value);
-                        }}></EditDescription>
+                        }}
+                      ></EditDescription>
                     </form>
                   )}
                   {!edit.includes(e.postId) && (
-                    <Description>
-                      <ReactTagify
-                        tagStyle={{
-                          color: "white",
-                          fontWeight: 800,
-                          cursor: "pointer",
-                        }}
-                        tagClicked={(tag) =>
-                          navigate(`/hashtag/${tag.substring(1)}`)
-                        }>
-                        {e.postDescription}
-                      </ReactTagify>
-                    </Description>
+                    <Description>{e.postDescription}</Description>
                   )}
-
                   <PostLink
                     linkTitle={e.linkTitle}
                     linkDescription={e.linkDescription}
@@ -302,29 +291,6 @@ const UserName = styled.h1`
   font-size: 17px;
   color: white;
   margin-top: 10px;
-  cursor: pointer;
-`;
-
-const Description = styled.p`
-  margin-top: 7px;
-  font-weight: 400;
-  font-size: 15px;
-  color: #b7b7b7;
-  line-height: 18px;
-`;
-
-const EditPencil = styled(TiPencil)`
-  position: absolute;
-  color: white;
-  right: 25px;
-  cursor: pointer;
-  pointer-events: ${(props) => (props.isOpened ? "none" : "initial")};
-`;
-
-const TrashCan = styled(FaTrash)`
-  color: white;
-  position: absolute;
-  right: 0;
   cursor: pointer;
 `;
 
