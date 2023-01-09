@@ -16,17 +16,20 @@ import "react-tooltip/dist/react-tooltip.css";
 import { LikeButton, LikedButton } from "./SmallComponents/LikeButtons";
 import { TiPencil } from "react-icons/ti";
 import { FaTrash } from "react-icons/fa";
-import { Link } from "react-router-dom";
 
-
-export default function Post({ loading, setLoading }) {
+export default function Post({
+  loading,
+  setLoading,
+  setIsOpen,
+  setDeletePost,
+}) {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(false);
   const [liked, setLiked] = useState([]);
   const [disabled, setDisabled] = useState(false);
   const [edit, setEdit] = useState([]);
-  const presentDescription = useRef();
+  const [editedDescription, setEditedDescription] = useState({});
   const { token } = useContext(AuthContext);
   const { userId } = jwtDecode(token);
 
@@ -65,18 +68,46 @@ export default function Post({ loading, setLoading }) {
     }
   }
 
+  function sendNewDescription(e, postId) {
+    e.preventDefault();
+    console.log(postId);
+    setLoading(true);
+
+    const config = {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        description: editedDescription,
+      },
+    };
+    axios(`http://localhost:4000/posts/${postId}`, config)
+      .then((a) => {
+        setLoading(false);
+        setEdit([]);
+        console.log(a.data);
+      })
+      .catch((e) => {
+        console.log(e);
+        setError(true);
+        setLoading(false);
+      });
+  }
+
   useEffect(() => {
     axios
       .get("http://localhost:4000/all-posts")
       .then((a) => {
         setLoading(false);
         setPosts(a.data);
+        console.log(a.data);
       })
       .catch((e) => {
         setLoading(false);
         setError(true);
       });
-  }, [loading, setLoading, liked]);
+  }, [loading, setLoading, liked, edit]);
 
   console.log(edit);
 
@@ -88,7 +119,7 @@ export default function Post({ loading, setLoading }) {
             <TooltipProvider>
               <PostStyle key={i}>
                 <LeftContainer>
-                  <UserProfilePicture alt="user-profile" src={e.userImage} />
+                  <UserProfilePicture alt='user-profile' src={e.userImage} />
                   {e.likedBy.length > 0 && (
                     <>
                       {e.likedBy.find((l) => l.userId === userId) && (
@@ -138,26 +169,55 @@ export default function Post({ loading, setLoading }) {
                   <TooltipWrapper tooltipId={e.id}>
                     <LikesCount>{e.likesCount} likes</LikesCount>
                   </TooltipWrapper>
-                  <Tooltip id={e.id} content={handleLikedBy(e.likedBy)} place = "bottom"  className="example" />
+                  <Tooltip
+                    id={e.id}
+                    content={handleLikedBy(e.likedBy)}
+                    place='bottom'
+                    className='example'
+                  />
                 </LeftContainer>
                 <RightContainer>
                   <UserName>
-                    <EditPencil
-                      onClick={() => {
-                        console.log(presentDescription);
-                        setEdit([...edit, e.postId]);
-                      }}
-                    />
-                    <TrashCan />
-                    {e.userName}
+                    {e.userId === userId && (
+                      <>
+                        <EditPencil
+                          onClick={() => {
+                            setEditedDescription(e.postDescription);
+                            edit.includes(e.postId)
+                              ? setEdit([])
+                              : setEdit([...edit, e.postId]);
+                          }}
+                        />
+                        <TrashCan
+                          onClick={() => {
+                            setIsOpen(true);
+                            setDeletePost(e.postId);
+                          }}
+                        />
+                      </>
+                    )}
+
+                    <p onClick={() => navigate(`/user/${e.id}`)}>
+                      {e.userName}
+                    </p>
                   </UserName>
                   {edit.includes(e.postId) && (
-                    <>
-                      <EditDescription></EditDescription>
-                    </>
+                    <form
+                      onSubmit={(event) => sendNewDescription(event, e.postId)}>
+                      <EditDescription
+                        disabled={loading}
+                        name='description'
+                        value={editedDescription}
+                        onKeyDown={(e) =>
+                          e.key === "Escape" ? setEdit([]) : ""
+                        }
+                        onChange={(e) => {
+                          setEditedDescription(e.target.value);
+                        }}></EditDescription>
+                    </form>
                   )}
                   {!edit.includes(e.postId) && (
-                    <Description ref={presentDescription}>
+                    <Description>
                       <ReactTagify
                         tagStyle={{
                           color: "white",
@@ -166,8 +226,7 @@ export default function Post({ loading, setLoading }) {
                         }}
                         tagClicked={(tag) =>
                           navigate(`/hashtag/${tag.substring(1)}`)
-                        }
-                      >
+                        }>
                         {e.postDescription}
                       </ReactTagify>
                     </Description>
@@ -242,6 +301,7 @@ const UserName = styled.h1`
   font-size: 17px;
   color: white;
   margin-top: 10px;
+  cursor: pointer;
 `;
 
 const Description = styled.p`
@@ -257,6 +317,7 @@ const EditPencil = styled(TiPencil)`
   color: white;
   right: 25px;
   cursor: pointer;
+  pointer-events: ${(props) => (props.isOpened ? "none" : "initial")};
 `;
 
 const TrashCan = styled(FaTrash)`

@@ -1,11 +1,14 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState,useContext } from "react";
 import axios from "axios";
+import { AuthContext } from "../Context/authContext";
+import jwtDecode from "jwt-decode";
 
 //https://linkr-api-9ik9.onrender.com
 
 export default function PostPublicationForm({ loading, setLoading }) {
   const [form, setForm] = useState({});
+  const { token } = useContext(AuthContext);
 
   function handleForm({ target: { value, name } }) {
     setForm({ ...form, [name]: value });
@@ -19,7 +22,7 @@ export default function PostPublicationForm({ loading, setLoading }) {
     axios
       .post("http://localhost:4000/post", form, {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJQaWN0dXJlIjoiaHR0cHM6Ly8zLmJwLmJsb2dzcG90LmNvbS8tUlB0eVhTR0tKRzQvVUVlemoxODBndUkvQUFBQUFBQUFBdWMvckVuX0xwSThEZnMvczE2MDAvZ2F0by1uZWdyby5qcGciLCJzZXNzaW9uSWQiOjEsImlhdCI6MTY3MzAyNzY0NH0.FWLjPwjA4qkV8-5pX-HIu7xi2B_50sdtxOMAMMbVfFw
+          Authorization: `Bearer ${token}
             `,
         },
       })
