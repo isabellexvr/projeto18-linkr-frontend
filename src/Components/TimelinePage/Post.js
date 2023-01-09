@@ -2,7 +2,6 @@ import styled from "styled-components";
 import PostLink from "./PostLink";
 import axios from "axios";
 import { useEffect, useState, useContext, useRef } from "react";
-import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import {
@@ -19,6 +18,7 @@ import {
   DeleteButton,
 } from "./SmallComponents/EditAndDeleteButtons";
 import Description from "./SmallComponents/PostDescription";
+import { TiPencil } from "react-icons/ti";
 
 export default function Post({
   loading,
@@ -34,10 +34,18 @@ export default function Post({
   const [disabled, setDisabled] = useState(false);
   const [edit, setEdit] = useState([]);
   const [editedDescription, setEditedDescription] = useState({});
+
   const { token } = useContext(AuthContext);
   const { userId } = jwtDecode(token);
 
   //https://linkr-api-9ik9.onrender.com/
+
+  function handleFocus(e) {
+    e.currentTarget.setSelectionRange(
+      e.currentTarget.value.length,
+      e.currentTarget.value.length
+    );
+  }
 
   function handleLikedBy(arr) {
     let string;
@@ -74,7 +82,6 @@ export default function Post({
 
   function sendNewDescription(e, postId) {
     e.preventDefault();
-    console.log(postId);
     setLoading(true);
 
     const config = {
@@ -112,8 +119,6 @@ export default function Post({
         setError(true);
       });
   }, [loading, setLoading, liked, edit]);
-
-  console.log(posts);
 
   return (
     <>
@@ -182,43 +187,48 @@ export default function Post({
                 </LeftContainer>
                 <RightContainer>
                   <UserName>
+                    <p onClick={() => navigate(`/user/${e.id}`)}>
+                      {e.userName}
+                    </p>
                     {e.userId === userId && (
                       <>
-                        <EditButton
-                          setEditedDescription={setEditedDescription}
-                          e={e}
-                          edit={edit}
-                          setEdit={setEdit}
-                        />
                         <DeleteButton
                           openModal={openModal}
                           setIsOpen={setIsOpen}
                           setDeletePost={setDeletePost}
                           e={e}
                         />
+                        <EditButton
+                          setEditedDescription={setEditedDescription}
+                          e={e}
+                          edit={edit}
+                          setEdit={setEdit}
+                        />
+                        <EditionForm
+                          onSubmit={(event) =>
+                            sendNewDescription(event, e.postId)
+                          }
+                        >
+                          <EditDescription
+                            type="text"
+                            appear={edit.length > 0}
+                            ref={(ref) => ref && ref.focus()}
+                            onFocus={handleFocus}
+                            disabled={loading}
+                            name="description"
+                            value={editedDescription}
+                            onKeyDown={(e) =>
+                              e.key === "Escape" ? setEdit([]) : ""
+                            }
+                            onChange={(e) => {
+                              setEditedDescription(e.target.value);
+                            }}
+                          />
+                        </EditionForm>
                       </>
                     )}
-                    <p onClick={() => navigate(`/user/${e.id}`)}>
-                      {e.userName}
-                    </p>
                   </UserName>
-                  {edit.includes(e.postId) && (
-                    <form
-                      onSubmit={(event) => sendNewDescription(event, e.postId)}
-                    >
-                      <EditDescription
-                        disabled={loading}
-                        name="description"
-                        value={editedDescription}
-                        onKeyDown={(e) =>
-                          e.key === "Escape" ? setEdit([]) : ""
-                        }
-                        onChange={(e) => {
-                          setEditedDescription(e.target.value);
-                        }}
-                      ></EditDescription>
-                    </form>
-                  )}
+
                   {!edit.includes(e.postId) && (
                     <Description>{e.postDescription}</Description>
                   )}
@@ -291,7 +301,36 @@ const UserName = styled.h1`
   font-size: 17px;
   color: white;
   margin-top: 10px;
-  cursor: pointer;
+  > p {
+    width: 50%;
+    cursor: pointer;
+  }
 `;
 
-const EditDescription = styled.input``;
+const EditDescription = styled.input`
+  display: ${(props) => (props.appear ? "initial" : "none")};
+  background: #ffffff;
+  border-radius: 7px;
+  width: 80%;
+  border: none;
+  padding: 10px;
+  box-sizing: border-box;
+  margin-top: 7px;
+  font-family: "Lato";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #4c4c4c;
+`;
+
+const EditPencil = styled(TiPencil)`
+  color: white;
+  position: absolute;
+  right: 25px;
+  cursor: pointer;
+  pointer-events: ${(props) => (props.isOpened ? "none" : "initial")};
+`;
+
+const EditionForm = styled.form`
+  cursor: initial;
+`;
