@@ -18,7 +18,7 @@ import { TiPencil } from "react-icons/ti";
 import { FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-export default function Post({ loading, setLoading }) {
+export default function Post({ loading, setLoading, setIsOpen, setDeletePost}) {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(false);
@@ -184,7 +184,10 @@ export default function Post({ loading, setLoading }) {
                               : setEdit([...edit, e.postId]);
                           }}
                         />
-                        <TrashCan />
+                        <TrashCan onClick={() => {
+                          setIsOpen(true);
+                          setDeletePost(e.postId);
+                        }}/>
                       </>
                     )}
 

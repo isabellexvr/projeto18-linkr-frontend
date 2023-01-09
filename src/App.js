@@ -6,39 +6,46 @@ import SignInPage from "./Pages/SignInPage";
 import SignUpPage from "./Pages/SignUpPage";
 import Context from "./Components/Context/authContext";
 import ProfilePage from "./Pages/ProfilePage";
+import Teste from "./Pages/Teste";
 
 function App() {
-	return (
-		<>
-			<ResetCss />
-			<BrowserRouter>
-				<Context>
-					<Routes>
-						<Route
-							path='/timeline'
-							element={<TimelinePage />}
-						/>
-						<Route
-							path='/hashtag/:hashtag'
-							element={<HashTagsPage />}
-						/>
-						<Route
-							path='/'
-							element={<SignInPage />}
-						/>
-						<Route
-							path='/sign-up'
-							element={<SignUpPage />}
-						/>
-						<Route
-							path='/user/:id'
-							element={<ProfilePage />}
-						/>
-					</Routes>
-				</Context>
-			</BrowserRouter>
-		</>
-	);
+  return (
+    <>
+      <ResetCss />
+      <BrowserRouter>
+        <Context>
+          <Routes>
+            <Route
+              path='/timeline'
+              element={<TimelinePage />}
+            />
+            <Route
+              path='/hashtag/:hashtag'
+              element={<HashTagsPage />}
+            />
+            <Route
+              path='/'
+              element={<SignInPage />}
+            />
+            <Route
+              path='/sign-up'
+              element={<SignUpPage />}
+            />
+            <Route
+              path='/user/:id'
+              element={<ProfilePage />}
+            />
+            <Route
+              path='/teste'
+              element={<Teste />}
+            />
+          </Routes>
+        </Context>
+      </BrowserRouter>
+    </>
+  );
 }
+
+
 
 export default App;
