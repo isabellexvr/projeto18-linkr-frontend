@@ -89,13 +89,16 @@ export const Description = styled.p`
 export const NoPostsMessage = styled.div`
   margin-top: 25px;
   display: flex;
+  flex-flow: column;
   width: 100%;
+  align-items: center;
   justify-content: center;
   > h1 {
     font-family: "Lato";
     font-weight: 600;
     font-size: 18px;
     color: #efefef;
+    margin-bottom: 10px;
   }
 `;
 
