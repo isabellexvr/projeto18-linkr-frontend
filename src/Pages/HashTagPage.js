@@ -75,29 +75,10 @@ Modal.setAppElement(document.getElementById('root'));
                     <PostHashTags setIsOpen = {setIsOpen} setDeletePost = {setDeletePost} openModal = {openModal} />
                 </PostMobile>
                 <Trending />
-                <StyleModal>
-        {/* <button onClick={openModal}>Open Modal</button> */}
-        <Modal
-          isOpen={modalIsOpen}
-          onAfterOpen={afterOpenModal}
-          onRequestClose={closeModal}
-          style={customStyles}
-          contentLabel="Example Modal"
-        >
-          <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Are you sure you want
-            to delete this post?</h2>
-          <button onClick={closeModal}>close</button>
-          <button onClick={confirmModal}>confirm</button>
-        </Modal>
-      </StyleModal>
             </HashTagPage>
         </>
     );
 }
-
-const StyleModal = styled.div`
-  h2{}
-`
 
 const HashTagPage = styled.div`
   margin-top: 70px;
@@ -122,8 +103,7 @@ const PageTitle = styled.h1`
   font-size: 33px;
   color: white;
   font-weight: 700;
-  margin-left: 17px;
+  margin-right: -120px;
   height: 87px;
-  display: flex;
-  align-items: center;
+  text-align: center;
 `;
