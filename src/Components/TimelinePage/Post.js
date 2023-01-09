@@ -16,9 +16,13 @@ import "react-tooltip/dist/react-tooltip.css";
 import { LikeButton, LikedButton } from "./SmallComponents/LikeButtons";
 import { TiPencil } from "react-icons/ti";
 import { FaTrash } from "react-icons/fa";
-import { Link } from "react-router-dom";
 
-export default function Post({ loading, setLoading, setIsOpen, setDeletePost}) {
+export default function Post({
+  loading,
+  setLoading,
+  setIsOpen,
+  setDeletePost,
+}) {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(false);
@@ -72,7 +76,7 @@ export default function Post({ loading, setLoading, setIsOpen, setDeletePost}) {
     const config = {
       method: "PATCH",
       headers: {
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE5LCJ1c2VyUGljdHVyZSI6Imh0dHBzOi8va2JpbWFnZXMxLWEuYWthbWFpaGQubmV0L2FmY2Q4NjUzLTNiMjctNDQyMy1iZWU5LTU3MGZiMTQ0MWFlZC8zNTMvNTY5LzkwL0ZhbHNlL3ByaWRlLWFuZC1wcmVqdWRpY2UtNzEuanBnIiwic2Vzc2lvbklkIjoxNTgsImlhdCI6MTY3MzIzMDMzNH0.poYNfisvv3a4b3b4kCuUXtIqH8yDVkkn4K04VN9ivn0`,
+        Authorization: `Bearer ${token}`,
       },
       data: {
         description: editedDescription,
@@ -86,7 +90,7 @@ export default function Post({ loading, setLoading, setIsOpen, setDeletePost}) {
       })
       .catch((e) => {
         console.log(e);
-        setError(true)
+        setError(true);
         setLoading(false);
       });
   }
@@ -115,7 +119,7 @@ export default function Post({ loading, setLoading, setIsOpen, setDeletePost}) {
             <TooltipProvider>
               <PostStyle key={i}>
                 <LeftContainer>
-                  <UserProfilePicture alt="user-profile" src={e.userImage} />
+                  <UserProfilePicture alt='user-profile' src={e.userImage} />
                   {e.likedBy.length > 0 && (
                     <>
                       {e.likedBy.find((l) => l.userId === userId) && (
@@ -168,12 +172,12 @@ export default function Post({ loading, setLoading, setIsOpen, setDeletePost}) {
                   <Tooltip
                     id={e.id}
                     content={handleLikedBy(e.likedBy)}
-                    place="bottom"
-                    className="example"
+                    place='bottom'
+                    className='example'
                   />
                 </LeftContainer>
                 <RightContainer>
-                  <UserName>
+                  <UserName onClick={() => navigate(`/user/${e.id}`)}>
                     {e.userId === userId && (
                       <>
                         <EditPencil
@@ -184,10 +188,12 @@ export default function Post({ loading, setLoading, setIsOpen, setDeletePost}) {
                               : setEdit([...edit, e.postId]);
                           }}
                         />
-                        <TrashCan onClick={() => {
-                          setIsOpen(true);
-                          setDeletePost(e.postId);
-                        }}/>
+                        <TrashCan
+                          onClick={() => {
+                            setIsOpen(true);
+                            setDeletePost(e.postId);
+                          }}
+                        />
                       </>
                     )}
 
@@ -195,19 +201,17 @@ export default function Post({ loading, setLoading, setIsOpen, setDeletePost}) {
                   </UserName>
                   {edit.includes(e.postId) && (
                     <form
-                      onSubmit={(event) => sendNewDescription(event, e.postId)}
-                    >
+                      onSubmit={(event) => sendNewDescription(event, e.postId)}>
                       <EditDescription
                         disabled={loading}
-                        name="description"
+                        name='description'
                         value={editedDescription}
                         onKeyDown={(e) =>
                           e.key === "Escape" ? setEdit([]) : ""
                         }
                         onChange={(e) => {
                           setEditedDescription(e.target.value);
-                        }}
-                      ></EditDescription>
+                        }}></EditDescription>
                     </form>
                   )}
                   {!edit.includes(e.postId) && (
@@ -220,8 +224,7 @@ export default function Post({ loading, setLoading, setIsOpen, setDeletePost}) {
                         }}
                         tagClicked={(tag) =>
                           navigate(`/hashtag/${tag.substring(1)}`)
-                        }
-                      >
+                        }>
                         {e.postDescription}
                       </ReactTagify>
                     </Description>
@@ -296,6 +299,7 @@ const UserName = styled.h1`
   font-size: 17px;
   color: white;
   margin-top: 10px;
+  cursor: pointer;
 `;
 
 const Description = styled.p`
