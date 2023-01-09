@@ -151,6 +151,19 @@ const CancelContainer = styled.div`
     width: 90%;
     justify-content: space-between;
   }
+  @media (max-width: 600px) {
+    width: 85%;
+  height: 81%;
+  display: flex;
+  flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    >div{
+    display:flex;
+    width: 90%;
+    margin-top: 20px;
+  }
+  }
 `;
 
 const CancelButton = styled.button`
@@ -166,7 +179,7 @@ const CancelButton = styled.button`
   cursor: pointer;
   @media (max-width: 600px) {
     width: 75%;
-    height: 37px;
+    height: auto;
     font-size: 3vw;
   }
 `;
@@ -185,7 +198,7 @@ const ConfirmButton = styled.button`
   cursor: pointer;
   @media (max-width: 600px) {
     width: 75%;
-    height: 37px;
+    height: auto;
     font-size: 3vw;
   }
 `;
