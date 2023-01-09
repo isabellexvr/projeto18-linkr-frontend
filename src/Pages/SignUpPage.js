@@ -16,13 +16,6 @@ export default function SignUp() {
 	const [loading, setLoading] = useState(false);
 
 	const navigate = useNavigate();
-	
-	  const isLogged = localStorage.getItem("userToken");
-	  if (isLogged) {
-		setToken(isLogged);
-		navigate("/timeline");
-		return;
-	  }
 
 	function register(event) {
 		event.preventDefault();

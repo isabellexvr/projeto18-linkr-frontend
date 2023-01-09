@@ -214,21 +214,23 @@ export default function Post({
                             sendNewDescription(event, e.postId)
                           }
                         >
-                          <EditDescription
-                            type="text"
-                            appear={edit.length > 0}
-                            ref={(ref) => ref && ref.focus()}
-                            onFocus={handleFocus}
-                            disabled={loading}
-                            name="description"
-                            value={editedDescription}
-                            onKeyDown={(e) =>
-                              e.key === "Escape" ? setEdit([]) : ""
-                            }
-                            onChange={(e) => {
-                              setEditedDescription(e.target.value);
-                            }}
-                          />
+                          {edit.includes(e.postId) && (
+                            <EditDescription
+                              type="text"
+                              appear={edit.length > 0}
+                              ref={(ref) => ref && ref.focus()}
+                              onFocus={handleFocus}
+                              disabled={loading}
+                              name="description"
+                              value={editedDescription}
+                              onKeyDown={(e) =>
+                                e.key === "Escape" ? setEdit([]) : ""
+                              }
+                              onChange={(e) => {
+                                setEditedDescription(e.target.value);
+                              }}
+                            />
+                          )}
                         </EditionForm>
                       </>
                     )}
