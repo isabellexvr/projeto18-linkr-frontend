@@ -25,8 +25,7 @@ export default function SignIn() {
     event.preventDefault();
     setLoading(true);
 
-    // const URL = "https://linkr-api-9ik9.onrender.com/";
-    const URL = "http://localhost:4000/sign-in";
+    const URL = "https://linkr-api-9ik9.onrender.com/sign-in";
 
     setTimeout(() => {
       const promise = axios.post(URL, form);
