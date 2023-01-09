@@ -14,9 +14,15 @@ import {
   LikedIcon,
   tagStyle,
   tooltipStyle,
+  EditPencil,
+  TrashCan,
+  TitleContainer,
+  ActionsContainer,
+  EditContainer,
 } from "./PostStyledComponents";
 import { dislikeFunction, postLikeFunction } from "../Services/LikeFunctions";
 import { Tooltip, TooltipWrapper } from "react-tooltip";
+import axios from "axios";
 
 function Post(props) {
   const { username, userImage, post, userId, token, myUser } = props;
@@ -33,6 +39,8 @@ function Post(props) {
 
   const navigate = useNavigate();
   const [liked, setLiked] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [postDescription, setPostDescription] = useState(description);
   const [postLikeCount, setPostLikeCount] = useState(likesCount);
   const [tooltip, setTooltip] = useState("");
 
@@ -64,6 +72,25 @@ function Post(props) {
     return postLikeFunction(id, token);
   }
 
+  function handleEdit(e) {
+    if (e.key === "Escape") return setEdit(false);
+    else if (e.key === "Enter") {
+      const config = {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
+          description: postDescription,
+        },
+      };
+      axios(`https://linkr-api-9ik9.onrender.com/posts/${id}`, config)
+        .then(() => {
+          setEdit(false);
+        })
+        .catch((err) => err.response.data);
+    }
+  }
   function createTooltip() {
     const length = likedArray.length;
     if (liked) {
@@ -112,13 +139,29 @@ function Post(props) {
         <Tooltip style={tooltipStyle} />
       </LeftContainer>
       <RightContainer>
-        <UserName>{username}</UserName>
+        <TitleContainer>
+          <UserName>{username}</UserName>
+          {userId === myUser.userId && (
+            <ActionsContainer>
+              <EditPencil onClick={() => setEdit(true)} />
+              <TrashCan />
+            </ActionsContainer>
+          )}
+        </TitleContainer>
         <Description>
-          <ReactTagify
-            tagStyle={tagStyle}
-            tagClicked={(tag) => navigate(`/hashtag/${tag.substring(1)}`)}>
-            {description}
-          </ReactTagify>
+          {!edit ? (
+            <ReactTagify
+              tagStyle={tagStyle}
+              tagClicked={(tag) => navigate(`/hashtag/${tag.substring(1)}`)}>
+              {postDescription}
+            </ReactTagify>
+          ) : (
+            <EditContainer
+              value={postDescription}
+              onChange={(e) => setPostDescription(e.target.value)}
+              onKeyDown={handleEdit}
+            />
+          )}
         </Description>
         <PostLink
           linkTitle={linkTitle}
