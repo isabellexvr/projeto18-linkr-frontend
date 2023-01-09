@@ -20,6 +20,7 @@ function ProfilePage() {
   const { id } = useParams();
   const { token } = useContext(AuthContext);
   const [user, setUser] = useState(null);
+  const [deleted, setDeleted] = useState(false);
   const { width } = useWindowDimensions();
   const myUser = jwtDecode(token);
 
@@ -38,7 +39,7 @@ function ProfilePage() {
         setUser(res.data);
       })
       .catch((err) => console.log(err));
-  }, [id]);
+  }, [id, deleted]);
 
   return (
     <>
@@ -58,12 +59,18 @@ function ProfilePage() {
                   userImage={user.userImage}
                   userId={Number(id)}
                   post={post}
+                  deleted={deleted}
+                  setDeleted={setDeleted}
                 />
               ))
             ) : (
               <NoPostsMessage>
                 <h1>There are no posts yet.</h1>
-                <button onClick={() => window.location.reload()}>Reload</button>
+                <button
+                  style={{ width: "fit-content" }}
+                  onClick={() => window.location.reload()}>
+                  Reload
+                </button>
               </NoPostsMessage>
             )}
           </PageStyle>

@@ -25,7 +25,16 @@ import { Tooltip, TooltipWrapper } from "react-tooltip";
 import axios from "axios";
 
 function Post(props) {
-  const { username, userImage, post, userId, token, myUser } = props;
+  const {
+    username,
+    userImage,
+    post,
+    userId,
+    token,
+    myUser,
+    deleted,
+    setDeleted,
+  } = props;
   const {
     id,
     description,
@@ -40,7 +49,6 @@ function Post(props) {
   const navigate = useNavigate();
   const [liked, setLiked] = useState(false);
   const [edit, setEdit] = useState(false);
-  const [deleted, setDeleted] = useState(false);
   const [postDescription, setPostDescription] = useState(description);
   const [postLikeCount, setPostLikeCount] = useState(likesCount);
   const [tooltip, setTooltip] = useState("");
@@ -99,7 +107,7 @@ function Post(props) {
       },
     };
     axios(`https://linkr-api-9ik9.onrender.com/posts/${id}`, config)
-      .then(setDeleted(true))
+      .then(() => setDeleted(!deleted))
       .catch((err) => err.response.data);
   }
   function createTooltip() {
