@@ -8,7 +8,8 @@ export default function AuthProvider({ children }) {
 
   function setAndPersistToken(userToken) {
     setToken(userToken);
-    localStorage.setItem("userToken", token);
+    const serialized = JSON.stringify(token)
+    localStorage.setItem("userToken", serialized);
   }
 
   return (
