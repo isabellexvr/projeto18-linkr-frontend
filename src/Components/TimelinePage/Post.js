@@ -91,12 +91,15 @@ export default function Post({ loading, setLoading }) {
       .then((a) => {
         setLoading(false);
         setPosts(a.data);
+        console.log(a.data);
       })
       .catch((e) => {
         setLoading(false);
         setError(true);
       });
-  }, [loading, setLoading, liked, setEdit]);
+  }, [loading, setLoading, liked, edit]);
+
+  console.log(edit);
 
   return (
     <>
@@ -165,14 +168,20 @@ export default function Post({ loading, setLoading }) {
                 </LeftContainer>
                 <RightContainer>
                   <UserName>
-                    <EditPencil
-                      isOpened={edit.length > 0}
-                      onClick={() => {
-                        setEditedDescription(e.postDescription);
-                        setEdit([...edit, e.postId]);
-                      }}
-                    />
-                    <TrashCan />
+                    {e.userId === userId && (
+                      <>
+                        <EditPencil
+                          onClick={() => {
+                            setEditedDescription(e.postDescription);
+                            edit.includes(e.postId)
+                              ? setEdit([])
+                              : setEdit([...edit, e.postId]);
+                          }}
+                        />
+                        <TrashCan />
+                      </>
+                    )}
+
                     {e.userName}
                   </UserName>
                   {edit.includes(e.postId) && (
@@ -182,6 +191,9 @@ export default function Post({ loading, setLoading }) {
                       <EditDescription
                         name="description"
                         value={editedDescription}
+                        onKeyDown={(e) =>
+                          e.key === "Escape" ? setEdit([]) : ""
+                        }
                         onChange={(e) => {
                           setEditedDescription(e.target.value);
                         }}
