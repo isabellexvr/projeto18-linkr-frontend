@@ -46,7 +46,7 @@ export default function TimelinePage() {
 
   function confirmModal() {
     axios
-      .delete(`http://localhost:4000/posts/${deletePost}`, {
+      .delete(`https://linkr-api-9ik9.onrender.com/posts/${deletePost}`, {
         headers: {
           Authorization: `Bearer ${token}
         `,
