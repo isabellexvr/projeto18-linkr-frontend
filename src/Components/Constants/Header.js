@@ -18,7 +18,7 @@ export default function Header() {
 	console.log(payload);
 
 	function handleLogout() {
-		localStorage.removeItem("token");
+		localStorage.removeItem("userToken");
 		navigate("/");
 		console.log("check token:", token);
 	}

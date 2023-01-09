@@ -26,7 +26,7 @@ export default function Post({ loading, setLoading }) {
   const [liked, setLiked] = useState([]);
   const [disabled, setDisabled] = useState(false);
   const [edit, setEdit] = useState([]);
-  const presentDescription = useRef();
+  const [editedDescription, setEditedDescription] = useState({});
   const { token } = useContext(AuthContext);
   const { userId } = jwtDecode(token);
 
@@ -65,6 +65,24 @@ export default function Post({ loading, setLoading }) {
     }
   }
 
+  function sendNewDescription(e, postId) {
+    e.preventDefault();
+    console.log(postId)
+
+    const config = {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE5LCJ1c2VyUGljdHVyZSI6Imh0dHBzOi8va2JpbWFnZXMxLWEuYWthbWFpaGQubmV0L2FmY2Q4NjUzLTNiMjctNDQyMy1iZWU5LTU3MGZiMTQ0MWFlZC8zNTMvNTY5LzkwL0ZhbHNlL3ByaWRlLWFuZC1wcmVqdWRpY2UtNzEuanBnIiwic2Vzc2lvbklkIjoxNTgsImlhdCI6MTY3MzIzMDMzNH0.poYNfisvv3a4b3b4kCuUXtIqH8yDVkkn4K04VN9ivn0`,
+      },
+      data: {
+        description: editedDescription,
+      },
+    };
+    axios(`http://localhost:4000/posts/${postId}`, config)
+      .then((a) => console.log(a.data))
+      .catch((e) => console.log(e));
+  }
+
   useEffect(() => {
     axios
       .get("http://localhost:4000/all-posts")
@@ -77,8 +95,6 @@ export default function Post({ loading, setLoading }) {
         setError(true);
       });
   }, [loading, setLoading, liked]);
-
-  console.log(edit);
 
   return (
     <>
@@ -144,7 +160,7 @@ export default function Post({ loading, setLoading }) {
                   <UserName>
                     <EditPencil
                       onClick={() => {
-                        console.log(presentDescription);
+                        setEditedDescription(e.postDescription);
                         setEdit([...edit, e.postId]);
                       }}
                     />
@@ -152,12 +168,20 @@ export default function Post({ loading, setLoading }) {
                     {e.userName}
                   </UserName>
                   {edit.includes(e.postId) && (
-                    <>
-                      <EditDescription></EditDescription>
-                    </>
+                    <form
+                      onSubmit={(event) => sendNewDescription(event, e.postId)}
+                    >
+                      <EditDescription
+                        name="description"
+                        value={editedDescription}
+                        onChange={(e) => {
+                          setEditedDescription(e.target.value);
+                        }}
+                      ></EditDescription>
+                    </form>
                   )}
                   {!edit.includes(e.postId) && (
-                    <Description ref={presentDescription}>
+                    <Description>
                       <ReactTagify
                         tagStyle={{
                           color: "white",
