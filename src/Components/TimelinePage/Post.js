@@ -33,8 +33,7 @@ export default function Post({ loading, setLoading }) {
       .then((a) => {
         setLoading(false);
         setPosts(a.data);
-        console.log(a.data)
-
+        console.log(a.data);
       })
       .catch((e) => {
         setLoading(false);
@@ -52,7 +51,7 @@ export default function Post({ loading, setLoading }) {
           {posts.map((e, i) => (
             <PostStyle key={i}>
               <LeftContainer>
-                <UserProfilePicture alt="user-profile" src={e.userImage} />
+                <UserProfilePicture alt='user-profile' src={e.userImage} />
                 {e.likedBy.length > 0 && (
                   <>
                     {e.likedBy.find((l) => l.userId === userId) && (
@@ -102,8 +101,7 @@ export default function Post({ loading, setLoading }) {
                     tagStyle={tagStyle}
                     tagClicked={(tag) =>
                       navigate(`/hashtag/${tag.substring(1)}`)
-                    }
-                  >
+                    }>
                     {e.postDescription}
                   </ReactTagify>
                 </Description>
