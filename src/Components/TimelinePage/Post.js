@@ -192,7 +192,7 @@ export default function Post({
                 </LeftContainer>
                 <RightContainer>
                   <UserName>
-                    <p onClick={() => navigate(`/user/${e.id}`)}>
+                    <p onClick={() => navigate(`/user/${e.userId}`)}>
                       {e.userName}
                     </p>
                     {e.userId === userId && (
