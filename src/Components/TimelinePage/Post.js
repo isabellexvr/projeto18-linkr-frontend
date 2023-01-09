@@ -71,8 +71,6 @@ export default function Post({ loading, setLoading }) {
       .then((a) => {
         setLoading(false);
         setPosts(a.data);
-        console.log(a.data);
-
       })
       .catch((e) => {
         setLoading(false);
@@ -140,7 +138,7 @@ export default function Post({ loading, setLoading }) {
                   <TooltipWrapper tooltipId={e.id}>
                     <LikesCount>{e.likesCount} likes</LikesCount>
                   </TooltipWrapper>
-                  <Tooltip id={e.id} content={handleLikedBy(e.likedBy)} />
+                  <Tooltip id={e.id} content={handleLikedBy(e.likedBy)} place = "bottom"  className="example" />
                 </LeftContainer>
                 <RightContainer>
                   <UserName>
