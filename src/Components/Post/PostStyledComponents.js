@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { FiHeart } from "react-icons/fi";
+import { BsHeart, BsHeartFill } from "react-icons/bs";
 
 export const PostStyle = styled.div`
   height: 70vw;
@@ -33,14 +33,23 @@ export const UserProfilePicture = styled.img`
   object-fit: cover;
 `;
 
-export const LikeIcon = styled(FiHeart)`
+export const LikeIcon = styled(BsHeart)`
   margin-bottom: 12px;
   font-size: 22px;
+  cursor: pointer;
+`;
+
+export const LikedIcon = styled(BsHeartFill)`
+  margin-bottom: 12px;
+  font-size: 22px;
+  color: red;
+  cursor: pointer;
 `;
 
 export const LikesCount = styled.h2`
   text-align: center;
   font-size: 12px;
+  cursor: default;
 `;
 
 export const RightContainer = styled.div`
@@ -77,3 +86,9 @@ export const NoPostsMessage = styled.div`
     color: #efefef;
   }
 `;
+
+export const tagStyle = {
+  color: "white",
+  fontWeight: 800,
+  cursor: "pointer",
+};

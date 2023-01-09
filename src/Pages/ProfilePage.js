@@ -13,12 +13,17 @@ import { NoPostsMessage } from "../Components/Post/PostStyledComponents";
 import { AuthContext } from "../Components/Context/authContext";
 import useWindowDimensions from "../Components/Services/windowDimensions";
 import Searchbox from "../Components/Constants/Searchbox";
+import { TooltipProvider } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
+import jwtDecode from "jwt-decode";
 
 function ProfilePage() {
   const { id } = useParams();
   const { token } = useContext(AuthContext);
   const [user, setUser] = useState(null);
   const { width } = useWindowDimensions();
+  const myUser = jwtDecode(token);
+  console.log(user);
 
   useEffect(() => {
     const config = {
@@ -40,28 +45,33 @@ function ProfilePage() {
   return (
     <>
       <Header />
-      <StyledMain width={width}>
-        <PageStyle>
-          {width < 840 && <Searchbox />}
-          <PageTitle>{user && user.username}'s posts</PageTitle>
-          {user && user.posts ? (
-            user.posts.map((post, index) => (
-              <Post
-                key={index}
-                username={user.username}
-                userImage={user.userImage}
-                post={post}
-              />
-            ))
-          ) : (
-            <NoPostsMessage>
-              <h1>There are no posts yet.</h1>
-              <button onClick={() => window.location.reload()}>Reload</button>
-            </NoPostsMessage>
-          )}
-        </PageStyle>
-        <Trending />
-      </StyledMain>
+      <TooltipProvider>
+        <StyledMain width={width}>
+          <PageStyle>
+            {width < 840 && <Searchbox />}
+            <PageTitle>{user?.username}'s posts</PageTitle>
+            {user?.posts ? (
+              user.posts.map((post, index) => (
+                <Post
+                  key={index}
+                  myUser={myUser}
+                  token={token}
+                  username={user.username}
+                  userImage={user.userImage}
+                  userId={Number(id)}
+                  post={post}
+                />
+              ))
+            ) : (
+              <NoPostsMessage>
+                <h1>There are no posts yet.</h1>
+                <button onClick={() => window.location.reload()}>Reload</button>
+              </NoPostsMessage>
+            )}
+          </PageStyle>
+          <Trending />
+        </StyledMain>
+      </TooltipProvider>
     </>
   );
 }
