@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import PostLink from "./PostLink";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
@@ -10,11 +10,14 @@ import {
   NoPostsMessage,
   ErrorMessage,
 } from "./SmallComponents/AlternativeMessages";
-import { useContext } from "react";
 import { AuthContext } from "../Context/authContext";
 import { Tooltip, TooltipWrapper, TooltipProvider } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import { LikeButton, LikedButton } from "./SmallComponents/LikeButtons";
+import { TiPencil } from "react-icons/ti";
+import { FaTrash } from "react-icons/fa";
+import { Link } from "react-router-dom";
+
 
 export default function Post({ loading, setLoading }) {
   const navigate = useNavigate();
@@ -22,34 +25,43 @@ export default function Post({ loading, setLoading }) {
   const [error, setError] = useState(false);
   const [liked, setLiked] = useState([]);
   const [disabled, setDisabled] = useState(false);
+  const [edit, setEdit] = useState([]);
+  const presentDescription = useRef();
   const { token } = useContext(AuthContext);
   const { userId } = jwtDecode(token);
- 
+
   //https://linkr-api-9ik9.onrender.com/
 
   function handleLikedBy(arr) {
     let string;
 
-      if (arr.find(e => e.userId === userId)) {
-        if (arr.length > 2) {
-          string = `Você ${arr[arr.length - 1].username} e outras ${arr.length - 2} pessoas`;
-          return string;
-        } if (arr.length === 2) {
-          string = `Você e ${arr[arr.length - 1].username} curtiram`;
-          return string;
-        } else {
-          return string = 'Você curtiu';
-        }
+    if (arr.find((e) => e.userId === userId)) {
+      if (arr.length > 2) {
+        string = `Você ${arr[arr.length - 1].username} e outras ${
+          arr.length - 2
+        } pessoas`;
+        return string;
       }
+      if (arr.length === 2) {
+        string = `Você e ${arr[arr.length - 1].username} curtiram`;
+        return string;
+      } else {
+        return (string = "Você curtiu");
+      }
+    }
 
     if (arr.length > 2) {
-      string = `${arr[arr.length - 1].username} , ${arr[arr.length - 2].username} e outras ${arr.length - 2} pessoas`;
+      string = `${arr[arr.length - 1].username} , ${
+        arr[arr.length - 2].username
+      } e outras ${arr.length - 2} pessoas`;
       return string;
     } else if (arr.length === 2) {
-      string = `${arr[arr.length - 1].username} , ${arr[arr.length - 2].username} curtiram`;
+      string = `${arr[arr.length - 1].username} , ${
+        arr[arr.length - 2].username
+      } curtiram`;
       return string;
     } else {
-      return string = `${arr[arr.length - 1].username}, curtiu`;
+      return (string = `${arr[arr.length - 1].username}, curtiu`);
     }
   }
 
@@ -66,6 +78,8 @@ export default function Post({ loading, setLoading }) {
       });
   }, [loading, setLoading, liked]);
 
+  console.log(edit);
+
   return (
     <>
       {posts.length > 0 && !error && !loading && (
@@ -79,23 +93,29 @@ export default function Post({ loading, setLoading }) {
                     <>
                       {e.likedBy.find((l) => l.userId === userId) && (
                         <>
-                          {<LikedButton setDisabled={setDisabled}
-                            disabled={disabled}
-                            token={token}
-                            setLiked={setLiked}
-                            liked={liked}
-                            e={e} />
+                          {
+                            <LikedButton
+                              setDisabled={setDisabled}
+                              disabled={disabled}
+                              token={token}
+                              setLiked={setLiked}
+                              liked={liked}
+                              e={e}
+                            />
                           }
                         </>
                       )}
                       {!e.likedBy.find((l) => l.userId === userId) && (
                         <>
-                          {<LikeButton setDisabled={setDisabled}
-                            disabled={disabled}
-                            token={token}
-                            setLiked={setLiked}
-                            liked={liked}
-                            e={e} />
+                          {
+                            <LikeButton
+                              setDisabled={setDisabled}
+                              disabled={disabled}
+                              token={token}
+                              setLiked={setLiked}
+                              liked={liked}
+                              e={e}
+                            />
                           }
                         </>
                       )}
@@ -103,38 +123,56 @@ export default function Post({ loading, setLoading }) {
                   )}
                   {e.likedBy.length < 1 && (
                     <>
-                      {<LikeButton setDisabled={setDisabled}
-                        disabled={disabled}
-                        token={token}
-                        setLiked={setLiked}
-                        liked={liked}
-                        e={e} />
+                      {
+                        <LikeButton
+                          setDisabled={setDisabled}
+                          disabled={disabled}
+                          token={token}
+                          setLiked={setLiked}
+                          liked={liked}
+                          e={e}
+                        />
                       }
                     </>
                   )}
                   <TooltipWrapper tooltipId={e.id}>
-                    <LikesCount>
-                      {e.likesCount} likes
-                    </LikesCount>
+                    <LikesCount>{e.likesCount} likes</LikesCount>
                   </TooltipWrapper>
                   <Tooltip id={e.id} content={handleLikedBy(e.likedBy)} place = "bottom"  className="example" />
                 </LeftContainer>
                 <RightContainer>
-                  <UserName>{e.userName}</UserName>
-                  <Description>
-                    <ReactTagify
-                      tagStyle={{
-                        color: "white",
-                        fontWeight: 800,
-                        cursor: "pointer",
+                  <UserName>
+                    <EditPencil
+                      onClick={() => {
+                        console.log(presentDescription);
+                        setEdit([...edit, e.postId]);
                       }}
-                      tagClicked={(tag) =>
-                        navigate(`/hashtag/${tag.substring(1)}`)
-                      }
-                    >
-                      {e.postDescription}
-                    </ReactTagify>
-                  </Description>
+                    />
+                    <TrashCan />
+                    {e.userName}
+                  </UserName>
+                  {edit.includes(e.postId) && (
+                    <>
+                      <EditDescription></EditDescription>
+                    </>
+                  )}
+                  {!edit.includes(e.postId) && (
+                    <Description ref={presentDescription}>
+                      <ReactTagify
+                        tagStyle={{
+                          color: "white",
+                          fontWeight: 800,
+                          cursor: "pointer",
+                        }}
+                        tagClicked={(tag) =>
+                          navigate(`/hashtag/${tag.substring(1)}`)
+                        }
+                      >
+                        {e.postDescription}
+                      </ReactTagify>
+                    </Description>
+                  )}
+
                   <PostLink
                     linkTitle={e.linkTitle}
                     linkDescription={e.linkDescription}
@@ -199,6 +237,7 @@ const RightContainer = styled.div`
 `;
 
 const UserName = styled.h1`
+  position: relative;
   font-weight: 400;
   font-size: 17px;
   color: white;
@@ -213,6 +252,18 @@ const Description = styled.p`
   line-height: 18px;
 `;
 
-const Balloon = styled.div`
-  overflow: clip;
+const EditPencil = styled(TiPencil)`
+  position: absolute;
+  color: white;
+  right: 25px;
+  cursor: pointer;
 `;
+
+const TrashCan = styled(FaTrash)`
+  color: white;
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+`;
+
+const EditDescription = styled.input``;
