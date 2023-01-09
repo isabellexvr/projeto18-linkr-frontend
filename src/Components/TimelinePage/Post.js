@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import PostLink from "./PostLink";
 import axios from "axios";
-import { useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import {
@@ -18,7 +18,6 @@ import {
   DeleteButton,
 } from "./SmallComponents/EditAndDeleteButtons";
 import Description from "./SmallComponents/PostDescription";
-import { TiPencil } from "react-icons/ti";
 
 export default function Post({
   loading,
@@ -51,6 +50,10 @@ export default function Post({
     let string;
 
     if (arr.find((e) => e.userId === userId)) {
+      if (arr.length === 1) {
+        string = "Ninguém ainda curtiu esse post.";
+        return string;
+      }
       if (arr.length > 2) {
         string = `Você ${arr[arr.length - 1].username} e outras ${
           arr.length - 2
@@ -65,6 +68,10 @@ export default function Post({
       }
     }
 
+    if (arr.length === 1) {
+      string = "Ninguém ainda curtiu esse post.";
+      return string;
+    }
     if (arr.length > 2) {
       string = `${arr[arr.length - 1].username} , ${
         arr[arr.length - 2].username
@@ -100,8 +107,8 @@ export default function Post({
         console.log(a.data);
       })
       .catch((e) => {
-        console.log(e);
-        setError(true);
+        console.log(e.response);
+        alert("Não foi possível salvar as alterações mediante um erro.");
         setLoading(false);
       });
   }
@@ -321,7 +328,7 @@ const EditDescription = styled.input`
   font-size: 14px;
   line-height: 17px;
   color: #4c4c4c;
-  :focus{
+  :focus {
     box-sizing: border-box;
     outline: none !important;
     border: none;

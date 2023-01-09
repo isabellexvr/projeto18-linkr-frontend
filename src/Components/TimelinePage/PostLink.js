@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import getLinkDomain from "../Services/getLinkDomain";
 
 export default function PostLink({
   linkTitle,
@@ -12,7 +13,7 @@ export default function PostLink({
         <UrlTextInfo>
           <UrlTitle>{linkTitle}</UrlTitle>
           <UrlDescription>{linkDescription.substring(0, 80)}</UrlDescription>
-          <Url>{linkUrl}</Url>
+          <Url>{getLinkDomain(linkUrl)}</Url>
         </UrlTextInfo>
         <UrlImage alt="url" src={linkImage} />
       </LinkStyle>
@@ -44,7 +45,7 @@ const UrlTextInfo = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   @media (max-width: 600px) {
-  justify-content: center;
+    justify-content: center;
   }
 `;
 
