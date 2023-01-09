@@ -1,20 +1,20 @@
 import styled from "styled-components";
 import { FiHeart } from "react-icons/fi";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ReactTagify } from "react-tagify";
 import { useNavigate, useParams } from "react-router-dom";
 import PostLink from "./PostLink";
+import { AuthContext } from "../Context/authContext";
 
 export default function PostHashTags() {
   const navigate = useNavigate();
   const { hashtag } = useParams();
-
+  const {token} = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   
-  // const token = JSON.parse(localStorage.getItem("token"));
 
   const tagStyle = {
     color: "white",
@@ -31,10 +31,11 @@ export default function PostHashTags() {
       // }
       )
     promisse.then((res) => {
+      console.log(res);
       setPosts(res.data);
     });
     promisse.catch((err) => {
-      console.log(err.response.data);
+      console.log(err.response);
     });
   }), [hashtag]);
   console.log(posts)
