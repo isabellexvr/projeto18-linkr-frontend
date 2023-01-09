@@ -18,15 +18,14 @@ import { TiPencil } from "react-icons/ti";
 import { FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-
-export default function Post({ loading, setLoading }) {
+export default function Post({ loading, setLoading, setIsOpen, setDeletePost, openModal}) {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(false);
   const [liked, setLiked] = useState([]);
   const [disabled, setDisabled] = useState(false);
   const [edit, setEdit] = useState([]);
-  const presentDescription = useRef();
+  const [editedDescription, setEditedDescription] = useState({});
   const { token } = useContext(AuthContext);
   const { userId } = jwtDecode(token);
 
@@ -65,20 +64,48 @@ export default function Post({ loading, setLoading }) {
     }
   }
 
+  function sendNewDescription(e, postId) {
+    e.preventDefault();
+    console.log(postId);
+    setLoading(true);
+
+    const config = {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE5LCJ1c2VyUGljdHVyZSI6Imh0dHBzOi8va2JpbWFnZXMxLWEuYWthbWFpaGQubmV0L2FmY2Q4NjUzLTNiMjctNDQyMy1iZWU5LTU3MGZiMTQ0MWFlZC8zNTMvNTY5LzkwL0ZhbHNlL3ByaWRlLWFuZC1wcmVqdWRpY2UtNzEuanBnIiwic2Vzc2lvbklkIjoxNTgsImlhdCI6MTY3MzIzMDMzNH0.poYNfisvv3a4b3b4kCuUXtIqH8yDVkkn4K04VN9ivn0`,
+      },
+      data: {
+        description: editedDescription,
+      },
+    };
+    axios(`http://localhost:4000/posts/${postId}`, config)
+      .then((a) => {
+        setLoading(false);
+        setEdit([]);
+        console.log(a.data);
+      })
+      .catch((e) => {
+        console.log(e);
+        setError(true)
+        setLoading(false);
+      });
+  }
+
   useEffect(() => {
     axios
       .get("http://localhost:4000/all-posts")
       .then((a) => {
         setLoading(false);
         setPosts(a.data);
+        console.log(a.data);
       })
       .catch((e) => {
         setLoading(false);
         setError(true);
       });
-  }, [loading, setLoading, liked]);
+  }, [loading, setLoading, liked, edit, posts]);
 
-  console.log(edit);
+  console.log(posts);
 
   return (
     <>
@@ -138,26 +165,54 @@ export default function Post({ loading, setLoading }) {
                   <TooltipWrapper tooltipId={e.id}>
                     <LikesCount>{e.likesCount} likes</LikesCount>
                   </TooltipWrapper>
-                  <Tooltip id={e.id} content={handleLikedBy(e.likedBy)} place = "bottom"  className="example" />
+                  <Tooltip
+                    id={e.id}
+                    content={handleLikedBy(e.likedBy)}
+                    place="bottom"
+                    className="example"
+                  />
                 </LeftContainer>
                 <RightContainer>
                   <UserName>
-                    <EditPencil
-                      onClick={() => {
-                        console.log(presentDescription);
-                        setEdit([...edit, e.postId]);
-                      }}
-                    />
-                    <TrashCan />
+                    {e.userId === userId && (
+                      <>
+                        <EditPencil
+                          onClick={() => {
+                            setEditedDescription(e.postDescription);
+                            edit.includes(e.postId)
+                              ? setEdit([])
+                              : setEdit([...edit, e.postId]);
+                          }}
+                        />
+                        <TrashCan onClick={() => {
+                          openModal();
+                          setIsOpen(true);
+                          setDeletePost(e.postId);
+                        }}/>
+                      </>
+                    )}
+
                     {e.userName}
                   </UserName>
                   {edit.includes(e.postId) && (
-                    <>
-                      <EditDescription></EditDescription>
-                    </>
+                    <form
+                      onSubmit={(event) => sendNewDescription(event, e.postId)}
+                    >
+                      <EditDescription
+                        disabled={loading}
+                        name="description"
+                        value={editedDescription}
+                        onKeyDown={(e) =>
+                          e.key === "Escape" ? setEdit([]) : ""
+                        }
+                        onChange={(e) => {
+                          setEditedDescription(e.target.value);
+                        }}
+                      ></EditDescription>
+                    </form>
                   )}
                   {!edit.includes(e.postId) && (
-                    <Description ref={presentDescription}>
+                    <Description>
                       <ReactTagify
                         tagStyle={{
                           color: "white",
@@ -257,6 +312,7 @@ const EditPencil = styled(TiPencil)`
   color: white;
   right: 25px;
   cursor: pointer;
+  pointer-events: ${(props) => (props.isOpened ? "none" : "initial")};
 `;
 
 const TrashCan = styled(FaTrash)`

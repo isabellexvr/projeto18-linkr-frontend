@@ -1,13 +1,15 @@
 import styled from "styled-components";
-import { useContext, useState } from "react";
+import { useState,useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../Context/authContext";
+import jwtDecode from "jwt-decode";
+
 //https://linkr-api-9ik9.onrender.com
 
 export default function PostPublicationForm({ loading, setLoading }) {
   const [form, setForm] = useState({});
   const { token } = useContext(AuthContext);
-  
+
   function handleForm({ target: { value, name } }) {
     setForm({ ...form, [name]: value });
   }
@@ -20,7 +22,7 @@ export default function PostPublicationForm({ loading, setLoading }) {
     axios
       .post("http://localhost:4000/post", form, {
         headers: {
-          Authorization: `Bearer ${JSON.parse(token)}
+          Authorization: `Bearer ${token}
             `,
         },
       })
