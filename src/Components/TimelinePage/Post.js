@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import PostLink from "./PostLink";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
@@ -10,7 +10,6 @@ import {
   NoPostsMessage,
   ErrorMessage,
 } from "./SmallComponents/AlternativeMessages";
-import { useContext } from "react";
 import { AuthContext } from "../Context/authContext";
 import { Tooltip, TooltipWrapper, TooltipProvider } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
@@ -25,6 +24,7 @@ export default function Post({ loading, setLoading }) {
   const [liked, setLiked] = useState([]);
   const [disabled, setDisabled] = useState(false);
   const [edit, setEdit] = useState([]);
+  const presentDescription = useRef();
   const { token } = useContext(AuthContext);
   const { userId } = jwtDecode(token);
 
@@ -142,6 +142,7 @@ export default function Post({ loading, setLoading }) {
                   <UserName>
                     <EditPencil
                       onClick={() => {
+                        console.log(presentDescription);
                         setEdit([...edit, e.postId]);
                       }}
                     />
@@ -154,7 +155,7 @@ export default function Post({ loading, setLoading }) {
                     </>
                   )}
                   {!edit.includes(e.postId) && (
-                    <Description>
+                    <Description ref={presentDescription}>
                       <ReactTagify
                         tagStyle={{
                           color: "white",
