@@ -13,10 +13,10 @@ import {
   Description,
   LikedIcon,
   tagStyle,
+  tooltipStyle,
 } from "./PostStyledComponents";
 import { dislikeFunction, postLikeFunction } from "../Services/LikeFunctions";
 import { Tooltip, TooltipWrapper } from "react-tooltip";
-import "react-tooltip/dist/react-tooltip.css";
 
 function Post(props) {
   const { username, userImage, post, userId, token, myUser } = props;
@@ -106,10 +106,10 @@ function Post(props) {
         ) : (
           <LikeIcon onClick={handleLikes} />
         )}
-        <TooltipWrapper content={tooltip}>
+        <TooltipWrapper content={tooltip} place='bottom'>
           <LikesCount>{postLikeCount} likes</LikesCount>
         </TooltipWrapper>
-        <Tooltip />
+        <Tooltip style={tooltipStyle} />
       </LeftContainer>
       <RightContainer>
         <UserName>{username}</UserName>
