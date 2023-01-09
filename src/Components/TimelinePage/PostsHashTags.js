@@ -27,12 +27,6 @@ export default function PostHashTags({openModal, setDeletePost, setIsOpen}) {
   const { userId } = jwtDecode(token);
   
 
-  const tagStyle = {
-    color: "white",
-    fontWeight: 800,
-    cursor: "pointer",
-  };
-
   function handleLikedBy(arr) {
     let string;
 
@@ -66,40 +60,14 @@ export default function PostHashTags({openModal, setDeletePost, setIsOpen}) {
     }
   }
 
-  function sendNewDescription(e, postId) {
-    e.preventDefault();
-    console.log(postId);
-    setLoading(true);
-
-    const config = {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE5LCJ1c2VyUGljdHVyZSI6Imh0dHBzOi8va2JpbWFnZXMxLWEuYWthbWFpaGQubmV0L2FmY2Q4NjUzLTNiMjctNDQyMy1iZWU5LTU3MGZiMTQ0MWFlZC8zNTMvNTY5LzkwL0ZhbHNlL3ByaWRlLWFuZC1wcmVqdWRpY2UtNzEuanBnIiwic2Vzc2lvbklkIjoxNTgsImlhdCI6MTY3MzIzMDMzNH0.poYNfisvv3a4b3b4kCuUXtIqH8yDVkkn4K04VN9ivn0`,
-      },
-      data: {
-        description: editedDescription,
-      },
-    };
-    axios(`http://localhost:4000/posts/${postId}`, config)
-      .then((a) => {
-        setLoading(false);
-        setEdit([]);
-        console.log(a.data);
-      })
-      .catch((e) => {
-        console.log(e);
-        setError(true)
-        setLoading(false);
-      });
-  }
 
   useEffect((() => {
     const promisse = axios.get(`http://localhost:4000/hashtag/${hashtag}`,
-      // {
-      //   headers: {
-      //     'Authorization': `token ${token}`
-      //   }
-      // }
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }
       )
     promisse.then((res) => {
       console.log(res);
@@ -178,43 +146,8 @@ export default function PostHashTags({openModal, setDeletePost, setIsOpen}) {
                 </LeftContainer>
                 <RightContainer>
                   <UserName>
-                    {e.userId === userId && (
-                      <>
-                        <EditPencil
-                          onClick={() => {
-                            setEditedDescription(e.description);
-                            edit.includes(e.postId)
-                              ? setEdit([])
-                              : setEdit([...edit, e.postId]);
-                          }}
-                        />
-                        <TrashCan onClick={() => {
-                          openModal();
-                          setIsOpen(true);
-                          setDeletePost(e.postId);
-                        }}/>
-                      </>
-                    )}
-
                     {e.username}
                   </UserName>
-                  {edit.includes(e.postId) && (
-                    <form
-                      onSubmit={(event) => sendNewDescription(event, e.postId)}
-                    >
-                      <EditDescription
-                        disabled={loading}
-                        name="description"
-                        value={editedDescription}
-                        onKeyDown={(e) =>
-                          e.key === "Escape" ? setEdit([]) : ""
-                        }
-                        onChange={(e) => {
-                          setEditedDescription(e.target.value);
-                        }}
-                      ></EditDescription>
-                    </form>
-                  )}
                   {!edit.includes(e.postId) && (
                     <Description>
                       <ReactTagify
