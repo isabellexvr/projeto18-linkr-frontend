@@ -15,7 +15,7 @@ export function LikedButton({
 }) {
   return (
     <LikedIcon
-      isRequesting={disabled}
+      isrequesting={disabled}
       onClick={() => {
         setDisabled(true);
         setLiked(liked.filter((a) => a !== e.postId));
@@ -35,7 +35,7 @@ export function LikeButton({
 }) {
   return (
     <LikeIcon
-      isRequesting={disabled}
+    isrequesting={disabled}
       onClick={() => {
         setDisabled(true);
         setLiked([...liked, e.postId]);
@@ -50,12 +50,12 @@ const LikedIcon = styled(BsHeartFill)`
   font-size: 22px;
   color: red;
   cursor: pointer;
-  pointer-events: ${(props) => (props.isRequesting ? "none" : "initial")};
+  pointer-events: ${(props) => (props.isrequesting ? "none" : "initial")};
 `;
 
 const LikeIcon = styled(BsHeart)`
   margin-bottom: 12px;
   font-size: 22px;
   cursor: pointer;
-  pointer-events: ${(props) => (props.isRequesting ? "none" : "initial")};
+  pointer-events: ${(props) => (props.isrequesting ? "none" : "initial")};
 `;
