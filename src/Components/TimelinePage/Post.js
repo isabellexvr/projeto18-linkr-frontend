@@ -107,7 +107,7 @@ export default function Post({
         setLoading(false);
         setError(true);
       });
-  }, [loading, setLoading, liked, edit, posts]);
+  }, [loading, setLoading, liked, edit]);
 
   console.log(posts);
 

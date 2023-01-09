@@ -2,7 +2,8 @@ import * as S from "../Assets/authStyle";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "../Components/Form/useForm";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import { AuthContext } from "../Components/Context/authContext";
 
 export default function SignUp() {
 	const [form, handleForm] = useForm({
@@ -11,9 +12,20 @@ export default function SignUp() {
 		username: "",
 		pictureUrl: "",
 	});
+	const { token, setToken } = useContext(AuthContext);
 	const [loading, setLoading] = useState(false);
 
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		navigate("/timeline");
+	  }, [token, setToken]);
+	
+	  const isLogged = localStorage.getItem("userToken");
+	  if (isLogged) {
+		setToken(isLogged);
+		return;
+	  }
 
 	function register(event) {
 		event.preventDefault();
