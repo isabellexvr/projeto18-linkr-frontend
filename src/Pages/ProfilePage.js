@@ -22,7 +22,6 @@ function ProfilePage() {
   const [user, setUser] = useState(null);
   const { width } = useWindowDimensions();
   const myUser = jwtDecode(token);
-  console.log(user);
 
   useEffect(() => {
     const config = {
@@ -31,7 +30,7 @@ function ProfilePage() {
         Authorization: `Bearer ${token}`,
       },
     };
-    axios(`http://localhost:4000/user/${id}`, config)
+    axios(`https://linkr-api-9ik9.onrender.com/user/${id}`, config)
       .then((res) => {
         if (res.data.posts[0].id === null) {
           delete res.data.posts;
