@@ -62,7 +62,7 @@ export default function PostHashTags({openModal, setDeletePost, setIsOpen}) {
 
 
   useEffect((() => {
-    const promisse = axios.get(`http://localhost:4000/hashtag/${hashtag}`,
+    const promisse = axios.get(`https://linkr-api-9ik9.onrender.com/hashtag/${hashtag}`,
       {
         headers: {
           'Authorization': `Bearer ${token}`

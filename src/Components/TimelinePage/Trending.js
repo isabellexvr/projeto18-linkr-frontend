@@ -7,7 +7,7 @@ export default function Trending() {
   const [trends, setTrends] = useState([]);
 
   useEffect(() => {
-    const URL = "http://localhost:4000/trends";
+    const URL = "https://linkr-api-9ik9.onrender.com/trends";
     const promise = axios.get(URL);
 
     promise.then((res) => {
