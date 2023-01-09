@@ -67,6 +67,7 @@ export default function Post({ loading, setLoading }) {
   function sendNewDescription(e, postId) {
     e.preventDefault();
     console.log(postId);
+    setLoading(true);
 
     const config = {
       method: "PATCH",
@@ -79,10 +80,15 @@ export default function Post({ loading, setLoading }) {
     };
     axios(`http://localhost:4000/posts/${postId}`, config)
       .then((a) => {
+        setLoading(false);
         setEdit([]);
         console.log(a.data);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        setError(true)
+        setLoading(false);
+      });
   }
 
   useEffect(() => {
@@ -189,6 +195,7 @@ export default function Post({ loading, setLoading }) {
                       onSubmit={(event) => sendNewDescription(event, e.postId)}
                     >
                       <EditDescription
+                        disabled={loading}
                         name="description"
                         value={editedDescription}
                         onKeyDown={(e) =>
