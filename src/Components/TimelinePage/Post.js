@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import PostLink from "./PostLink";
 import axios from "axios";
-import { useEffect, useState, useContext, useRef } from "react";
-import { ReactTagify } from "react-tagify";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import {
@@ -14,14 +13,19 @@ import { AuthContext } from "../Context/authContext";
 import { Tooltip, TooltipWrapper, TooltipProvider } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
 import { LikeButton, LikedButton } from "./SmallComponents/LikeButtons";
-import { TiPencil } from "react-icons/ti";
-import { FaTrash } from "react-icons/fa";
+import {
+  EditButton,
+  DeleteButton,
+} from "./SmallComponents/EditAndDeleteButtons";
+import Description from "./SmallComponents/PostDescription";
+import URL from "../Services/APIlink";
 
 export default function Post({
   loading,
   setLoading,
   setIsOpen,
-  setDeletePost, openModal,
+  setDeletePost,
+  openModal,
 }) {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
@@ -33,12 +37,21 @@ export default function Post({
   const { token } = useContext(AuthContext);
   const { userId } = jwtDecode(token);
 
-  //https://linkr-api-9ik9.onrender.com/
+  function handleFocus(e) {
+    e.currentTarget.setSelectionRange(
+      e.currentTarget.value.length,
+      e.currentTarget.value.length
+    );
+  }
 
   function handleLikedBy(arr) {
     let string;
 
     if (arr.find((e) => e.userId === userId)) {
+      if (arr.length === 1) {
+        string = "Ninguém ainda curtiu esse post.";
+        return string;
+      }
       if (arr.length > 2) {
         string = `Você ${arr[arr.length - 1].username} e outras ${
           arr.length - 2
@@ -53,6 +66,10 @@ export default function Post({
       }
     }
 
+    if (arr.length === 1) {
+      string = "Ninguém ainda curtiu esse post.";
+      return string;
+    }
     if (arr.length > 2) {
       string = `${arr[arr.length - 1].username} , ${
         arr[arr.length - 2].username
@@ -70,7 +87,6 @@ export default function Post({
 
   function sendNewDescription(e, postId) {
     e.preventDefault();
-    console.log(postId);
     setLoading(true);
 
     const config = {
@@ -82,22 +98,22 @@ export default function Post({
         description: editedDescription,
       },
     };
-    axios(`http://localhost:4000/posts/${postId}`, config)
+    axios(`${URL}/posts/${postId}`, config)
       .then((a) => {
         setLoading(false);
         setEdit([]);
         console.log(a.data);
       })
       .catch((e) => {
-        console.log(e);
-        setError(true);
+        console.log(e.response);
+        alert("Não foi possível salvar as alterações mediante um erro.");
         setLoading(false);
       });
   }
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/all-posts")
+      .get(URL + "/all-posts")
       .then((a) => {
         setLoading(false);
         setPosts(a.data);
@@ -107,9 +123,7 @@ export default function Post({
         setLoading(false);
         setError(true);
       });
-  }, [loading, setLoading, liked, edit]);
-
-  console.log(posts);
+  }, [loading, setLoading, liked, edit, disabled, openModal]);
 
   return (
     <>
@@ -119,7 +133,7 @@ export default function Post({
             <TooltipProvider>
               <PostStyle key={i}>
                 <LeftContainer>
-                  <UserProfilePicture alt='user-profile' src={e.userImage} />
+                  <UserProfilePicture alt="user-profile" src={e.userImage} />
                   {e.likedBy.length > 0 && (
                     <>
                       {e.likedBy.find((l) => l.userId === userId) && (
@@ -172,67 +186,57 @@ export default function Post({
                   <Tooltip
                     id={e.id}
                     content={handleLikedBy(e.likedBy)}
-                    place='bottom'
-                    className='example'
+                    place="bottom"
+                    className="example"
                   />
                 </LeftContainer>
                 <RightContainer>
                   <UserName>
-                    {e.userId === userId && (
-                      <>
-                        <EditPencil
-                          onClick={() => {
-                            setEditedDescription(e.postDescription);
-                            edit.includes(e.postId)
-                              ? setEdit([])
-                              : setEdit([...edit, e.postId]);
-                          }}
-                        />
-                        <TrashCan
-                          onClick={() => {
-                          openModal();
-                            setIsOpen(true);
-                            setDeletePost(e.postId);
-                          }}
-                        />
-                      </>
-                    )}
-
                     <p onClick={() => navigate(`/user/${e.id}`)}>
                       {e.userName}
                     </p>
+                    {e.userId === userId && (
+                      <>
+                        <DeleteButton
+                          openModal={openModal}
+                          setIsOpen={setIsOpen}
+                          setDeletePost={setDeletePost}
+                          e={e}
+                        />
+                        <EditButton
+                          setEditedDescription={setEditedDescription}
+                          e={e}
+                          edit={edit}
+                          setEdit={setEdit}
+                        />
+                        <EditionForm
+                          onSubmit={(event) =>
+                            sendNewDescription(event, e.postId)
+                          }
+                        >
+                          <EditDescription
+                            type="text"
+                            appear={edit.length > 0}
+                            ref={(ref) => ref && ref.focus()}
+                            onFocus={handleFocus}
+                            disabled={loading}
+                            name="description"
+                            value={editedDescription}
+                            onKeyDown={(e) =>
+                              e.key === "Escape" ? setEdit([]) : ""
+                            }
+                            onChange={(e) => {
+                              setEditedDescription(e.target.value);
+                            }}
+                          />
+                        </EditionForm>
+                      </>
+                    )}
                   </UserName>
-                  {edit.includes(e.postId) && (
-                    <form
-                      onSubmit={(event) => sendNewDescription(event, e.postId)}>
-                      <EditDescription
-                        disabled={loading}
-                        name='description'
-                        value={editedDescription}
-                        onKeyDown={(e) =>
-                          e.key === "Escape" ? setEdit([]) : ""
-                        }
-                        onChange={(e) => {
-                          setEditedDescription(e.target.value);
-                        }}></EditDescription>
-                    </form>
-                  )}
-                  {!edit.includes(e.postId) && (
-                    <Description>
-                      <ReactTagify
-                        tagStyle={{
-                          color: "white",
-                          fontWeight: 800,
-                          cursor: "pointer",
-                        }}
-                        tagClicked={(tag) =>
-                          navigate(`/hashtag/${tag.substring(1)}`)
-                        }>
-                        {e.postDescription}
-                      </ReactTagify>
-                    </Description>
-                  )}
 
+                  {!edit.includes(e.postId) && (
+                    <Description>{e.postDescription}</Description>
+                  )}
                   <PostLink
                     linkTitle={e.linkTitle}
                     linkDescription={e.linkDescription}
@@ -253,7 +257,7 @@ export default function Post({
 }
 
 const PostStyle = styled.div`
-  height: 232px;
+  height: 235px;
   width: 100%;
   background-color: #171717;
   margin-top: 16px;
@@ -301,31 +305,34 @@ const UserName = styled.h1`
   font-weight: 400;
   font-size: 17px;
   color: white;
-  margin-top: 10px;
-  cursor: pointer;
+  margin-top: 13px;
+  > p {
+    width: 50%;
+    cursor: pointer;
+  }
 `;
 
-const Description = styled.p`
+const EditDescription = styled.input`
+  display: ${(props) => (props.appear ? "initial" : "none")};
+  background: #ffffff;
+  border-radius: 7px;
+  width: 80%;
+  border: none;
+  padding: 10px;
+  box-sizing: border-box;
   margin-top: 7px;
+  font-family: "Lato";
   font-weight: 400;
-  font-size: 15px;
-  color: #b7b7b7;
-  line-height: 18px;
+  font-size: 14px;
+  line-height: 17px;
+  color: #4c4c4c;
+  :focus {
+    box-sizing: border-box;
+    outline: none !important;
+    border: none;
+  }
 `;
 
-const EditPencil = styled(TiPencil)`
-  position: absolute;
-  color: white;
-  right: 25px;
-  cursor: pointer;
-  pointer-events: ${(props) => (props.isOpened ? "none" : "initial")};
+const EditionForm = styled.form`
+  cursor: initial;
 `;
-
-const TrashCan = styled(FaTrash)`
-  color: white;
-  position: absolute;
-  right: 0;
-  cursor: pointer;
-`;
-
-const EditDescription = styled.input``;

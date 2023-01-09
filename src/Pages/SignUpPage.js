@@ -2,7 +2,7 @@ import * as S from "../Assets/authStyle";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "../Components/Form/useForm";
 import axios from "axios";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { AuthContext } from "../Components/Context/authContext";
 
 export default function SignUp() {
@@ -16,14 +16,11 @@ export default function SignUp() {
 	const [loading, setLoading] = useState(false);
 
 	const navigate = useNavigate();
-
-	useEffect(() => {
-		navigate("/timeline");
-	  }, [token, setToken]);
 	
 	  const isLogged = localStorage.getItem("userToken");
 	  if (isLogged) {
 		setToken(isLogged);
+		navigate("/timeline");
 		return;
 	  }
 

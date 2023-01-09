@@ -80,8 +80,12 @@ const UserContainer = styled.div`
 `;
 
 const UserProfilePicture = styled.img`
-	width: 44px;
-	border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-left: 18px;
+    margin-top: 16px;
+    object-fit: cover;
 `;
 const Logo = styled.div`
 	color: #ffffff;

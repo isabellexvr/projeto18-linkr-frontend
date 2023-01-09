@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { ReactTagify } from "react-tagify"
 import styled from "styled-components"
 
-
 export default function Trend({ t }) {
     const navigate = useNavigate();
     console.log(t);
