@@ -81,6 +81,15 @@ function Post(props) {
     return postLikeFunction(id, token);
   }
   function handleEdit(e) {
+    setPostDescription(e.target.value);
+  }
+  function handleFocus(e) {
+    e.currentTarget.setSelectionRange(
+      e.currentTarget.value.length,
+      e.currentTarget.value.length
+    );
+  }
+  function handleKeyPress(e) {
     if (e.key === "Escape") return setEdit(false);
     else if (e.key === "Enter") {
       const config = {
@@ -176,9 +185,11 @@ function Post(props) {
             </ReactTagify>
           ) : (
             <EditContainer
+              ref={(ref) => ref && ref.focus()}
               value={postDescription}
-              onChange={(e) => setPostDescription(e.target.value)}
-              onKeyDown={handleEdit}
+              onChange={handleEdit}
+              onFocus={handleFocus}
+              onKeyDown={handleKeyPress}
             />
           )}
         </Description>
