@@ -1,27 +1,28 @@
 import styled from "styled-components";
-import PostLink from "./PostLink";
+import PostLink from "../PostLink/PostLink";
 import axios from "axios";
-import { useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useContext } from "react";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
-import {
-  LoadingMessage,
-  NoPostsMessage,
-  ErrorMessage,
-} from "./SmallComponents/AlternativeMessages";
-import { AuthContext } from "../Context/authContext";
+import LoadingMessage from "../LoadingMessage/LoadingMessage";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
+import NoPostsMessage from "../NoPostsMessage/NoPostsMessage";
+import { AuthContext } from "../../Context/authContext";
 import { Tooltip, TooltipWrapper, TooltipProvider } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
-import { LikeButton, LikedButton } from "./SmallComponents/LikeButtons";
+import LikeButton from "../LikeButtons/LikeButtons";
+import LikedButton from "../LikeButtons/LikedButton";
 import { TiPencil } from "react-icons/ti";
 import { FaTrash } from "react-icons/fa";
+import PageContainer from "../PageContainer/PageContainer";
 
 export default function Post({
   loading,
   setLoading,
   setIsOpen,
-  setDeletePost, openModal,
+  setDeletePost,
+  openModal,
 }) {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
@@ -109,10 +110,8 @@ export default function Post({
       });
   }, [loading, setLoading, liked, edit]);
 
-  console.log(posts);
-
   return (
-    <>
+    <PageContainer>
       {posts.length > 0 && !error && !loading && (
         <>
           {posts.map((e, i) => (
@@ -190,7 +189,7 @@ export default function Post({
                         />
                         <TrashCan
                           onClick={() => {
-                          openModal();
+                            openModal();
                             setIsOpen(true);
                             setDeletePost(e.postId);
                           }}
@@ -198,7 +197,7 @@ export default function Post({
                       </>
                     )}
 
-                    <p onClick={() => navigate(`/user/${e.id}`)}>
+                    <p onClick={() => navigate(`/user/${e.userId}`)}>
                       {e.userName}
                     </p>
                   </UserName>
@@ -248,7 +247,7 @@ export default function Post({
       {!error && loading && <LoadingMessage />}
       {!error && !loading && posts.length < 1 && <NoPostsMessage />}
       {error && <ErrorMessage />}
-    </>
+    </PageContainer>
   );
 }
 

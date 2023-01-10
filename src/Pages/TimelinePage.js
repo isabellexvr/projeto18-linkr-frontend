@@ -1,38 +1,27 @@
-import styled from "styled-components";
-import Header from "../Components/Constants/Header";
-import PostPublicationForm from "../Components/TimelinePage/PostPublicationForm";
+import Header from "../Components/Header/Header";
+import PostPublicationForm from "../Components/PostPublicationForm/PostPublicationForm";
 import Post from "../Components/TimelinePage/Post";
-import useWindowDimensions from "../Components/Services/windowDimensions";
-import Searchbox from "../Components/Constants/Searchbox";
-import { useContext, useState } from "react";
-import Modal from "react-modal";
+import useWindowDimensions from "../Services/windowDimensions";
+import Searchbox from "../Components/Searchbox/Searchbox";
 import axios from "axios";
-import { AuthContext } from "../Components/Context/authContext";
+import DeleteModal from "../Components/DeleteModal/DeleteModal";
+import { useContext, useState } from "react";
+import { AuthContext } from "../Context/authContext";
 import { useNavigate } from "react-router-dom";
+import {
+  StyledMain,
+  PageTitle,
+  PageStyle,
+  PostsContainer,
+} from "../Assets/PageTheme";
+import Trending from "../Components/Trending/Trending";
+import PageContainer from "../Components/PageContainer/PageContainer";
 
 export default function TimelinePage() {
-  const [loading, setLoading] = useState(false);
   const { width } = useWindowDimensions();
   const { token } = useContext(AuthContext);
   const navigate = useNavigate();
-
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      width: "41.40%",
-      height: "25.5%",
-      background: "#333333",
-      borderRadius: "50px",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-    },
-  };
+  const [loading, setLoading] = useState(false);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [deletePost, setDeletePost] = useState("");
 
@@ -56,7 +45,6 @@ export default function TimelinePage() {
         navigate("/timeline");
         window.location.reload(true);
         setIsOpen(false);
-        console.log(a.data);
       })
       .catch((err) => {
         setIsOpen(false);
@@ -66,123 +54,31 @@ export default function TimelinePage() {
   }
 
   return (
-    <>
+    <PageContainer>
       <Header />
-      <TimelinePageStyle>
-        {width < 840 && <Searchbox />}
+      <StyledMain width={width}>
+        {width < 667 && <Searchbox />}
         <PageTitle>timeline</PageTitle>
-        <PostPublicationForm loading={loading} setLoading={setLoading} />
-        <Post
-          loading={loading}
-          setLoading={setLoading}
-          modalIsOpen={modalIsOpen}
-          setIsOpen={setIsOpen}
-          setDeletePost={setDeletePost}
-          openModal={openModal}
-        />
-        <Modal
-          isOpen={modalIsOpen}
-          onRequestClose={closeModal}
-          style={customStyles}
-          contentLabel="Example Modal"
-        >
-          <CancelContainer>
-            <DeleteMessage>
-              Are you sure you want to delete this post?
-            </DeleteMessage>
-            <div>
-              <CancelButton onClick={closeModal}>No, go back</CancelButton>
-              <ConfirmButton onClick={confirmModal}>
-                Yes, delete it
-              </ConfirmButton>
-            </div>
-          </CancelContainer>
-        </Modal>
-      </TimelinePageStyle>
-    </>
+        <PageStyle>
+          <PostsContainer>
+            <PostPublicationForm loading={loading} setLoading={setLoading} />
+            <Post
+              loading={loading}
+              setLoading={setLoading}
+              modalIsOpen={modalIsOpen}
+              setIsOpen={setIsOpen}
+              setDeletePost={setDeletePost}
+              openModal={openModal}
+            />
+            <DeleteModal
+              modalIsOpen={modalIsOpen}
+              closeModal={closeModal}
+              confirmModal={confirmModal}
+            />
+          </PostsContainer>
+          {width > 1020 && <Trending />}
+        </PageStyle>
+      </StyledMain>
+    </PageContainer>
   );
 }
-
-const TimelinePageStyle = styled.div`
-  margin-top: 70px;
-  height: 100%;
-  background-color: #333333;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-    @media (max-width: 600px) {
-      width: 100%;
-      >div:last-child{
-        width: 100px;
-        background-color: red;
-      }
-    }
-`;
-
-const PageTitle = styled.h1`
-  height: 87px;
-  display: flex;
-  align-items: center;
-  width: 611px;
-  font-family: "Oswald";
-  font-size: 33px;
-  color: white;
-  font-weight: 700;
-  margin-left: 17px;
-  @media (max-width: 600px) {
-    width: 100%;
-    align-items: center;
-  }
-`;
-
-const CancelContainer = styled.div`
-  width: 85%;
-  height: 81%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  >div{
-    display:flex;
-    width: 90%;
-    justify-content: space-between;
-  }
-`;
-
-const CancelButton = styled.button`
-  background: #ffffff;
-  font-family: "Lato";
-  font-weight: 700;
-  font-size: 3vw;
-  color: #1877f2;
-  width: 75%;
-  height: 37px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-`;
-
-
-const ConfirmButton = styled.button`
-  background: #1877f2;
-  font-family: "Lato";
-  font-weight: 700;
-  font-size: 3vw;
-  color: #ffffff;
-  width: 75%;
-  height: 37px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-`;
-
-const DeleteMessage = styled.h1`
-  font-family: "Lato";
-  font-style: normal;
-  font-weight: 700;
-  font-size: 4.8vw;
-  line-height: 20px;
-  text-align: center;
-  width: 98%;
-  color: #ffffff;
-`;

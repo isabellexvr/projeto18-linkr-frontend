@@ -1,9 +1,9 @@
 import * as S from "../Assets/authStyle";
 import { Link, useNavigate } from "react-router-dom";
-import { useForm } from "../Components/Form/useForm";
+import { useForm } from "../Services/useForm";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../Components/Context/authContext";
+import { AuthContext } from "../Context/authContext";
 
 export default function SignIn() {
   const [form, handleForm] = useForm({ email: "", password: "" });
@@ -61,24 +61,24 @@ export default function SignIn() {
         <S.ContainerInformation>
           <S.ContainerForm onSubmit={login}>
             <input
-              type="email"
-              placeholder=" e-mail"
-              name="email"
+              type='email'
+              placeholder=' e-mail'
+              name='email'
               value={form.email}
               onChange={handleForm}
             />
             <input
-              type="password"
-              placeholder=" password"
-              name="password"
+              type='password'
+              placeholder=' password'
+              name='password'
               value={form.password}
               onChange={handleForm}
             />
-            <S.Button type="submit" disabled={loading}>
+            <S.Button type='submit' disabled={loading}>
               Log In
             </S.Button>
           </S.ContainerForm>
-          <Link to="sign-up">
+          <Link to='sign-up'>
             <S.RedirecitonText>
               First time? Create an account!
             </S.RedirecitonText>

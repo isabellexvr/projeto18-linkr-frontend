@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PostLink from "../TimelinePage/PostLink";
+import PostLink from "../PostLink/PostLink";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 import {
@@ -20,7 +20,10 @@ import {
   ActionsContainer,
   EditContainer,
 } from "./PostStyledComponents";
-import { dislikeFunction, postLikeFunction } from "../Services/LikeFunctions";
+import {
+  dislikeFunction,
+  postLikeFunction,
+} from "../../Services/LikeFunctions";
 import { Tooltip, TooltipWrapper } from "react-tooltip";
 import axios from "axios";
 

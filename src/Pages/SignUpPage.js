@@ -1,118 +1,116 @@
 import * as S from "../Assets/authStyle";
 import { useNavigate, Link } from "react-router-dom";
-import { useForm } from "../Components/Form/useForm";
+import { useForm } from "../Services/useForm";
 import axios from "axios";
 import { useState, useContext, useEffect } from "react";
-import { AuthContext } from "../Components/Context/authContext";
+import { AuthContext } from "../Context/authContext";
 
 export default function SignUp() {
-	const [form, handleForm] = useForm({
-		email: "",
-		password: "",
-		username: "",
-		pictureUrl: "",
-	});
-	const { token, setToken } = useContext(AuthContext);
-	const [loading, setLoading] = useState(false);
+  const [form, handleForm] = useForm({
+    email: "",
+    password: "",
+    username: "",
+    pictureUrl: "",
+  });
+  const { token, setToken } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
 
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
-	useEffect(() => {
-		navigate("/timeline");
-	  }, [token, setToken]);
-	
-	  const isLogged = localStorage.getItem("userToken");
-	  if (isLogged) {
-		setToken(isLogged);
-		return;
-	  }
+  useEffect(() => {
+    navigate("/timeline");
+  }, [token, setToken]);
 
-	function register(event) {
-		event.preventDefault();
-		setLoading(true);
+  const isLogged = localStorage.getItem("userToken");
+  if (isLogged) {
+    setToken(isLogged);
+    return;
+  }
 
-		if (
-			form.email === "" ||
-			form.password === "" ||
-			form.username === "" ||
-			form.pictureUrl === ""
-		) {
-			alert("Preencha todos os campos do formulário, por favor.");
-			setLoading(false);
-			return;
-		}
+  function register(event) {
+    event.preventDefault();
+    setLoading(true);
 
-		const URL = "https://linkr-api-9ik9.onrender.com/sign-up";
+    if (
+      form.email === "" ||
+      form.password === "" ||
+      form.username === "" ||
+      form.pictureUrl === ""
+    ) {
+      alert("Preencha todos os campos do formulário, por favor.");
+      setLoading(false);
+      return;
+    }
 
-		setTimeout(() => {
-			const promise = axios.post(URL, form);
+    const URL = "https://linkr-api-9ik9.onrender.com/sign-up";
 
-			promise.then(() => {
-				setLoading(false);
-				navigate("/");
-			});
+    setTimeout(() => {
+      const promise = axios.post(URL, form);
 
-			promise.catch((err) => {
-				console.log(err.response.data);
-				setLoading(false);
-				alert(err.response.data);
-			});
-		}, 1000);
-	}
+      promise.then(() => {
+        setLoading(false);
+        navigate("/");
+      });
 
-	return (
-		<S.ManagingContainers>
-			<S.MainContainer>
-				<S.LogoContainer>
-					<S.Logo>linkr</S.Logo>
-					<S.Slogan>
-						<h1>save, share and discover</h1>
-						<h1>the best links on the web</h1>
-					</S.Slogan>
-				</S.LogoContainer>
-			</S.MainContainer>
-			<S.SecondContainer>
-				<S.ContainerInformation>
-					<S.ContainerForm onSubmit={register}>
-						<input
-							type='email'
-							placeholder=' e-mail'
-							name='email'
-							value={form.email}
-							onChange={handleForm}
-						/>
-						<input
-							type='password'
-							placeholder=' password'
-							name='password'
-							value={form.password}
-							onChange={handleForm}
-						/>
-						<input
-							type='text'
-							placeholder=' username'
-							name='username'
-							value={form.username}
-							onChange={handleForm}
-						/>
-						<input
-							type='url'
-							placeholder=' picture url'
-							name='pictureUrl'
-							value={form.pictureUrl}
-							onChange={handleForm}
-						/>
-						<S.Button
-							type='submit'
-							disabled={loading}>
-							Sign Up
-						</S.Button>
-					</S.ContainerForm>
-					<Link to='/'>
-						<S.RedirecitonText>Switch back to log in</S.RedirecitonText>
-					</Link>
-				</S.ContainerInformation>
-			</S.SecondContainer>
-		</S.ManagingContainers>
-	);
+      promise.catch((err) => {
+        console.log(err.response.data);
+        setLoading(false);
+        alert(err.response.data);
+      });
+    }, 1000);
+  }
+
+  return (
+    <S.ManagingContainers>
+      <S.MainContainer>
+        <S.LogoContainer>
+          <S.Logo>linkr</S.Logo>
+          <S.Slogan>
+            <h1>save, share and discover</h1>
+            <h1>the best links on the web</h1>
+          </S.Slogan>
+        </S.LogoContainer>
+      </S.MainContainer>
+      <S.SecondContainer>
+        <S.ContainerInformation>
+          <S.ContainerForm onSubmit={register}>
+            <input
+              type='email'
+              placeholder=' e-mail'
+              name='email'
+              value={form.email}
+              onChange={handleForm}
+            />
+            <input
+              type='password'
+              placeholder=' password'
+              name='password'
+              value={form.password}
+              onChange={handleForm}
+            />
+            <input
+              type='text'
+              placeholder=' username'
+              name='username'
+              value={form.username}
+              onChange={handleForm}
+            />
+            <input
+              type='url'
+              placeholder=' picture url'
+              name='pictureUrl'
+              value={form.pictureUrl}
+              onChange={handleForm}
+            />
+            <S.Button type='submit' disabled={loading}>
+              Sign Up
+            </S.Button>
+          </S.ContainerForm>
+          <Link to='/'>
+            <S.RedirecitonText>Switch back to log in</S.RedirecitonText>
+          </Link>
+        </S.ContainerInformation>
+      </S.SecondContainer>
+    </S.ManagingContainers>
+  );
 }
