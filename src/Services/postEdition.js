@@ -12,12 +12,12 @@ export default function handleEditInput(e, postId, editedDescription, setEdit, t
           description: editedDescription,
         },
       })
-        .then((a) => {
+        .then((ans) => {
           setEdit(false);
-          console.log(a.data);
+          console.log(ans.data);
         })
-        .catch((e) => {
-          console.log(e);
+        .catch((err) => {
+          console.log(err);
         });
     }
   }

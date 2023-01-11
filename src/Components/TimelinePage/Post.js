@@ -28,9 +28,9 @@ function Post(props) {
   const { userId, userName, userImage } = props.user;
   const { postId, likesCount, likedBy, postDescription, url } = props.content;
   const { disabled, setDisabled } = props.disable;
-  const [edit, setEdit] = useState(false);
+  const { edit, setEdit } = props.edition;
   const [editedDescription, setEditedDescription] = useState(postDescription);
-  const [openModal, setOpenModal] = useState(false);
+  const {openModal, setOpenModal} = props.modal
   const navigate = useNavigate();
   const token = props.token;
   const userInfo = jwtDecode(token);
@@ -87,9 +87,15 @@ function Post(props) {
               type="text"
               ref={(ref) => ref && ref.focus()}
               value={editedDescription}
-              onChange={(e) => setEditedDescription(e.target.value)}
-              onKeyDown={(e) =>
-                handleEditInput(e, postId, editedDescription, setEdit, token)
+              onChange={(event) => setEditedDescription(event.target.value)}
+              onKeyDown={(event) =>
+                handleEditInput(
+                  event,
+                  postId,
+                  editedDescription,
+                  setEdit,
+                  token
+                )
               }
             />
           )}
@@ -99,6 +105,7 @@ function Post(props) {
           </Link>
         </RightContainer>
         <DeleteModal
+          
           postId={postId}
           token={token}
           openModal={openModal}
