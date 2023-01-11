@@ -7,12 +7,13 @@ export const Redirect = styled.a`
 export const LinkStyle = styled.div`
   margin-top: 10px;
   margin-bottom: 10px;
-  height: 155px;
+  height: 150px;
   border: 1px solid #4d4d4d;
   border-radius: 11px;
   display: flex;
   @media (max-width: 667px) {
-    min-width: 278px;
+    min-width: 277px;
+    height: 140px;
   }
 `;
 
@@ -24,7 +25,7 @@ export const UrlTextInfo = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   @media (max-width: 667px) {
-    justify-content: center;
+    justify-content: space-evenly;
   }
 `;
 

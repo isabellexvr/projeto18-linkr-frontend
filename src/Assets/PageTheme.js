@@ -23,8 +23,11 @@ export const PageTitle = styled.h1`
   color: white;
   font-weight: 700;
   margin-left: 17px;
+  justify-content: center;
+  width: 100%;
   @media (max-width: 667px) {
     font-size: 23px;
+    justify-content: flex-start;
   }
 `;
 
