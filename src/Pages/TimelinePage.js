@@ -14,10 +14,7 @@ import {
 } from "../Assets/PageTheme";
 import Trending from "../Components/Trending/Trending";
 import PageContainer from "../Components/PageContainer/PageContainer";
-import ErrorMessage from "../Components/ErrorMessage/ErrorMessage";
-import NoPostsMessage from "../Components/NoPostsMessage/NoPostsMessage";
-import LoadingMessage from "../Components/LoadingMessage/LoadingMessage";
-import { TooltipProvider } from "react-tooltip";
+import verifyIfPosts from "../Services/verifyPosts";
 
 export default function TimelinePage() {
   const { width } = useWindowDimensions();
@@ -40,43 +37,6 @@ export default function TimelinePage() {
       });
   }, [loading, setLoading, disabled, setDisabled]);
 
-  function verifyIfPosts() {
-    if (posts) {
-      if (posts.length > 0) {
-        return posts.map((post, index) => (
-          <Post
-            disable={{ setDisabled, disabled }}
-            key={index}
-            token={token}
-            user={{
-              userId: post.userId,
-              userName: post.userName,
-              userImage: post.userImage,
-            }}
-            content={{
-              postId: post.postId,
-              likesCount: post.likesCount,
-              likedBy: post.likedBy,
-              postDescription: post.postDescription,
-              url: post.url,
-            }}
-            metadata={{
-              linkTitle: post.linkTitle,
-              linkDescription: post.linkDescription,
-              linkUrl: post.linkUrl,
-              linkImage: post.linkImage,
-            }}
-          />
-        ));
-      }
-      return <NoPostsMessage />;
-    } else if (error) {
-      return <ErrorMessage />;
-    } else if (loading) {
-      return <LoadingMessage />;
-    }
-  }
-
   return (
     <PageContainer>
       <Header />
@@ -86,7 +46,7 @@ export default function TimelinePage() {
           <PageStyle>
             <PostsContainer>
               <PostPublicationForm loading={loading} setLoading={setLoading} />
-              {verifyIfPosts()}
+              {verifyIfPosts(posts, setDisabled, disabled, token, loading, error)}
             </PostsContainer>
             {width > 1020 && <Trending />}
           </PageStyle>
