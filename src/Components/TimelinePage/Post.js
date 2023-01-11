@@ -59,8 +59,8 @@ function Post(props) {
   function handleLikedBy(arr) {
     let string;
 
-    if (arr.find((e) => e.userId === userId)) {
-      if (arr.length === 1) {
+    if (arr.find((e) => e.userId === userInfo.userId)) {
+      if (arr.length === 0) {
         string = "Ninguém ainda curtiu esse post.";
         return string;
       }
@@ -78,7 +78,7 @@ function Post(props) {
       }
     }
 
-    if (arr.length === 1) {
+    if (arr.length === 0) {
       string = "Ninguém ainda curtiu esse post.";
       return string;
     }
@@ -99,70 +99,72 @@ function Post(props) {
 
   return (
     <TooltipProvider>
-    <PostStyle>
-      <LeftContainer>
-        <UserProfilePicture src={userImage} />
-        <IsLiked
-          likedBy={likedBy}
-          setDisabled={setDisabled}
-          disabled={disabled}
-          token={token}
-          postId={postId}
-          loggedUserId={userInfo.userId}
-        />
-        <TooltipWrapper tooltipId="postId">
-          <LikesCount>{likesCount}</LikesCount>
-        </TooltipWrapper>
-        <Tooltip
-          id={postId}
-          content="oi"
-          place="bottom"
-        />
-      </LeftContainer>
-      <RightContainer>
-        <TitleContainer>
-          <UserName>{userName}</UserName>
-          {userId === userInfo.userId && (
-            <ActionsContainer>
-              <EditButton setEdit={setEdit} edit={edit} />
-              <DeleteButton setOpenModal={setOpenModal} />
-            </ActionsContainer>
-          )}
-        </TitleContainer>
-        {!edit ? (
-          <Description>
-            <ReactTagify
-              tagStyle={{
-                color: "white",
-                fontWeight: 800,
-                cursor: "pointer",
-              }}
-              tagClicked={(tag) => navigate(`/hashtag/${tag.substring(1)}`)}
-            >
-              {postDescription}
-            </ReactTagify>
-          </Description>
-        ) : (
-          <EditContainer
-            type="text"
-            ref={(ref) => ref && ref.focus()}
-            value={editedDescription}
-            onChange={(e) => setEditedDescription(e.target.value)}
-            onKeyDown={(e) => handleEditInput(e)}
+      <PostStyle>
+        <LeftContainer>
+          <UserProfilePicture src={userImage} />
+          <IsLiked
+            likedBy={likedBy}
+            setDisabled={setDisabled}
+            disabled={disabled}
+            token={token}
+            postId={postId}
+            loggedUserId={userInfo.userId}
           />
-        )}
+          <TooltipWrapper tooltipId={postId}>
+            <LikesCount>
+              {likesCount} {likesCount === "1" ? "like" : "likes"}
+            </LikesCount>
+          </TooltipWrapper>
+          <Tooltip
+            id={postId}
+            content={handleLikedBy(likedBy)}
+            place="bottom"
+          />
+        </LeftContainer>
+        <RightContainer>
+          <TitleContainer>
+            <UserName>{userName}</UserName>
+            {userId === userInfo.userId && (
+              <ActionsContainer>
+                <EditButton setEdit={setEdit} edit={edit} />
+                <DeleteButton setOpenModal={setOpenModal} />
+              </ActionsContainer>
+            )}
+          </TitleContainer>
+          {!edit ? (
+            <Description>
+              <ReactTagify
+                tagStyle={{
+                  color: "white",
+                  fontWeight: 800,
+                  cursor: "pointer",
+                }}
+                tagClicked={(tag) => navigate(`/hashtag/${tag.substring(1)}`)}
+              >
+                {postDescription}
+              </ReactTagify>
+            </Description>
+          ) : (
+            <EditContainer
+              type="text"
+              ref={(ref) => ref && ref.focus()}
+              value={editedDescription}
+              onChange={(e) => setEditedDescription(e.target.value)}
+              onKeyDown={(e) => handleEditInput(e)}
+            />
+          )}
 
-        <Link to={url}>
-          <PostLink metadata={props.metadata} />
-        </Link>
-      </RightContainer>
-      <DeleteModal
-        postId={postId}
-        token={token}
-        openModal={openModal}
-        setOpenModal={setOpenModal}
-      />
-    </PostStyle>
+          <Link to={url}>
+            <PostLink metadata={props.metadata} />
+          </Link>
+        </RightContainer>
+        <DeleteModal
+          postId={postId}
+          token={token}
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+        />
+      </PostStyle>
     </TooltipProvider>
   );
 }
