@@ -14,6 +14,7 @@ import {
 import Trending from "../Components/Trending/Trending";
 import PageContainer from "../Components/PageContainer/PageContainer";
 import verifyIfPosts from "../Services/verifyPosts";
+import DeleteModal from "../Components/DeleteModal/DeleteModal";
 
 export default function TimelinePage() {
   const { width } = useWindowDimensions();
@@ -24,6 +25,7 @@ export default function TimelinePage() {
   const [disabled, setDisabled] = useState(false);
   const [edit, setEdit] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [postToDelete, setPostToDelete] = useState("");
 
   useEffect(() => {
     axios
@@ -67,8 +69,15 @@ export default function TimelinePage() {
               edit,
               setEdit,
               openModal,
-              setOpenModal
+              setOpenModal,
+              setPostToDelete
             )}
+            <DeleteModal
+              openModal={openModal}
+              setOpenModal={setOpenModal}
+              token={token}
+              postToDelete={postToDelete}
+            />
           </PostsContainer>
           {width > 1020 && <Trending />}
         </PageStyle>

@@ -16,9 +16,8 @@ import PostLink from "../PostLink/PostLink";
 import jwtDecode from "jwt-decode";
 import EditButton from "../EditAndDeleteButtons/EditButton";
 import DeleteButton from "../EditAndDeleteButtons/DeleteButton";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ReactTagify } from "react-tagify";
-import DeleteModal from "../DeleteModal/DeleteModal";
 import IsLiked from "../../Services/CheckIfIsLiked";
 import { TooltipProvider } from "react-tooltip";
 import handleLikedBy from "../../Services/handleLikedBy";
@@ -31,6 +30,7 @@ function Post(props) {
   const { edit, setEdit } = props.edition;
   const [editedDescription, setEditedDescription] = useState(postDescription);
   const { openModal, setOpenModal } = props.modal;
+  const setPostToDelete = props.setPostToDelete;
   const navigate = useNavigate();
   const token = props.token;
   const userInfo = jwtDecode(token);
@@ -65,30 +65,15 @@ function Post(props) {
             {userId === userInfo.userId && (
               <ActionsContainer>
                 <EditButton setEdit={setEdit} edit={edit} />
-                <DeleteButton setOpenModal={setOpenModal} />
-                <DeleteModal
-                  openModal={openModal}
+                <DeleteButton
+                  setPostToDelete={setPostToDelete}
                   setOpenModal={setOpenModal}
                   postId={postId}
-                  token={token}
                 />
               </ActionsContainer>
             )}
           </TitleContainer>
-          {!edit ? (
-            <Description>
-              <ReactTagify
-                tagStyle={{
-                  color: "white",
-                  fontWeight: 800,
-                  cursor: "pointer",
-                }}
-                tagClicked={(tag) => navigate(`/hashtag/${tag.substring(1)}`)}
-              >
-                {postDescription}
-              </ReactTagify>
-            </Description>
-          ) : (
+          {edit && userId === userInfo.userId ? (
             <EditContainer
               type="text"
               ref={(ref) => ref && ref.focus()}
@@ -104,11 +89,21 @@ function Post(props) {
                 )
               }
             />
+          ) : (
+            <Description>
+              <ReactTagify
+                tagStyle={{
+                  color: "white",
+                  fontWeight: 800,
+                  cursor: "pointer",
+                }}
+                tagClicked={(tag) => navigate(`/hashtag/${tag.substring(1)}`)}
+              >
+                {postDescription}
+              </ReactTagify>
+            </Description>
           )}
-
-          <Link to={url}>
-            <PostLink metadata={props.metadata} />
-          </Link>
+          <PostLink metadata={props.metadata} />
         </RightContainer>
       </PostStyle>
     </TooltipProvider>

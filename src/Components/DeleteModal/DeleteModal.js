@@ -26,8 +26,8 @@ const customStyles = {
   },
 };
 
-function DeleteModal({ openModal, setOpenModal, postId, token }) {
-  console.log(postId)
+function DeleteModal({ openModal, setOpenModal, token, postToDelete }) {
+
   return (
     <Modal isOpen={openModal} style={customStyles} contentLabel="Example Modal">
       <CancelContainer>
@@ -38,7 +38,7 @@ function DeleteModal({ openModal, setOpenModal, postId, token }) {
           <CancelButton onClick={() => setOpenModal(false)}>
             No, go back
           </CancelButton>
-          <ConfirmButton onClick={()=>confirmModal(postId, setOpenModal, token)}>
+          <ConfirmButton onClick={()=>confirmModal(postToDelete, setOpenModal, token)}>
             Yes, delete it
           </ConfirmButton>
         </div>
