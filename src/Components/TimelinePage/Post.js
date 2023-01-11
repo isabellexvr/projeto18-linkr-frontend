@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Tooltip, TooltipWrapper } from "react-tooltip";
 import {
   ActionsContainer,
@@ -18,11 +18,11 @@ import EditButton from "../EditAndDeleteButtons/EditButton";
 import DeleteButton from "../EditAndDeleteButtons/DeleteButton";
 import { Link, useNavigate } from "react-router-dom";
 import { ReactTagify } from "react-tagify";
-import axios from "axios";
 import DeleteModal from "../DeleteModal/DeleteModal";
 import IsLiked from "../../Services/CheckIfIsLiked";
 import { TooltipProvider } from "react-tooltip";
 import handleLikedBy from "../../Services/handleLikedBy";
+import handleEditInput from "../../Services/postEdition";
 
 function Post(props) {
   const { userId, userName, userImage } = props.user;
@@ -34,30 +34,6 @@ function Post(props) {
   const navigate = useNavigate();
   const token = props.token;
   const userInfo = jwtDecode(token);
-
-  function handleEditInput(e) {
-    if (e.key === "Escape") setEdit(false);
-    if (e.key === "Enter") {
-      axios(`http://localhost:4000/posts/${postId}`, {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        data: {
-          description: editedDescription,
-        },
-      })
-        .then((a) => {
-          setEdit(false);
-          console.log(a.data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    }
-  }
-
-
 
   return (
     <TooltipProvider>
@@ -112,7 +88,9 @@ function Post(props) {
               ref={(ref) => ref && ref.focus()}
               value={editedDescription}
               onChange={(e) => setEditedDescription(e.target.value)}
-              onKeyDown={(e) => handleEditInput(e)}
+              onKeyDown={(e) =>
+                handleEditInput(e, postId, editedDescription, setEdit, token)
+              }
             />
           )}
 

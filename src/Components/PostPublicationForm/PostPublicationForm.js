@@ -17,7 +17,6 @@ export default function PostPublicationForm({ loading, setLoading }) {
   const [form, setForm] = useState({});
   const { token } = useContext(AuthContext);
   const {userPicture} = jwtDecode(token)
-  console.log(userPicture)
 
   function handleForm({ target: { value, name } }) {
     setForm({ ...form, [name]: value });
