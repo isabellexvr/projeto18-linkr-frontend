@@ -42,9 +42,6 @@ export default function TimelinePage() {
       });
   }, [loading, setLoading, disabled, setDisabled]);
 
-
-
-
   function verifyIfPosts() {
     if (posts) {
       if (posts.length > 0) {

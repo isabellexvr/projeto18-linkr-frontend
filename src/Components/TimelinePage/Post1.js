@@ -88,6 +88,7 @@ function Post(props) {
   }
 
   function handleEditInput(e) {
+
     if (e.key === "Escape") setEdit(false);
     if (e.key === "Enter") {
       axios(`http://localhost:4000/posts/${postId}`, {
@@ -144,8 +145,9 @@ function Post(props) {
           </Description>
         ) : (
           <EditContainer
+          type="text"
             ref={(ref) => ref && ref.focus()}
-            value={postDescription}
+            value={editedDescription}
             onChange={(e) => setEditedDescription(e.target.value)}
             onKeyDown={(e) => handleEditInput(e)}
           />
