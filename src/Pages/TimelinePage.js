@@ -24,10 +24,7 @@ import { TooltipProvider } from "react-tooltip";
 export default function TimelinePage() {
   const { width } = useWindowDimensions();
   const { token } = useContext(AuthContext);
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [modalIsOpen, setIsOpen] = useState(false);
-  const [deletePost, setDeletePost] = useState("");
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(false);
   const [disabled, setDisabled] = useState(false);
@@ -44,35 +41,9 @@ export default function TimelinePage() {
         setError(true);
       });
   }, [loading, setLoading, disabled, setDisabled]);
-  console.log(disabled)
 
-  function openModal() {
-    setIsOpen(true);
-  }
 
-  function closeModal() {
-    setIsOpen(false);
-  }
 
-  function confirmModal() {
-    axios
-      .delete(`http://localhost:4000/posts/${deletePost}`, {
-        // headers: {
-        //   Authorization: `Bearer ${token}
-        // `,
-        // },
-      })
-      .then((a) => {
-        navigate("/timeline");
-        window.location.reload(true);
-        setIsOpen(false);
-      })
-      .catch((err) => {
-        setIsOpen(false);
-        alert("Não foi possível deletar o post");
-        console.log(err);
-      });
-  }
 
   function verifyIfPosts() {
     if (posts) {

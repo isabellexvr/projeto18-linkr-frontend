@@ -5,29 +5,35 @@ import LikedButton from "../LikeButtons/LikedButton";
 import {
   ActionsContainer,
   Description,
-  EditPencil,
+  EditContainer,
   LeftContainer,
   LikesCount,
   PostStyle,
   RightContainer,
   TitleContainer,
-  TrashCan,
   UserName,
   UserProfilePicture,
 } from "../Post/PostStyledComponents";
 import PostLink from "../PostLink/PostLink";
-import {
-  postLikeFunction,
-  dislikeFunction,
-} from "../../Services/LikeFunctions";
 import jwtDecode from "jwt-decode";
+import EditButton from "../EditAndDeleteButtons/EditButton";
+import DeleteButton from "../EditAndDeleteButtons/DeleteButton";
+import { Link, useNavigate } from "react-router-dom";
+import { ReactTagify } from "react-tagify";
+import axios from "axios";
 
 function Post(props) {
   const { userId, userName, userImage } = props.user;
   const { postId, likesCount, likedBy, postDescription, url } = props.content;
-  const {disabled ,setDisabled} = props.disable
+  const { disabled, setDisabled } = props.disable;
+  const [edit, setEdit] = useState(false);
+  const [editedDescription, setEditedDescription] = useState(postDescription);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [deletePost, setDeletePost] = useState("");
+  const navigate = useNavigate();
   const token = props.token;
   const userInfo = jwtDecode(token);
+  console.log(userInfo.userId);
 
   function IsLiked() {
     const idArray = likedBy.map((obj) => obj.userId);
@@ -61,6 +67,48 @@ function Post(props) {
     );
   }
 
+  function confirmModal() {
+    axios
+      .delete(`http://localhost:4000/posts/${deletePost}`, {
+        // headers: {
+        //   Authorization: `Bearer ${token}
+        // `,
+        // },
+      })
+      .then((a) => {
+        navigate("/timeline");
+        window.location.reload(true);
+        setIsOpen(false);
+      })
+      .catch((err) => {
+        setIsOpen(false);
+        alert("Não foi possível deletar o post");
+        console.log(err);
+      });
+  }
+
+  function handleEditInput(e) {
+    if (e.key === "Escape") setEdit(false);
+    if (e.key === "Enter") {
+      axios(`http://localhost:4000/posts/${postId}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
+          description: editedDescription,
+        },
+      })
+        .then((a) => {
+          setEdit(false);
+          console.log(a.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  }
+
   return (
     <PostStyle>
       <LeftContainer>
@@ -74,13 +122,38 @@ function Post(props) {
       <RightContainer>
         <TitleContainer>
           <UserName>{userName}</UserName>
-          <ActionsContainer>
-            <EditPencil />
-            <TrashCan />
-          </ActionsContainer>
+          {userId === userInfo.userId && (
+            <ActionsContainer>
+              <EditButton setEdit={setEdit} edit={edit} />
+              <DeleteButton />
+            </ActionsContainer>
+          )}
         </TitleContainer>
-        <Description>{postDescription}</Description>
-        <PostLink metadata={props.metadata} />
+        {!edit ? (
+          <Description>
+            <ReactTagify
+              tagStyle={{
+                color: "white",
+                fontWeight: 800,
+                cursor: "pointer",
+              }}
+              tagClicked={(tag) => navigate(`/hashtag/${tag.substring(1)}`)}
+            >
+              {postDescription}
+            </ReactTagify>
+          </Description>
+        ) : (
+          <EditContainer
+            ref={(ref) => ref && ref.focus()}
+            value={postDescription}
+            onChange={(e) => setEditedDescription(e.target.value)}
+            onKeyDown={(e) => handleEditInput(e)}
+          />
+        )}
+
+        <Link to={url}>
+          <PostLink metadata={props.metadata} />
+        </Link>
       </RightContainer>
     </PostStyle>
   );
