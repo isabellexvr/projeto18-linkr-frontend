@@ -67,10 +67,11 @@ function Post(props) {
           postId={postId}
           loggedUserId={userInfo.userId}
         />
-        <TooltipWrapper>
+        <TooltipWrapper tooltipId="postId">
           <LikesCount>{likesCount}</LikesCount>
         </TooltipWrapper>
-        <Tooltip />
+
+        <Tooltip id={postId} />
       </LeftContainer>
       <RightContainer>
         <TitleContainer>
