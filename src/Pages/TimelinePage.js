@@ -80,7 +80,6 @@ export default function TimelinePage() {
   return (
     <PageContainer>
       <Header />
-      <TooltipProvider>
         <StyledMain width={width}>
           {width < 667 && <Searchbox />}
           <PageTitle>timeline</PageTitle>
@@ -92,7 +91,6 @@ export default function TimelinePage() {
             {width > 1020 && <Trending />}
           </PageStyle>
         </StyledMain>
-      </TooltipProvider>
     </PageContainer>
   );
 }

@@ -19,8 +19,9 @@ import DeleteButton from "../EditAndDeleteButtons/DeleteButton";
 import { Link, useNavigate } from "react-router-dom";
 import { ReactTagify } from "react-tagify";
 import axios from "axios";
-import DeleteModal from "../../Components/DeleteModal/DeleteModal";
+import DeleteModal from "../DeleteModal/DeleteModal";
 import IsLiked from "../../Services/CheckIfIsLiked";
+import { TooltipProvider } from "react-tooltip";
 
 function Post(props) {
   const { userId, userName, userImage } = props.user;
@@ -55,7 +56,49 @@ function Post(props) {
     }
   }
 
+  function handleLikedBy(arr) {
+    let string;
+
+    if (arr.find((e) => e.userId === userId)) {
+      if (arr.length === 1) {
+        string = "Ninguém ainda curtiu esse post.";
+        return string;
+      }
+      if (arr.length > 2) {
+        string = `Você ${arr[arr.length - 1].username} e outras ${
+          arr.length - 2
+        } pessoas`;
+        return string;
+      }
+      if (arr.length === 2) {
+        string = `Você e ${arr[arr.length - 1].username} curtiram`;
+        return string;
+      } else {
+        return (string = "Você curtiu");
+      }
+    }
+
+    if (arr.length === 1) {
+      string = "Ninguém ainda curtiu esse post.";
+      return string;
+    }
+    if (arr.length > 2) {
+      string = `${arr[arr.length - 1].username} , ${
+        arr[arr.length - 2].username
+      } e outras ${arr.length - 2} pessoas`;
+      return string;
+    } else if (arr.length === 2) {
+      string = `${arr[arr.length - 1].username} , ${
+        arr[arr.length - 2].username
+      } curtiram`;
+      return string;
+    } else {
+      return (string = `${arr[arr.length - 1].username}, curtiu`);
+    }
+  }
+
   return (
+    <TooltipProvider>
     <PostStyle>
       <LeftContainer>
         <UserProfilePicture src={userImage} />
@@ -70,8 +113,11 @@ function Post(props) {
         <TooltipWrapper tooltipId="postId">
           <LikesCount>{likesCount}</LikesCount>
         </TooltipWrapper>
-
-        <Tooltip id={postId} />
+        <Tooltip
+          id={postId}
+          content="oi"
+          place="bottom"
+        />
       </LeftContainer>
       <RightContainer>
         <TitleContainer>
@@ -117,6 +163,7 @@ function Post(props) {
         setOpenModal={setOpenModal}
       />
     </PostStyle>
+    </TooltipProvider>
   );
 }
 
