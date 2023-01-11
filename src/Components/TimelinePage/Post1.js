@@ -33,7 +33,6 @@ function Post(props) {
   const navigate = useNavigate();
   const token = props.token;
   const userInfo = jwtDecode(token);
-  console.log(userInfo.userId);
 
   function IsLiked() {
     const idArray = likedBy.map((obj) => obj.userId);
