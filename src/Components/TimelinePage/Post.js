@@ -1,17 +1,15 @@
 import React, { useState } from "react";
-import { Tooltip, TooltipWrapper } from "react-tooltip";
+
 import {
-  ActionsContainer,
+  LoggedUserActionsContainer,
   Description,
   EditContainer,
   LeftContainer,
-  LikesCount,
   PostStyle,
   RightContainer,
   TitleContainer,
   UserName,
   UserProfilePicture,
-  UserActionsContainer,
 } from "../Post/PostStyledComponents";
 import PostLink from "../PostLink/PostLink";
 import jwtDecode from "jwt-decode";
@@ -19,14 +17,13 @@ import EditButton from "../EditAndDeleteButtons/EditButton";
 import DeleteButton from "../EditAndDeleteButtons/DeleteButton";
 import { useNavigate } from "react-router-dom";
 import { ReactTagify } from "react-tagify";
-import IsLiked from "../../Services/CheckIfIsLiked";
 import { TooltipProvider } from "react-tooltip";
-import handleLikedBy from "../../Services/handleLikedBy";
 import handleEditInput from "../../Services/postEdition";
+import UserPostActions from "../UserPostActions/UserPostActions";
 
 function Post(props) {
   const { userId, userName, userImage } = props.user;
-  const { postId, likesCount, likedBy, postDescription, url } = props.content;
+  const { postId, likesCount, likedBy, postDescription, repostsCount } = props.content;
   const { disabled, setDisabled } = props.disable;
   const { edit, setEdit } = props.edition;
   const [editedDescription, setEditedDescription] = useState(postDescription);
@@ -41,39 +38,24 @@ function Post(props) {
       <PostStyle>
         <LeftContainer>
           <UserProfilePicture src={userImage} />
-          <UserActionsContainer>
-            <IsLiked
-              likedBy={likedBy}
-              setDisabled={setDisabled}
-              disabled={disabled}
-              token={token}
-              postId={postId}
-              loggedUserId={userInfo.userId}
-            />
-            <TooltipWrapper tooltipId={postId}>
-              <LikesCount>
-                {likesCount} {likesCount === "1" ? "like" : "likes"}
-              </LikesCount>
-            </TooltipWrapper>
-            <Tooltip
-              id={postId}
-              content={handleLikedBy(likedBy, userInfo)}
-              place="bottom"
-            />
-          </UserActionsContainer>
+          <UserPostActions
+            postInfo={{likedBy, postId, likesCount, repostsCount}}
+            user={{userInfo, token}}
+            disabledUseState={{setDisabled, disabled}}
+          />
         </LeftContainer>
         <RightContainer>
           <TitleContainer>
             <UserName>{userName}</UserName>
             {userId === userInfo.userId && (
-              <ActionsContainer>
+              <LoggedUserActionsContainer>
                 <EditButton setEdit={setEdit} edit={edit} />
                 <DeleteButton
                   setPostToDelete={setPostToDelete}
                   setOpenModal={setOpenModal}
                   postId={postId}
                 />
-              </ActionsContainer>
+              </LoggedUserActionsContainer>
             )}
           </TitleContainer>
           {edit && userId === userInfo.userId ? (

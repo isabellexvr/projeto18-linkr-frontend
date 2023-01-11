@@ -7,7 +7,7 @@ import {
   LeftContainer,
   UserProfilePicture,
   LikeIcon,
-  LikesCount,
+  Count,
   RightContainer,
   UserName,
   Description,
@@ -17,7 +17,7 @@ import {
   EditPencil,
   TrashCan,
   TitleContainer,
-  ActionsContainer,
+  LoggedUserActionsContainer,
   EditContainer,
 } from "./PostStyledComponents";
 import {
@@ -165,7 +165,7 @@ function Post(props) {
           <LikeIcon onClick={handleLikes} />
         )}
         <TooltipWrapper content={tooltip} place='bottom'>
-          <LikesCount>{postLikeCount} likes</LikesCount>
+          <Count>{postLikeCount} likes</Count>
         </TooltipWrapper>
         <Tooltip style={tooltipStyle} />
       </LeftContainer>
@@ -173,10 +173,10 @@ function Post(props) {
         <TitleContainer>
           <UserName>{username}</UserName>
           {userId === myUser.userId && (
-            <ActionsContainer>
+            <LoggedUserActionsContainer>
               <EditPencil onClick={() => setEdit(true)} />
               <TrashCan onClick={handleDelete} />
-            </ActionsContainer>
+            </LoggedUserActionsContainer>
           )}
         </TitleContainer>
         <Description>

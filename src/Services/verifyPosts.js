@@ -25,6 +25,7 @@ export default function verifyIfPosts(posts, setDisabled, disabled, token, loadi
             likedBy: post.likedBy,
             postDescription: post.postDescription,
             url: post.url,
+            repostsCount: post.repostsCount
           }}
           metadata={{
             linkTitle: post.linkTitle,
