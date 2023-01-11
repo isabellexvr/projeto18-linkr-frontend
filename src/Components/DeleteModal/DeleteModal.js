@@ -6,6 +6,7 @@ import {
   DeleteMessage,
   ConfirmButton,
 } from "./DeleteModalStyles";
+import confirmModal from "../../Services/confirmDeletingPosting";
 
 const customStyles = {
   content: {
@@ -25,9 +26,7 @@ const customStyles = {
   },
 };
 
-function DeleteModal(props) {
-  const { confirmModal, openModal, setOpenModal } = props;
-
+function DeleteModal({ openModal, setOpenModal, postId, token }) {
   return (
     <Modal isOpen={openModal} style={customStyles} contentLabel="Example Modal">
       <CancelContainer>
@@ -38,7 +37,9 @@ function DeleteModal(props) {
           <CancelButton onClick={() => setOpenModal(false)}>
             No, go back
           </CancelButton>
-          <ConfirmButton onClick={confirmModal}>Yes, delete it</ConfirmButton>
+          <ConfirmButton onClick={()=>confirmModal(postId, setOpenModal, token)}>
+            Yes, delete it
+          </ConfirmButton>
         </div>
       </CancelContainer>
     </Modal>

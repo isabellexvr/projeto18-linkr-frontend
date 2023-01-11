@@ -33,6 +33,8 @@ export const UserContainer = styled.div`
 
 export const UserProfilePicture = styled.img`
   width: 44px;
+  height: 44px;
+  object-fit: cover;
   border-radius: 50%;
 `;
 export const Logo = styled.div`

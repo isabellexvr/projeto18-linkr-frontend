@@ -5,7 +5,6 @@ import HashTagsPage from "./Pages/HashTagPage";
 import ProfilePage from "./Pages/ProfilePage";
 import SignInPage from "./Pages/SignInPage";
 import SignUpPage from "./Pages/SignUpPage";
-import Teste from "./Pages/Teste";
 import TimelinePage from "./Pages/TimelinePage";
 
 function App() {
@@ -20,7 +19,6 @@ function App() {
             <Route path='/' element={<SignInPage />} />
             <Route path='/sign-up' element={<SignUpPage />} />
             <Route path='/user/:id' element={<ProfilePage />} />
-            <Route path='/teste' element={<Teste />} />
           </Routes>
         </Context>
       </BrowserRouter>

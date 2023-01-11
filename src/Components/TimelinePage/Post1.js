@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Tooltip, TooltipWrapper } from "react-tooltip";
-import LikeButton from "../LikeButtons/LikeButtons";
-import LikedButton from "../LikeButtons/LikedButton";
 import {
   ActionsContainer,
   Description,
@@ -22,6 +20,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ReactTagify } from "react-tagify";
 import axios from "axios";
 import DeleteModal from "../../Components/DeleteModal/DeleteModal";
+import IsLiked from "../../Services/CheckIfIsLiked";
 
 function Post(props) {
   const { userId, userName, userImage } = props.user;
@@ -33,56 +32,6 @@ function Post(props) {
   const navigate = useNavigate();
   const token = props.token;
   const userInfo = jwtDecode(token);
-
-  function IsLiked() {
-    const idArray = likedBy.map((obj) => obj.userId);
-    if (idArray.length <= 0) {
-      return (
-        <LikeButton
-          setDisabled={setDisabled}
-          disabled={disabled}
-          token={token}
-          postId={postId}
-        />
-      );
-    }
-    if (idArray.includes(userInfo.userId)) {
-      return (
-        <LikedButton
-          setDisabled={setDisabled}
-          disabled={disabled}
-          token={token}
-          postId={postId}
-        />
-      );
-    }
-    return (
-      <LikeButton
-        setDisabled={setDisabled}
-        disabled={disabled}
-        token={token}
-        postId={postId}
-      />
-    );
-  }
-
-  function confirmModal() {
-    axios
-      .delete(`http://localhost:4000/posts/${postId}`, {
-        headers: {
-          Authorization: `Bearer ${token}
-         `,
-        },
-      })
-      .then((ans) => {
-        alert(ans.data);
-        setOpenModal(false);
-      })
-      .catch((err) => {
-        alert("Não foi possível deletar o post");
-        console.log(err);
-      });
-  }
 
   function handleEditInput(e) {
     if (e.key === "Escape") setEdit(false);
@@ -110,7 +59,14 @@ function Post(props) {
     <PostStyle>
       <LeftContainer>
         <UserProfilePicture src={userImage} />
-        <IsLiked />
+        <IsLiked
+          likedBy={likedBy}
+          setDisabled={setDisabled}
+          disabled={disabled}
+          token={token}
+          postId={postId}
+          loggedUserId={userInfo.userId}
+        />
         <TooltipWrapper>
           <LikesCount>{likesCount}</LikesCount>
         </TooltipWrapper>
@@ -154,7 +110,8 @@ function Post(props) {
         </Link>
       </RightContainer>
       <DeleteModal
-        confirmModal={confirmModal}
+        postId={postId}
+        token={token}
         openModal={openModal}
         setOpenModal={setOpenModal}
       />
