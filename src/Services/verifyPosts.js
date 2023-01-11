@@ -4,7 +4,7 @@ import LoadingMessage from "../Components/LoadingMessage/LoadingMessage";
 import Post from "../Components/TimelinePage/Post";
 
 export default function verifyIfPosts(posts, setDisabled, disabled, token, loading, error, edit, setEdit, setOpenModal, setPostToDelete ) {
-  if (posts && !loading) {
+  if (posts && !loading && !error) {
     if (posts.length > 0) {
       return posts.map((post, index) => (
         <Post

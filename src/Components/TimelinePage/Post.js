@@ -11,6 +11,7 @@ import {
   TitleContainer,
   UserName,
   UserProfilePicture,
+  UserActionsContainer,
 } from "../Post/PostStyledComponents";
 import PostLink from "../PostLink/PostLink";
 import jwtDecode from "jwt-decode";
@@ -40,24 +41,26 @@ function Post(props) {
       <PostStyle>
         <LeftContainer>
           <UserProfilePicture src={userImage} />
-          <IsLiked
-            likedBy={likedBy}
-            setDisabled={setDisabled}
-            disabled={disabled}
-            token={token}
-            postId={postId}
-            loggedUserId={userInfo.userId}
-          />
-          <TooltipWrapper tooltipId={postId}>
-            <LikesCount>
-              {likesCount} {likesCount === "1" ? "like" : "likes"}
-            </LikesCount>
-          </TooltipWrapper>
-          <Tooltip
-            id={postId}
-            content={handleLikedBy(likedBy, userInfo)}
-            place="bottom"
-          />
+          <UserActionsContainer>
+            <IsLiked
+              likedBy={likedBy}
+              setDisabled={setDisabled}
+              disabled={disabled}
+              token={token}
+              postId={postId}
+              loggedUserId={userInfo.userId}
+            />
+            <TooltipWrapper tooltipId={postId}>
+              <LikesCount>
+                {likesCount} {likesCount === "1" ? "like" : "likes"}
+              </LikesCount>
+            </TooltipWrapper>
+            <Tooltip
+              id={postId}
+              content={handleLikedBy(likedBy, userInfo)}
+              place="bottom"
+            />
+          </UserActionsContainer>
         </LeftContainer>
         <RightContainer>
           <TitleContainer>

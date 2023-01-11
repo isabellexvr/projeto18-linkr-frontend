@@ -145,3 +145,7 @@ export const tagStyle = {
   fontWeight: 800,
   cursor: "pointer",
 };
+
+export const UserActionsContainer = styled.div`
+  background-color: red;
+`
