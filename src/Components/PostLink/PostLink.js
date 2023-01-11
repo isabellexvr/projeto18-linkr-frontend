@@ -7,6 +7,7 @@ import {
   Url,
   UrlImage,
 } from "./PostLinkStyles";
+import getLinkDomain from "../../Services/GetLinkDomain"
 
 export default function PostLink(props) {
   const { linkTitle, linkDescription, linkUrl, linkImage } = props.metadata;
@@ -17,7 +18,7 @@ export default function PostLink(props) {
         <UrlTextInfo>
           <UrlTitle>{linkTitle}</UrlTitle>
           <UrlDescription>{linkDescription?.substring(0, 80)}</UrlDescription>
-          <Url>{linkUrl}</Url>
+          <Url>{getLinkDomain(linkUrl)}</Url>
         </UrlTextInfo>
         <UrlImage alt='url' src={linkImage} />
       </LinkStyle>
