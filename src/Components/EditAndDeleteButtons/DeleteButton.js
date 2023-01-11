@@ -1,18 +1,5 @@
 import { TrashCan } from "../Post/PostStyledComponents";
 
-export default function DeleteButton({
-  openModal,
-  setIsOpen,
-  setDeletePost,
-  postId,
-}) {
-  return (
-    <TrashCan
-      onClick={() => {
-        openModal();
-        setIsOpen(true);
-        setDeletePost(postId);
-      }}
-    />
-  );
+export default function DeleteButton({ setOpenModal }) {
+  return <TrashCan onClick={() => setOpenModal(true)} />;
 }

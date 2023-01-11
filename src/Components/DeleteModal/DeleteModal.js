@@ -26,20 +26,18 @@ const customStyles = {
 };
 
 function DeleteModal(props) {
-  const { closeModal, confirmModal, modalIsOpen } = props;
+  const { confirmModal, openModal, setOpenModal } = props;
 
   return (
-    <Modal
-      isOpen={modalIsOpen}
-      onRequestClose={closeModal}
-      style={customStyles}
-      contentLabel='Example Modal'>
+    <Modal isOpen={openModal} style={customStyles} contentLabel="Example Modal">
       <CancelContainer>
         <DeleteMessage>
           Are you sure you want to delete this post?
         </DeleteMessage>
         <div>
-          <CancelButton onClick={closeModal}>No, go back</CancelButton>
+          <CancelButton onClick={() => setOpenModal(false)}>
+            No, go back
+          </CancelButton>
           <ConfirmButton onClick={confirmModal}>Yes, delete it</ConfirmButton>
         </div>
       </CancelContainer>

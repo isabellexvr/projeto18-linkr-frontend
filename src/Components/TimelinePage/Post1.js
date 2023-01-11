@@ -21,7 +21,7 @@ import DeleteButton from "../EditAndDeleteButtons/DeleteButton";
 import { Link, useNavigate } from "react-router-dom";
 import { ReactTagify } from "react-tagify";
 import axios from "axios";
-
+import DeleteModal from "../../Components/DeleteModal/DeleteModal";
 
 function Post(props) {
   const { userId, userName, userImage } = props.user;
@@ -29,8 +29,7 @@ function Post(props) {
   const { disabled, setDisabled } = props.disable;
   const [edit, setEdit] = useState(false);
   const [editedDescription, setEditedDescription] = useState(postDescription);
-  const [modalIsOpen, setIsOpen] = useState(false);
-  const [deletePost, setDeletePost] = useState("");
+  const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
   const token = props.token;
   const userInfo = jwtDecode(token);
@@ -69,26 +68,23 @@ function Post(props) {
 
   function confirmModal() {
     axios
-      .delete(`http://localhost:4000/posts/${deletePost}`, {
-        // headers: {
-        //   Authorization: `Bearer ${token}
-        // `,
-        // },
+      .delete(`http://localhost:4000/posts/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${token}
+         `,
+        },
       })
-      .then((a) => {
-        navigate("/timeline");
-        window.location.reload(true);
-        setIsOpen(false);
+      .then((ans) => {
+        alert(ans.data);
+        setOpenModal(false);
       })
       .catch((err) => {
-        setIsOpen(false);
         alert("Não foi possível deletar o post");
         console.log(err);
       });
   }
 
   function handleEditInput(e) {
-
     if (e.key === "Escape") setEdit(false);
     if (e.key === "Enter") {
       axios(`http://localhost:4000/posts/${postId}`, {
@@ -126,7 +122,7 @@ function Post(props) {
           {userId === userInfo.userId && (
             <ActionsContainer>
               <EditButton setEdit={setEdit} edit={edit} />
-              <DeleteButton />
+              <DeleteButton setOpenModal={setOpenModal} />
             </ActionsContainer>
           )}
         </TitleContainer>
@@ -145,7 +141,7 @@ function Post(props) {
           </Description>
         ) : (
           <EditContainer
-          type="text"
+            type="text"
             ref={(ref) => ref && ref.focus()}
             value={editedDescription}
             onChange={(e) => setEditedDescription(e.target.value)}
@@ -157,6 +153,11 @@ function Post(props) {
           <PostLink metadata={props.metadata} />
         </Link>
       </RightContainer>
+      <DeleteModal
+        confirmModal={confirmModal}
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+      />
     </PostStyle>
   );
 }

@@ -4,7 +4,7 @@ import Post from "../Components/TimelinePage/Post1";
 import useWindowDimensions from "../Services/windowDimensions";
 import Searchbox from "../Components/Searchbox/Searchbox";
 import axios from "axios";
-import DeleteModal from "../Components/DeleteModal/DeleteModal";
+
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../Context/authContext";
 import { useNavigate } from "react-router-dom";
