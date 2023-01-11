@@ -1,6 +1,5 @@
 export default function handleLikedBy(arr, userInfo) {
     let string;
-    console.log(arr[0].username)
 
     if (arr.find((e) => e.userId === userInfo.userId)) {
       if (arr.length === 1 && arr[0].username === null) {

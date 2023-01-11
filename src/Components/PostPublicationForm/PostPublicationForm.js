@@ -9,12 +9,15 @@ import {
   DescriptionInput,
   SubmitButton,
 } from "./PostPublicationFormStyles";
+import jwtDecode from "jwt-decode";
 
 //https://linkr-api-9ik9.onrender.com
 
 export default function PostPublicationForm({ loading, setLoading }) {
   const [form, setForm] = useState({});
   const { token } = useContext(AuthContext);
+  const {userPicture} = jwtDecode(token)
+  console.log(userPicture)
 
   function handleForm({ target: { value, name } }) {
     setForm({ ...form, [name]: value });
@@ -51,7 +54,7 @@ export default function PostPublicationForm({ loading, setLoading }) {
       <DesktopForm>
         <img
           alt='user'
-          src='https://i.pinimg.com/originals/64/8b/da/648bda8b742f5f713e94f17ff1b49252.jpg'
+          src={userPicture}
         />
       </DesktopForm>
       <div>

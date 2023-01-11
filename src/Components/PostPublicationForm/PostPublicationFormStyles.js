@@ -43,6 +43,8 @@ export const DesktopForm = styled.div`
   width: 86px;
   > img {
     width: 50px;
+    height: 50px;
+    object-fit: cover;
     border-radius: 50%;
     margin-left: 18px;
     margin-top: 16px;
