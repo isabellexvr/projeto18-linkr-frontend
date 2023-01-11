@@ -14,13 +14,13 @@ export const tooltipStyle = {
 };
 
 export const PostStyle = styled.div`
-  height: 70vw;
+  height: 232px;
   width: 100%;
   background-color: #171717;
   margin-top: 16px;
   display: flex;
 
-  @media (min-width: 900px) {
+  @media (min-width: 667px) {
     width: 611px;
     height: 276px;
     border-radius: 16px;
@@ -67,6 +67,7 @@ export const LikesCount = styled.h2`
 export const RightContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
   font-family: "Lato";
   width: 76.8%;
 `;
