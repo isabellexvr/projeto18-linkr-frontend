@@ -27,6 +27,7 @@ const customStyles = {
 };
 
 function DeleteModal({ openModal, setOpenModal, postId, token }) {
+  console.log(postId)
   return (
     <Modal isOpen={openModal} style={customStyles} contentLabel="Example Modal">
       <CancelContainer>

@@ -30,7 +30,7 @@ function Post(props) {
   const { disabled, setDisabled } = props.disable;
   const { edit, setEdit } = props.edition;
   const [editedDescription, setEditedDescription] = useState(postDescription);
-  const {openModal, setOpenModal} = props.modal
+  const { openModal, setOpenModal } = props.modal;
   const navigate = useNavigate();
   const token = props.token;
   const userInfo = jwtDecode(token);
@@ -66,6 +66,12 @@ function Post(props) {
               <ActionsContainer>
                 <EditButton setEdit={setEdit} edit={edit} />
                 <DeleteButton setOpenModal={setOpenModal} />
+                <DeleteModal
+                  openModal={openModal}
+                  setOpenModal={setOpenModal}
+                  postId={postId}
+                  token={token}
+                />
               </ActionsContainer>
             )}
           </TitleContainer>
@@ -104,13 +110,6 @@ function Post(props) {
             <PostLink metadata={props.metadata} />
           </Link>
         </RightContainer>
-        <DeleteModal
-          
-          postId={postId}
-          token={token}
-          openModal={openModal}
-          setOpenModal={setOpenModal}
-        />
       </PostStyle>
     </TooltipProvider>
   );
