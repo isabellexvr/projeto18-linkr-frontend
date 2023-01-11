@@ -29,7 +29,7 @@ function Post(props) {
   const { disabled, setDisabled } = props.disable;
   const { edit, setEdit } = props.edition;
   const [editedDescription, setEditedDescription] = useState(postDescription);
-  const { openModal, setOpenModal } = props.modal;
+  const { setOpenModal } = props.modal;
   const setPostToDelete = props.setPostToDelete;
   const navigate = useNavigate();
   const token = props.token;

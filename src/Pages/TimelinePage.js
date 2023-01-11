@@ -68,7 +68,6 @@ export default function TimelinePage() {
               error,
               edit,
               setEdit,
-              openModal,
               setOpenModal,
               setPostToDelete
             )}
