@@ -1,6 +1,6 @@
 import Header from "../Components/Header/Header";
 import PostPublicationForm from "../Components/PostPublicationForm/PostPublicationForm";
-import Post from "../Components/TimelinePage/Post1";
+import Post from "../Components/TimelinePage/Post";
 import useWindowDimensions from "../Services/windowDimensions";
 import Searchbox from "../Components/Searchbox/Searchbox";
 import axios from "axios";

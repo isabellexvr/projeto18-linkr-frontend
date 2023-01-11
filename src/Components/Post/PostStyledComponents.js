@@ -17,7 +17,7 @@ export const PostStyle = styled.div`
   height: 232px;
   width: 100%;
   background-color: #171717;
-  margin-bottom: 16px;
+  margin-top: 16px;
   display: flex;
 
   @media (min-width: 667px) {
@@ -67,6 +67,7 @@ export const LikesCount = styled.h2`
 export const RightContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
   font-family: "Lato";
   width: 76.8%;
 `;
