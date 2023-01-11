@@ -30,7 +30,7 @@ export default function TimelinePage() {
   const [deletePost, setDeletePost] = useState("");
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(false);
-
+  const [disabled, setDisabled] = useState(false);
   useEffect(() => {
     axios
       .get("http://localhost:4000/all-posts")
@@ -43,7 +43,8 @@ export default function TimelinePage() {
         setLoading(false);
         setError(true);
       });
-  }, [loading, setLoading]);
+  }, [loading, setLoading, disabled, setDisabled]);
+  console.log(disabled)
 
   function openModal() {
     setIsOpen(true);
@@ -78,6 +79,7 @@ export default function TimelinePage() {
       if (posts.length > 0) {
         return posts.map((post, index) => (
           <Post
+            disable={{ setDisabled, disabled }}
             key={index}
             token={token}
             user={{

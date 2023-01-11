@@ -5,17 +5,14 @@ export default function LikeButton({
   setDisabled,
   disabled,
   token,
-  setLiked,
-  liked,
-  e,
+  postId,
 }) {
   return (
     <LikeIcon
       isRequesting={disabled}
       onClick={() => {
         setDisabled(true);
-        setLiked([...liked, e.postId]);
-        postLikeFunction(e.postId, token, setDisabled);
+        postLikeFunction(postId, token, setDisabled);
       }}
     />
   );

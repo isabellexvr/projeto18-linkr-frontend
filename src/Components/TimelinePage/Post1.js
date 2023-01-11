@@ -25,32 +25,47 @@ import jwtDecode from "jwt-decode";
 function Post(props) {
   const { userId, userName, userImage } = props.user;
   const { postId, likesCount, likedBy, postDescription, url } = props.content;
+  const {disabled ,setDisabled} = props.disable
   const token = props.token;
   const userInfo = jwtDecode(token);
-  const [liked, setLiked] = useState(false);
 
-  function isLiked() {
+  function IsLiked() {
     const idArray = likedBy.map((obj) => obj.userId);
+    if (idArray.length <= 0) {
+      return (
+        <LikeButton
+          setDisabled={setDisabled}
+          disabled={disabled}
+          token={token}
+          postId={postId}
+        />
+      );
+    }
     if (idArray.includes(userInfo.userId)) {
-      setLiked(true);
-      return <LikedButton onClick={handleLikes} />;
+      return (
+        <LikedButton
+          setDisabled={setDisabled}
+          disabled={disabled}
+          token={token}
+          postId={postId}
+        />
+      );
     }
-    setLiked(false);
-    return <LikeButton onClick={handleLikes} />;
-  }
-
-  function handleLikes() {
-    if (liked) {
-      return postLikeFunction(postId, token);
-    }
-    return dislikeFunction(postId, token);
+    return (
+      <LikeButton
+        setDisabled={setDisabled}
+        disabled={disabled}
+        token={token}
+        postId={postId}
+      />
+    );
   }
 
   return (
     <PostStyle>
       <LeftContainer>
         <UserProfilePicture src={userImage} />
-        {isLiked()}
+        <IsLiked />
         <TooltipWrapper>
           <LikesCount>{likesCount}</LikesCount>
         </TooltipWrapper>
