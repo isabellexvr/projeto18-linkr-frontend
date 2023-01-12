@@ -197,10 +197,7 @@ function Post(props) {
           )}
         </Description>
         <PostLink
-          linkTitle={linkTitle}
-          linkDescription={linkDescription}
-          linkUrl={linkUrl}
-          linkImage={linkImg}
+metadata={{linkTitle, linkDescription, linkUrl, linkImg}}
         />
       </RightContainer>
     </PostStyle>
