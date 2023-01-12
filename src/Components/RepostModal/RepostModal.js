@@ -50,7 +50,7 @@ function RepostModal({
               confirmRepostingPost(postToRepost, setOpenRepostModal, token)
             }
           >
-            Yes, delete it
+            Yes, repost it
           </ConfirmButton>
         </div>
       </CancelContainer>

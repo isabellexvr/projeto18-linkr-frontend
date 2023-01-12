@@ -16,7 +16,7 @@ export default function UserPostActions({ postInfo, user, disabledUseState, repo
   const { likedBy, postId, likesCount, repostsCount, commentsCount } = postInfo;
   const { userInfo, token } = user;
   const { setDisabled, disabled } = disabledUseState;
-  const {setOpenRepostModal} = repostModal
+  const {setOpenRepostModal, setPostToRepost} = repostModal
 
   return (
     <UserActionsContainer>
@@ -45,7 +45,9 @@ export default function UserPostActions({ postInfo, user, disabledUseState, repo
         <Count>{commentsCount} {commentsCount === "1" ?  "comment" : "comments"}</Count>
       </Comments>
       <Repost>
-        <RepostArrows onClick={()=>setOpenRepostModal(true)} />
+        <RepostArrows onClick={()=>{
+          setPostToRepost(postId)
+          setOpenRepostModal(true)}} />
         <Count>{repostsCount} re-posts</Count>
       </Repost>
     </UserActionsContainer>

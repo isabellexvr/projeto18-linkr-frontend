@@ -5,15 +5,14 @@ import Post from "../Components/TimelinePage/Post";
 
 export default function verifyIfPosts(posts, token, modals, states ) {
 
-  console.log(token)
-
   const {setOpenDeleteModal, openDeleteModal, setOpenRepostModal, openRepostModal} = modals
-  const {setDisabled, disabled, loading, error, edit, setEdit, setPostToDelete} = states
+  const {setDisabled, disabled, loading, error, edit, setEdit, setPostToDelete, setPostToRepost} = states
 
   if (posts && !loading) {
     if (posts.length > 0) {
       return posts.map((post, index) => (
         <Post
+        setPostToRepost={setPostToRepost}
         setPostToDelete={setPostToDelete}
           setOpenDeleteModal={setOpenDeleteModal}
           modals={{ setOpenDeleteModal, setOpenRepostModal }}

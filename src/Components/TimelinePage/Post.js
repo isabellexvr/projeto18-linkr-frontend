@@ -29,6 +29,7 @@ function Post(props) {
   const [editedDescription, setEditedDescription] = useState(postDescription);
   const { setOpenDeleteModal, setOpenRepostModal } = props.modals;
   const setPostToDelete = props.setPostToDelete;
+  const setPostToRepost = props.setPostToRepost
   const navigate = useNavigate();
   const token = props.token;
   const userInfo = jwtDecode(token);
@@ -40,7 +41,7 @@ function Post(props) {
         <LeftContainer>
           <UserProfilePicture src={userImage} />
           <UserPostActions
-            repostModal={{setOpenRepostModal}}
+            repostModal={{setOpenRepostModal, setPostToRepost}}
             postInfo={{likedBy, postId, likesCount, repostsCount, commentsCount}}
             user={{userInfo, token}}
             disabledUseState={{setDisabled, disabled}}
