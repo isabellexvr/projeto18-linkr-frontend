@@ -20,6 +20,7 @@ export const InputWrapper = styled.div`
   }
   display: inherit;
   align-items: center;
+  justify-content: space-between;
   height: 45px;
   width: 100%;
   background-color: #fff;
@@ -60,7 +61,7 @@ export const SearchIcon = styled(AiOutlineSearch)`
 
 export const StyledInput = styled(DebounceInput)`
   @media (min-width: 768px) {
-    width: 543px;
+    width: 100%;
     text-indent: 14px;
     &::placeholder {
       font-size: 19px;
