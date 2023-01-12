@@ -26,19 +26,19 @@ const customStyles = {
   },
 };
 
-function DeleteModal({ openModal, setOpenModal, token, postToDelete }) {
+function DeleteModal({ openDeleteModal, setOpenDeleteModal, token, postToDelete }) {
 
   return (
-    <Modal isOpen={openModal} style={customStyles} contentLabel="Example Modal">
+    <Modal isOpen={openDeleteModal} style={customStyles} contentLabel="Example Modal">
       <CancelContainer>
         <DeleteMessage>
           Are you sure you want to delete this post?
         </DeleteMessage>
         <div>
-          <CancelButton onClick={() => setOpenModal(false)}>
+          <CancelButton onClick={() => setOpenDeleteModal(false)}>
             No, go back
           </CancelButton>
-          <ConfirmButton onClick={()=>confirmModal(postToDelete, setOpenModal, token)}>
+          <ConfirmButton onClick={()=>confirmModal(postToDelete, setOpenDeleteModal, token)}>
             Yes, delete it
           </ConfirmButton>
         </div>

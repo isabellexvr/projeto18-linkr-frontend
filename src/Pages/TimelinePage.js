@@ -26,7 +26,7 @@ export default function TimelinePage() {
   const [error, setError] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [edit, setEdit] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(true);
   const [postToDelete, setPostToDelete] = useState("");
   const [newPosts, setNewPosts] = useState([]);
   const [display, setDisplay] = useState("none");
@@ -51,8 +51,8 @@ export default function TimelinePage() {
     setDisabled,
     edit,
     setEdit,
-    openModal,
-    setOpenModal,
+    openDeleteModal,
+    setOpenDeleteModal,
   ]);
 
   useInterval(() => {
@@ -102,12 +102,12 @@ export default function TimelinePage() {
               error,
               edit,
               setEdit,
-              setOpenModal,
+              setOpenDeleteModal,
               setPostToDelete
             )}
             <DeleteModal
-              openModal={openModal}
-              setOpenModal={setOpenModal}
+              openDeleteModal={openDeleteModal}
+              setOpenDeleteModal={setOpenDeleteModal}
               token={token}
               postToDelete={postToDelete}
             />
