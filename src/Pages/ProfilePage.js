@@ -1,26 +1,33 @@
-import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
 import axios from "axios";
-import Header from "../Components/Constants/Header";
-import Post from "../Components/Post/Post";
-import Trending from "../Components/TimelinePage/Trending";
+import jwtDecode from "jwt-decode";
+import React, { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { TooltipProvider } from "react-tooltip";
 import {
+  FollowButton,
   PageStyle,
   PageTitle,
+  PostsContainer,
+  ProfilePicture,
   StyledMain,
-} from "../Components/Constants/PageTheme";
+  TitleWrapper,
+  Wrapper,
+} from "../Assets/PageTheme";
+import { AuthContext } from "../Context/authContext";
+import useWindowDimensions from "../Services/windowDimensions";
+import Header from "../Components/Header/Header";
+import PageContainer from "../Components/PageContainer/PageContainer";
+import Post from "../Components/Post/Post";
 import { NoPostsMessage } from "../Components/Post/PostStyledComponents";
-import { AuthContext } from "../Components/Context/authContext";
-import useWindowDimensions from "../Components/Services/windowDimensions";
-import Searchbox from "../Components/Constants/Searchbox";
-import { TooltipProvider } from "react-tooltip";
-import jwtDecode from "jwt-decode";
+import Searchbox from "../Components/Searchbox/Searchbox";
+import Trending from "../Components/Trending/Trending";
 
 function ProfilePage() {
   const { id } = useParams();
   const { token } = useContext(AuthContext);
   const [user, setUser] = useState(null);
   const [deleted, setDeleted] = useState(false);
+  const [follow, setFollow] = useState(false);
   const { width } = useWindowDimensions();
   const myUser = jwtDecode(token);
 
@@ -31,53 +38,70 @@ function ProfilePage() {
         Authorization: `Bearer ${token}`,
       },
     };
-    axios(`https://linkr-api-9ik9.onrender.com/user/${id}`, config)
+    axios(`http://localhost:4000/user/${id}`, config)
       .then((res) => {
         if (res.data.posts[0].id === null) {
           delete res.data.posts;
         }
+        if (res.data.followedBy?.includes(myUser.userId)) {
+          setFollow(true);
+          setUser(res.data);
+          return;
+        }
+        setFollow(false);
         setUser(res.data);
+        return;
       })
       .catch((err) => console.log(err));
   }, [id, deleted]);
 
   return (
-    <>
+    <PageContainer>
       <Header />
       <TooltipProvider>
         <StyledMain width={width}>
-          <PageStyle>
-            {width < 840 && <Searchbox />}
-            <PageTitle>{user?.username}'s posts</PageTitle>
-            {user?.posts ? (
-              user.posts.map((post, index) => (
-                <Post
-                  key={index}
-                  myUser={myUser}
-                  token={token}
-                  username={user.username}
-                  userImage={user.userImage}
-                  userId={Number(id)}
-                  post={post}
-                  deleted={deleted}
-                  setDeleted={setDeleted}
-                />
-              ))
-            ) : (
-              <NoPostsMessage>
-                <h1>There are no posts yet.</h1>
-                <button
-                  style={{ width: "fit-content" }}
-                  onClick={() => window.location.reload()}>
-                  Reload
-                </button>
-              </NoPostsMessage>
+          {width < 667 && <Searchbox />}
+          <Wrapper>
+            <TitleWrapper>
+              <ProfilePicture src={user?.userImage} />
+              <PageTitle>{user?.username}'s posts</PageTitle>
+            </TitleWrapper>
+            {Number(id) !== myUser.userId && (
+              <FollowButton>{follow ? "Unfollow" : "Follow"}</FollowButton>
             )}
+          </Wrapper>
+          <PageStyle>
+            <PostsContainer>
+              {user?.posts ? (
+                user.posts.map((post, index) => (
+                  <Post
+                    key={index}
+                    myUser={myUser}
+                    token={token}
+                    username={user.username}
+                    userImage={user.userImage}
+                    userId={Number(id)}
+                    post={post}
+                    deleted={deleted}
+                    setDeleted={setDeleted}
+                  />
+                ))
+              ) : (
+                <NoPostsMessage>
+                  <h1>There are no posts yet.</h1>
+                  <button
+                    style={{ width: "fit-content" }}
+                    onClick={() => window.location.reload()}>
+                    Reload
+                  </button>
+                </NoPostsMessage>
+              )}
+            </PostsContainer>
+            {width > 1020 && <Trending />}
           </PageStyle>
-          <Trending />
         </StyledMain>
       </TooltipProvider>
-    </>
+    </PageContainer>
   );
 }
 

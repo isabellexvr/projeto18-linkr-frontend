@@ -16,7 +16,6 @@ export default function PostPublicationForm({ loading, setLoading }) {
 
   function sendForm(e) {
     e.preventDefault();
-    console.log(form);
     setLoading(true);
 
     axios

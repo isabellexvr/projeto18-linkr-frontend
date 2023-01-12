@@ -36,7 +36,6 @@ const TrendTopics = styled.div`
   height: 406px;
   background: #171717;
   border-radius: 16px;
-  margin-top: 100px;
   margin-left: 40px;
   h1 {
     font-family: "Oswald";
