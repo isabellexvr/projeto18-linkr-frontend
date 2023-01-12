@@ -12,11 +12,11 @@ import handleLikedBy from "../../Services/handleLikedBy";
 import { Tooltip, TooltipWrapper } from "react-tooltip";
 import 'react-tooltip/dist/react-tooltip.css'
 
-export default function UserPostActions({ postInfo, user, disabledUseState }) {
+export default function UserPostActions({ postInfo, user, disabledUseState, repostModal }) {
   const { likedBy, postId, likesCount, repostsCount, commentsCount } = postInfo;
   const { userInfo, token } = user;
   const { setDisabled, disabled } = disabledUseState;
-  
+  const {setOpenRepostModal} = repostModal
 
   return (
     <UserActionsContainer>
@@ -45,7 +45,7 @@ export default function UserPostActions({ postInfo, user, disabledUseState }) {
         <Count>{commentsCount} {commentsCount === "1" ?  "comment" : "comments"}</Count>
       </Comments>
       <Repost>
-        <RepostArrows />
+        <RepostArrows onClick={()=>setOpenRepostModal(true)} />
         <Count>{repostsCount} re-posts</Count>
       </Repost>
     </UserActionsContainer>

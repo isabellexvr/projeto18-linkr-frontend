@@ -3,7 +3,12 @@ import ErrorMessage from "../Components/ErrorMessage/ErrorMessage";
 import LoadingMessage from "../Components/LoadingMessage/LoadingMessage";
 import Post from "../Components/TimelinePage/Post";
 
-export default function verifyIfPosts(posts, setDisabled, disabled, token, loading, error, edit, setEdit, setOpenDeleteModal, setPostToDelete ) {
+export default function verifyIfPosts(posts, token, modals, states ) {
+
+  console.log(token)
+
+  const {setOpenDeleteModal, openDeleteModal, setOpenRepostModal, openRepostModal} = modals
+  const {setDisabled, disabled, loading, error, edit, setEdit, setPostToDelete} = states
 
   if (posts && !loading) {
     if (posts.length > 0) {
@@ -11,7 +16,7 @@ export default function verifyIfPosts(posts, setDisabled, disabled, token, loadi
         <Post
         setPostToDelete={setPostToDelete}
           setOpenDeleteModal={setOpenDeleteModal}
-          modal={{ setOpenDeleteModal }}
+          modals={{ setOpenDeleteModal, setOpenRepostModal }}
           edition={{ edit, setEdit }}
           disable={{ setDisabled, disabled }}
           key={index}

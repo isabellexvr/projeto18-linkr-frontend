@@ -1,9 +1,9 @@
 import axios from "axios";
 
-export default function confirmModal(postId, setOpenModal, token) {
+export default function confirmRepostingPost(postId, setOpenDeleteModal, token) {
 
   axios
-    .delete(`http://localhost:4000/posts/${postId}`, {
+    .post(`http://localhost:4000/repost/${postId}`, {
       headers: {
         Authorization: `Bearer ${token}
          `,
@@ -11,7 +11,7 @@ export default function confirmModal(postId, setOpenModal, token) {
     })
     .then((ans) => {
       console.log(ans.data)
-      setOpenModal(false);
+      setOpenDeleteModal(false);
     })
     .catch((err) => {
       console.log(err);
