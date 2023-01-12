@@ -81,7 +81,7 @@ function Post(props) {
           </TitleContainer>
           {edit && userId === userInfo.userId ? (
             <EditContainer
-              type="text"
+              type='text'
               ref={(ref) => ref && ref.focus()}
               value={editedDescription}
               onChange={(event) => setEditedDescription(event.target.value)}
@@ -103,8 +103,7 @@ function Post(props) {
                   fontWeight: 800,
                   cursor: "pointer",
                 }}
-                tagClicked={(tag) => navigate(`/hashtag/${tag.substring(1)}`)}
-              >
+                tagClicked={(tag) => navigate(`/hashtag/${tag.substring(1)}`)}>
                 {postDescription}
               </ReactTagify>
             </Description>
