@@ -10,17 +10,24 @@ import {
   ProfilePicture,
   Username,
   StyledInput,
+  FollowingTag,
 } from "./SearchboxStyles";
+import jwtDecode from "jwt-decode";
+import { sortByFollowing } from "../../Services/sortByFollowing";
 
 function Searchbox() {
   const [search, setSearch] = useState("");
   const [result, setResult] = useState([]);
+  const [followers, setFollowers] = useState([]);
 
   const { token } = useContext(AuthContext);
+  const { userId } = jwtDecode(token);
   const navigate = useNavigate();
 
+  console.log(followers);
+
   useEffect(() => {
-    if (search.length !== 0) {
+    if (search.length >= 3) {
       const config = {
         method: "GET",
         headers: {
@@ -28,18 +35,27 @@ function Searchbox() {
         },
       };
 
-      axios(
-        `https://linkr-api-9ik9.onrender.com/user?username=${search}`,
-        config
-      )
-        .then((res) => setResult(res.data))
+      axios(`http://localhost:4000/user?username=${search}`, config)
+        .then((res) => {
+          res.data.forEach((user) => {
+            if (!followers.includes(user.id)) {
+              if (user.followedBy?.includes(Number(userId))) {
+                setFollowers([...followers, user.id]);
+              }
+            }
+          });
+          setResult(res.data);
+        })
         .catch((err) => console.log(err));
     }
+    setFollowers([]);
+    setResult([]);
   }, [search]);
 
   function handleClick(user) {
     setSearch("");
     setResult([]);
+    setFollowers([]);
     navigate(`/user/${user.id}`);
   }
 
@@ -63,13 +79,16 @@ function Searchbox() {
       </InputWrapper>
       {search.length !== 0 &&
         result.length !== 0 &&
-        result.map((user, index) => (
+        sortByFollowing(followers, result).map((user, index) => (
           <ResultWrapper key={index} onClick={() => handleClick(user)}>
             <ProfilePicture
               src={user.pictureUrl}
               alt={`${user.username} profile picture`}
             />
             <Username>{user.username}</Username>
+            {followers.includes(user.id) && (
+              <FollowingTag>• following</FollowingTag>
+            )}
           </ResultWrapper>
         ))}
     </ComponentWrapper>

@@ -79,3 +79,10 @@ export const StyledInput = styled(DebounceInput)`
     font-size: 17px;
   }
 `;
+
+export const FollowingTag = styled.span`
+  color: #c5c5c5;
+  font-size: 19px;
+  line-height: 23px;
+  margin-left: 8px;
+`;
