@@ -67,7 +67,6 @@ function Post(props) {
             <span onClick={() => navigate(`/user/${posterId}`)}>
               <UserName>{userName}</UserName>
             </span>
-
             {userId === userInfo.userId && (
               <LoggedUserActionsContainer>
                 <EditButton setEdit={setEdit} edit={edit} />
