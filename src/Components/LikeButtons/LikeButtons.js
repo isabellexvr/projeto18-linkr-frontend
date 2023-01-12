@@ -9,8 +9,9 @@ export default function LikeButton({
 }) {
   return (
     <LikeIcon
-      isRequesting={disabled}
+    isrequesting={disabled}
       onClick={() => {
+        console.log(disabled)
         setDisabled(true);
         postLikeFunction(postId, token, setDisabled);
       }}

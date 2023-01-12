@@ -11,6 +11,7 @@ export default function SignIn() {
   const { token, setToken, setAndPersistToken } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
 
+
   function login(event) {
     event.preventDefault();
     setLoading(true);

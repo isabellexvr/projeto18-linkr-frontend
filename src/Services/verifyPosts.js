@@ -9,9 +9,9 @@ export default function verifyIfPosts(posts, setDisabled, disabled, token, loadi
     if (posts.length > 0) {
       return posts.map((post, index) => (
         <Post
-        setPostToDelete={setPostToDelete}
-          modal={{ setOpenModal}}
-          edition={{edit, setEdit}}
+          setPostToDelete={setPostToDelete}
+          modal={{ setOpenModal }}
+          edition={{ edit, setEdit }}
           disable={{ setDisabled, disabled }}
           key={index}
           token={token}
@@ -26,6 +26,8 @@ export default function verifyIfPosts(posts, setDisabled, disabled, token, loadi
             likedBy: post.likedBy,
             postDescription: post.postDescription,
             url: post.url,
+            repostsCount: post.repostsCount,
+            commentsCount: post.commentsCount,
           }}
           metadata={{
             linkTitle: post.linkTitle,
