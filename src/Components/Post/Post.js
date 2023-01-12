@@ -44,7 +44,7 @@ function Post(props) {
     linkTitle,
     linkDescription,
     linkUrl,
-    linkImg,
+    linkImage,
     likesCount,
     likedBy,
   } = post;
