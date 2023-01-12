@@ -3,14 +3,15 @@ import ErrorMessage from "../Components/ErrorMessage/ErrorMessage";
 import LoadingMessage from "../Components/LoadingMessage/LoadingMessage";
 import Post from "../Components/TimelinePage/Post";
 
-export default function verifyIfPosts(posts, setDisabled, disabled, token, loading, error, edit, setEdit, setOpenModal, setPostToDelete ) {
+export default function verifyIfPosts(posts, setDisabled, disabled, token, loading, error, edit, setEdit, setOpenDeleteModal, setPostToDelete ) {
 
   if (posts && !loading) {
     if (posts.length > 0) {
       return posts.map((post, index) => (
         <Post
-          setPostToDelete={setPostToDelete}
-          modal={{ setOpenModal }}
+        setPostToDelete={setPostToDelete}
+          setOpenDeleteModal={setOpenDeleteModal}
+          modal={{ setOpenDeleteModal }}
           edition={{ edit, setEdit }}
           disable={{ setDisabled, disabled }}
           key={index}

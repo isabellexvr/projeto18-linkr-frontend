@@ -27,7 +27,7 @@ function Post(props) {
   const { disabled, setDisabled } = props.disable;
   const { edit, setEdit } = props.edition;
   const [editedDescription, setEditedDescription] = useState(postDescription);
-  const { setOpenModal } = props.modal;
+  const { setOpenDeleteModal } = props.modal;
   const setPostToDelete = props.setPostToDelete;
   const navigate = useNavigate();
   const token = props.token;
@@ -53,7 +53,7 @@ function Post(props) {
                 <EditButton setEdit={setEdit} edit={edit} />
                 <DeleteButton
                   setPostToDelete={setPostToDelete}
-                  setOpenModal={setOpenModal}
+                  setOpenDeleteModal={setOpenDeleteModal}
                   postId={postId}
                 />
               </LoggedUserActionsContainer>
