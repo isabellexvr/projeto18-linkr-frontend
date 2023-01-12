@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export default function confirmModal(postId, setOpenModal, token) {
+export default function confirmDeletingPost(postId, setOpenModal, token) {
 
   axios
     .delete(`http://localhost:4000/posts/${postId}`, {
