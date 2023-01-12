@@ -15,6 +15,8 @@ import Trending from "../Components/Trending/Trending";
 import PageContainer from "../Components/PageContainer/PageContainer";
 import verifyIfPosts from "../Services/verifyPosts";
 import DeleteModal from "../Components/DeleteModal/DeleteModal";
+import NewPost from "../Components/TimelinePage/NewPosts";
+import useInterval from "use-interval";
 
 export default function TimelinePage() {
   const { width } = useWindowDimensions();
@@ -26,6 +28,9 @@ export default function TimelinePage() {
   const [edit, setEdit] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [postToDelete, setPostToDelete] = useState("");
+  const [newPosts, setNewPosts] = useState([]);
+  const [display, setDisplay] = useState("none");
+  const [countNewPosts, setCountNewPosts] = useState(0);
 
   useEffect(() => {
     axios
@@ -50,6 +55,33 @@ export default function TimelinePage() {
     setOpenModal,
   ]);
 
+  useInterval(() => {
+    axios
+      .get("http://localhost:4000/all-posts", {
+        params: {
+          _limit: 3
+        }
+      })
+      .then((a) => {
+        setNewPosts(a.data);
+        console.log(newPosts);
+        setLoading(false);
+        if (newPosts.length > posts.length) {
+          let prod = newPosts.length - posts.length;
+          setCountNewPosts(prod);
+          setDisplay("");
+          // setPosts(a.data);
+          return;
+        }
+
+      })
+      .catch((e) => {
+        console.log(e);
+        setLoading(false);
+        setError(true);
+      });
+  }, 15000);
+
   return (
     <PageContainer>
       <Header />
@@ -59,6 +91,8 @@ export default function TimelinePage() {
         <PageStyle>
           <PostsContainer>
             <PostPublicationForm loading={loading} setLoading={setLoading} />
+            <NewPost display={display} setDisplay={setDisplay}
+              setPosts={setPosts} newPosts={newPosts} countNewPosts={countNewPosts} />
             {verifyIfPosts(
               posts,
               setDisabled,

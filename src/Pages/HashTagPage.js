@@ -1,14 +1,30 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Modal from "react-modal";
 import { useParams } from "react-router";
 import styled from "styled-components";
 import Header from "../Components/Header/Header";
 import PostHashTags from "../Components/TimelinePage/PostsHashTags";
 import Trending from "../Components/Trending/Trending";
+import { AuthContext } from "../Context/authContext";
+import verifyIfPosts from "../Services/verifyPosts";
+import verifyPostsHashtags from "../Services/verifyPostsHashtags";
+import useWindowDimensions from "../Services/windowDimensions";
 
 export default function HashTagsPage() {
   const { hashtag } = useParams();
+  const { width } = useWindowDimensions();
+  const { token } = useContext(AuthContext);
+  const [loading, setLoading] = useState(true);
+  const [posts, setPosts] = useState([]);
+  const [error, setError] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [postToDelete, setPostToDelete] = useState("");
+  const [newPosts, setNewPosts] = useState([]);
+  const [display, setDisplay] = useState("none");
+  const [countNewPosts, setCountNewPosts] = useState(0);
 
   const customStyles = {
     content: {
@@ -29,38 +45,57 @@ export default function HashTagsPage() {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [deletePost, setDeletePost] = useState("");
 
-  function openModal() {
-    setIsOpen(true);
-  }
+  // function openModal() {
+  //   setIsOpen(true);
+  // }
 
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    subtitle.style.color = "green";
-  }
+  // function afterOpenModal() {
+  //   // references are now sync'd and can be accessed.
+  //   subtitle.style.color = "green";
+  // }
 
-  function closeModal() {
-    setIsOpen(false);
-  }
+  // function closeModal() {
+  //   setIsOpen(false);
+  // }
 
-  function confirmModal() {
-    axios
-      .delete(`http://localhost:4000/posts/${deletePost}`, {
-        // headers: {
-        //   Authorization: `Bearer ${token}
-        // `,
-        // },
-      })
-      .then((a) => {
-        window.location.reload(true);
-        setIsOpen(false);
-        console.log(a.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+  // function confirmModal() {
+  //   axios
+  //     .delete(`http://localhost:4000/posts/${deletePost}`, {
+  //       // headers: {
+  //       //   Authorization: `Bearer ${token}
+  //       // `,
+  //       // },
+  //     })
+  //     .then((a) => {
+  //       window.location.reload(true);
+  //       setIsOpen(false);
+  //       console.log(a.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }
 
-  Modal.setAppElement(document.getElementById("root"));
+  // Modal.setAppElement(document.getElementById("root"));
+
+  useEffect(() => {
+    const promisse = axios.get(
+      `http://localhost:4000/hashtag/${hashtag}`,
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }
+    );
+    promisse.then((res) => {
+      setLoading(false);
+      setPosts(res.data);
+    });
+    promisse.catch((err) => {
+      setLoading(false);
+      setError(true);
+    });
+  }, [hashtag, loading, setLoading]);
 
   return (
     <>
@@ -68,15 +103,22 @@ export default function HashTagsPage() {
       <HashTagPage>
         <PageTitle>#{hashtag}</PageTitle>
         <PostMobile>
-          <PostHashTags
-            setIsOpen={setIsOpen}
-            setDeletePost={setDeletePost}
-            openModal={openModal}
-          />
+          {verifyPostsHashtags(
+            posts,
+            setDisabled,
+            disabled,
+            token,
+            loading,
+            error,
+            edit,
+            setEdit,
+            setOpenModal,
+            setPostToDelete
+          )}
         </PostMobile>
         <Trending />
-        <StyleModal>
-          {/* <button onClick={openModal}>Open Modal</button> */}
+        {/* <StyleModal>
+          <button onClick={openModal}>Open Modal</button>
           <Modal
             isOpen={modalIsOpen}
             onAfterOpen={afterOpenModal}
@@ -89,16 +131,16 @@ export default function HashTagsPage() {
             <button onClick={closeModal}>close</button>
             <button onClick={confirmModal}>confirm</button>
           </Modal>
-        </StyleModal>
+        </StyleModal> */}
       </HashTagPage>
     </>
   );
 }
 
-const StyleModal = styled.div`
-  h2 {
-  }
-`;
+// const StyleModal = styled.div`
+//   h2 {
+//   }
+// `;
 
 const HashTagPage = styled.div`
   margin-top: 70px;
