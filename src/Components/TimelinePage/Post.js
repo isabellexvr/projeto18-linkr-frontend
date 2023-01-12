@@ -23,7 +23,14 @@ import UserPostActions from "../../Components/UserPostActions/UserPostActions";
 
 function Post(props) {
   const { userId, userName, userImage } = props.user;
-  const { postId, likesCount, likedBy, postDescription, repostsCount, commentsCount } = props.content;
+  const {
+    postId,
+    likesCount,
+    likedBy,
+    postDescription,
+    repostsCount,
+    commentsCount,
+  } = props.content;
   const { disabled, setDisabled } = props.disable;
   const { edit, setEdit } = props.edition;
   const [editedDescription, setEditedDescription] = useState(postDescription);
@@ -33,21 +40,28 @@ function Post(props) {
   const token = props.token;
   const userInfo = jwtDecode(token);
 
-
   return (
     <TooltipProvider>
       <PostStyle>
         <LeftContainer>
           <UserProfilePicture src={userImage} />
           <UserPostActions
-            postInfo={{likedBy, postId, likesCount, repostsCount, commentsCount}}
-            user={{userInfo, token}}
-            disabledUseState={{setDisabled, disabled}}
+            postInfo={{
+              likedBy,
+              postId,
+              likesCount,
+              repostsCount,
+              commentsCount,
+            }}
+            user={{ userInfo, token }}
+            disabledUseState={{ setDisabled, disabled }}
           />
         </LeftContainer>
         <RightContainer>
           <TitleContainer>
-            <UserName>{userName}</UserName>
+            <UserName onClick={() => navigate(`/user/${userId}`)}>
+              {userName}
+            </UserName>
             {userId === userInfo.userId && (
               <LoggedUserActionsContainer>
                 <EditButton setEdit={setEdit} edit={edit} />
@@ -61,7 +75,7 @@ function Post(props) {
           </TitleContainer>
           {edit && userId === userInfo.userId ? (
             <EditContainer
-              type="text"
+              type='text'
               ref={(ref) => ref && ref.focus()}
               value={editedDescription}
               onChange={(event) => setEditedDescription(event.target.value)}
@@ -83,8 +97,7 @@ function Post(props) {
                   fontWeight: 800,
                   cursor: "pointer",
                 }}
-                tagClicked={(tag) => navigate(`/hashtag/${tag.substring(1)}`)}
-              >
+                tagClicked={(tag) => navigate(`/hashtag/${tag.substring(1)}`)}>
                 {postDescription}
               </ReactTagify>
             </Description>

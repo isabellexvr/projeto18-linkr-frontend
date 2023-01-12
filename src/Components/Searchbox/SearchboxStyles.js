@@ -20,6 +20,7 @@ export const InputWrapper = styled.div`
   }
   display: inherit;
   align-items: center;
+  justify-content: space-between;
   height: 45px;
   width: 100%;
   background-color: #fff;
@@ -60,7 +61,7 @@ export const SearchIcon = styled(AiOutlineSearch)`
 
 export const StyledInput = styled(DebounceInput)`
   @media (min-width: 768px) {
-    width: 543px;
+    width: 100%;
     text-indent: 14px;
     &::placeholder {
       font-size: 19px;
@@ -77,4 +78,11 @@ export const StyledInput = styled(DebounceInput)`
     color: #c6c6c6;
     font-size: 17px;
   }
+`;
+
+export const FollowingTag = styled.span`
+  color: #c5c5c5;
+  font-size: 19px;
+  line-height: 23px;
+  margin-left: 8px;
 `;

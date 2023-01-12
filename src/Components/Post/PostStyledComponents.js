@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { FaTrash } from "react-icons/fa";
 import { TiPencil } from "react-icons/ti";
-import {AiOutlineComment} from "react-icons/ai"
-import {BiRepost} from "react-icons/bi"
+import { AiOutlineComment } from "react-icons/ai";
+import { BiRepost } from "react-icons/bi";
 
 export const tooltipStyle = {
   fontFamily: "Lato",
@@ -64,10 +64,10 @@ export const Count = styled.h2`
   font-size: 10px;
   cursor: default;
   margin-bottom: 8px;
-  font-family: 'Lato';
-font-weight: 400;
-line-height: 13px;
-text-align: center;
+  font-family: "Lato";
+  font-weight: 400;
+  line-height: 13px;
+  text-align: center;
 `;
 
 export const RightContainer = styled.div`
@@ -83,6 +83,7 @@ export const UserName = styled.h1`
   font-size: 17px;
   color: white;
   margin-top: 10px;
+  cursor: pointer;
 `;
 
 export const Description = styled.p`
@@ -153,39 +154,36 @@ export const tagStyle = {
 };
 
 export const UserActionsContainer = styled.div`
-
   display: flex;
   flex-direction: column;
   align-items: center;
-`
+`;
 
 export const Like = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
+`;
 
 export const Comments = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
+`;
 
 export const CommentBalloons = styled(AiOutlineComment)`
   font-size: 20px;
   margin-bottom: 3px;
-`
-
+`;
 
 export const Repost = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
+`;
 
 export const RepostArrows = styled(BiRepost)`
   font-size: 20px;
   margin-bottom: 3px;
-
-`
+`;
 //lembrar de componentizar o styled components do userpostactions
