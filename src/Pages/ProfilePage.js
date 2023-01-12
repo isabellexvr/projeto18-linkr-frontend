@@ -21,6 +21,7 @@ import Post from "../Components/Post/Post";
 import { NoPostsMessage } from "../Components/Post/PostStyledComponents";
 import Searchbox from "../Components/Searchbox/Searchbox";
 import Trending from "../Components/Trending/Trending";
+import { followUser, unFollowUser } from "../Services/followUser";
 
 function ProfilePage() {
   const { id } = useParams();
@@ -28,6 +29,7 @@ function ProfilePage() {
   const [user, setUser] = useState(null);
   const [deleted, setDeleted] = useState(false);
   const [follow, setFollow] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const { width } = useWindowDimensions();
   const myUser = jwtDecode(token);
 
@@ -40,10 +42,14 @@ function ProfilePage() {
     };
     axios(`http://localhost:4000/user/${id}`, config)
       .then((res) => {
+        console.log(res.data);
         if (res.data.posts[0].id === null) {
           delete res.data.posts;
         }
-        if (res.data.followedBy?.includes(myUser.userId)) {
+        if (
+          res.data.followedBy &&
+          res.data.followedBy.includes(Number(myUser.userId))
+        ) {
           setFollow(true);
           setUser(res.data);
           return;
@@ -54,6 +60,16 @@ function ProfilePage() {
       })
       .catch((err) => console.log(err));
   }, [id, deleted]);
+
+  function handleFollow() {
+    setDisabled(true);
+    if (follow) {
+      setFollow(false);
+      return unFollowUser(id, token, setDisabled);
+    }
+    setFollow(true);
+    return followUser(id, token, setDisabled);
+  }
 
   return (
     <PageContainer>
@@ -67,7 +83,9 @@ function ProfilePage() {
               <PageTitle>{user?.username}'s posts</PageTitle>
             </TitleWrapper>
             {Number(id) !== myUser.userId && (
-              <FollowButton>{follow ? "Unfollow" : "Follow"}</FollowButton>
+              <FollowButton disabled={disabled} onClick={handleFollow}>
+                {follow ? "Unfollow" : "Follow"}
+              </FollowButton>
             )}
           </Wrapper>
           <PageStyle>
