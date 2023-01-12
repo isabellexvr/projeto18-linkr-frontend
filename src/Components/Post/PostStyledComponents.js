@@ -33,7 +33,7 @@ export const LeftContainer = styled.div`
   margin-top: 17px;
   display: flex;
   flex-direction: column;
-  width: 18.4%;
+  width: 19.5%;
   align-items: center;
   color: white;
 `;

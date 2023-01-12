@@ -23,7 +23,7 @@ import UserPostActions from "../../Components/UserPostActions/UserPostActions";
 
 function Post(props) {
   const { userId, userName, userImage } = props.user;
-  const { postId, likesCount, likedBy, postDescription, repostsCount, commentsCount } = props.content;
+  const { postId, likesCount, likedBy, postDescription, repostsCount, commentsCount, repostedBy } = props.content;
   const { disabled, setDisabled } = props.disable;
   const { edit, setEdit } = props.edition;
   const [editedDescription, setEditedDescription] = useState(postDescription);
@@ -42,7 +42,7 @@ function Post(props) {
           <UserProfilePicture src={userImage} />
           <UserPostActions
             repostModal={{setOpenRepostModal, setPostToRepost}}
-            postInfo={{likedBy, postId, likesCount, repostsCount, commentsCount}}
+            postInfo={{likedBy, postId, likesCount, repostsCount, commentsCount, repostedBy}}
             user={{userInfo, token}}
             disabledUseState={{setDisabled, disabled}}
           />
