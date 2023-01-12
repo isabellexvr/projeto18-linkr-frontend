@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PostLink from "../TimelinePage/PostLink";
+import PostLink from "../PostLink/PostLink";
 import { ReactTagify } from "react-tagify";
 import { useNavigate } from "react-router-dom";
 import {
@@ -7,7 +7,7 @@ import {
   LeftContainer,
   UserProfilePicture,
   LikeIcon,
-  LikesCount,
+  Count,
   RightContainer,
   UserName,
   Description,
@@ -17,10 +17,13 @@ import {
   EditPencil,
   TrashCan,
   TitleContainer,
-  ActionsContainer,
+  LoggedUserActionsContainer,
   EditContainer,
 } from "./PostStyledComponents";
-import { dislikeFunction, postLikeFunction } from "../Services/LikeFunctions";
+import {
+  dislikeFunction,
+  postLikeFunction,
+} from "../../Services/LikeFunctions";
 import { Tooltip, TooltipWrapper } from "react-tooltip";
 import axios from "axios";
 
@@ -162,7 +165,7 @@ function Post(props) {
           <LikeIcon onClick={handleLikes} />
         )}
         <TooltipWrapper content={tooltip} place='bottom'>
-          <LikesCount>{postLikeCount} likes</LikesCount>
+          <Count>{postLikeCount} likes</Count>
         </TooltipWrapper>
         <Tooltip style={tooltipStyle} />
       </LeftContainer>
@@ -170,10 +173,10 @@ function Post(props) {
         <TitleContainer>
           <UserName>{username}</UserName>
           {userId === myUser.userId && (
-            <ActionsContainer>
+            <LoggedUserActionsContainer>
               <EditPencil onClick={() => setEdit(true)} />
               <TrashCan onClick={handleDelete} />
-            </ActionsContainer>
+            </LoggedUserActionsContainer>
           )}
         </TitleContainer>
         <Description>

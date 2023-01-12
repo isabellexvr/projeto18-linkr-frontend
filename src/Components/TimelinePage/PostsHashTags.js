@@ -1,19 +1,20 @@
-import styled from "styled-components";
-import { FiHeart } from "react-icons/fi";
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
-import { ReactTagify } from "react-tagify";
-import { useNavigate, useParams } from "react-router-dom";
-import PostLink from "./PostLink";
-import { Tooltip, TooltipWrapper, TooltipProvider } from "react-tooltip";
-import "react-tooltip/dist/react-tooltip.css";
-import { LikeButton, LikedButton } from "./SmallComponents/LikeButtons";
-import { TiPencil } from "react-icons/ti";
-import { FaTrash } from "react-icons/fa";
-import { AuthContext } from "../Context/authContext";
 import jwtDecode from "jwt-decode";
+import { useContext, useEffect, useState } from "react";
+import { FaTrash } from "react-icons/fa";
+import { FiHeart } from "react-icons/fi";
+import { TiPencil } from "react-icons/ti";
+import { useNavigate, useParams } from "react-router-dom";
+import { ReactTagify } from "react-tagify";
+import { Tooltip, TooltipProvider, TooltipWrapper } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
+import styled from "styled-components";
+import { AuthContext } from "../../Context/authContext";
+import PostLink from "../PostLink/PostLink";
+import LikeButton from "../LikeButtons/LikeButtons";
+import LikedButton from "../LikeButtons/LikedButton";
 
-export default function PostHashTags({openModal, setDeletePost, setIsOpen}) {
+export default function PostHashTags({ openModal, setDeletePost, setIsOpen }) {
   const navigate = useNavigate();
   const { hashtag } = useParams();
   const [posts, setPosts] = useState([]);
@@ -25,7 +26,12 @@ export default function PostHashTags({openModal, setDeletePost, setIsOpen}) {
   const [editedDescription, setEditedDescription] = useState({});
   const { token } = useContext(AuthContext);
   const { userId } = jwtDecode(token);
-  
+
+  const tagStyle = {
+    color: "white",
+    fontWeight: 800,
+    cursor: "pointer",
+  };
 
   function handleLikedBy(arr) {
     let string;
@@ -60,15 +66,42 @@ export default function PostHashTags({openModal, setDeletePost, setIsOpen}) {
     }
   }
 
+  function sendNewDescription(e, postId) {
+    e.preventDefault();
+    console.log(postId);
+    setLoading(true);
 
-  useEffect((() => {
-    const promisse = axios.get(`https://linkr-api-9ik9.onrender.com/hashtag/${hashtag}`,
+    const config = {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE5LCJ1c2VyUGljdHVyZSI6Imh0dHBzOi8va2JpbWFnZXMxLWEuYWthbWFpaGQubmV0L2FmY2Q4NjUzLTNiMjctNDQyMy1iZWU5LTU3MGZiMTQ0MWFlZC8zNTMvNTY5LzkwL0ZhbHNlL3ByaWRlLWFuZC1wcmVqdWRpY2UtNzEuanBnIiwic2Vzc2lvbklkIjoxNTgsImlhdCI6MTY3MzIzMDMzNH0.poYNfisvv3a4b3b4kCuUXtIqH8yDVkkn4K04VN9ivn0`,
+      },
+      data: {
+        description: editedDescription,
+      },
+    };
+    axios(`http://localhost:4000/posts/${postId}`, config)
+      .then((a) => {
+        setLoading(false);
+        setEdit([]);
+        console.log(a.data);
+      })
+      .catch((e) => {
+        console.log(e);
+        setError(true);
+        setLoading(false);
+      });
+  }
+
+  useEffect(() => {
+    const promisse = axios.get(
+      `http://localhost:4000/hashtag/${hashtag}`,
       {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       }
-      )
+    );
     promisse.then((res) => {
       console.log(res);
       setPosts(res.data);
@@ -76,9 +109,9 @@ export default function PostHashTags({openModal, setDeletePost, setIsOpen}) {
     promisse.catch((err) => {
       console.log(err.response);
     });
-  }), [hashtag]);
-  
-  console.log(posts)
+  }, [hashtag]);
+
+  console.log(posts);
   return (
     <>
       {posts.length > 0 && !error && !loading && (
@@ -87,7 +120,7 @@ export default function PostHashTags({openModal, setDeletePost, setIsOpen}) {
             <TooltipProvider>
               <PostStyle key={i}>
                 <LeftContainer>
-                  <UserProfilePicture alt="user-profile" src={e.pictureUrl} />
+                  <UserProfilePicture alt='user-profile' src={e.pictureUrl} />
                   {e.likedBy.length > 0 && (
                     <>
                       {e.likedBy.find((l) => l.userId === userId) && (
@@ -140,14 +173,49 @@ export default function PostHashTags({openModal, setDeletePost, setIsOpen}) {
                   <Tooltip
                     id={e.id}
                     content={handleLikedBy(e.likedBy)}
-                    place="bottom"
-                    className="example"
+                    place='bottom'
+                    className='example'
                   />
                 </LeftContainer>
                 <RightContainer>
                   <UserName>
+                    {e.userId === userId && (
+                      <>
+                        <EditPencil
+                          onClick={() => {
+                            setEditedDescription(e.description);
+                            edit.includes(e.postId)
+                              ? setEdit([])
+                              : setEdit([...edit, e.postId]);
+                          }}
+                        />
+                        <TrashCan
+                          onClick={() => {
+                            openModal();
+                            setIsOpen(true);
+                            setDeletePost(e.postId);
+                          }}
+                        />
+                      </>
+                    )}
+
                     {e.username}
                   </UserName>
+                  {edit.includes(e.postId) && (
+                    <form
+                      onSubmit={(event) => sendNewDescription(event, e.postId)}>
+                      <EditDescription
+                        disabled={loading}
+                        name='description'
+                        value={editedDescription}
+                        onKeyDown={(e) =>
+                          e.key === "Escape" ? setEdit([]) : ""
+                        }
+                        onChange={(e) => {
+                          setEditedDescription(e.target.value);
+                        }}></EditDescription>
+                    </form>
+                  )}
                   {!edit.includes(e.postId) && (
                     <Description>
                       <ReactTagify
@@ -158,8 +226,7 @@ export default function PostHashTags({openModal, setDeletePost, setIsOpen}) {
                         }}
                         tagClicked={(tag) =>
                           navigate(`/hashtag/${tag.substring(1)}`)
-                        }
-                      >
+                        }>
                         {e.description}
                       </ReactTagify>
                     </Description>
@@ -306,7 +373,6 @@ const RightContainer = styled.div`
 `;
 
 const UserName = styled.h1`
-
   font-weight: 400;
   font-size: 17px;
   color: white;
