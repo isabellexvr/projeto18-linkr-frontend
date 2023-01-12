@@ -7,9 +7,9 @@ import {
   Url,
   UrlImage,
 } from "./PostLinkStyles";
-import getLinkDomain from "../../Services/GetLinkDomain"
 
 export default function PostLink(props) {
+
   const { linkTitle, linkDescription, linkUrl, linkImage } = props.metadata;
 
   return (
