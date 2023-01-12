@@ -8,9 +8,7 @@ import {
   UrlImage,
 } from "./PostLinkStyles";
 
-export default function PostLink(props) {
-
-  const { linkTitle, linkDescription, linkUrl, linkImage } = props.metadata;
+export default function PostLink({ linkTitle, linkDescription, linkUrl, linkImage }) {
 
   return (
     <Redirect href={linkUrl} target='_blank'>
