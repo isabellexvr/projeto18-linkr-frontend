@@ -26,6 +26,8 @@ export default function verifyPostsHashtags(posts, setDisabled, disabled, token,
             likedBy: post.likedBy,
             postDescription: post.description,
             url: post.url,
+            repostsCount: post.repostsCount,
+            commentsCount: post.commentsCount,
           }}
           metadata={{
             linkTitle: post.linkTitle,

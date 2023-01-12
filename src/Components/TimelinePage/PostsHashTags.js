@@ -6,6 +6,7 @@ import {
   EditContainer,
   LeftContainer,
   LikesCount,
+  LoggedUserActionsContainer,
   PostStyle,
   RightContainer,
   TitleContainer,
@@ -24,6 +25,7 @@ import handleLikedBy from "../../Services/handleLikedBy";
 import handleEditInput from "../../Services/postEdition";
 import axios from "axios";
 import styled from "styled-components";
+import UserPostActions from "../UserPostActions/UserPostActions";
 
 export default function PostHashTags(props) {
   console.log(props.metadata);
@@ -37,7 +39,7 @@ export default function PostHashTags(props) {
   // const { token } = useContext(AuthContext);
   // const { userId } = jwtDecode(token);
   const { userId, userName, userImage } = props.user;
-  const { postId, likesCount, likedBy, postDescription, url } = props.content;
+  const { postId, likesCount, likedBy, postDescription, repostsCount, commentsCount } = props.content;
   const { disabled, setDisabled } = props.disable;
   const { edit, setEdit } = props.edition;
   const [editedDescription, setEditedDescription] = useState(postDescription);
@@ -111,37 +113,24 @@ export default function PostHashTags(props) {
       <PostStyleHashTag>
         <LeftContainer>
           <UserProfilePicture src={userImage} />
-          <IsLiked
-            likedBy={likedBy}
-            setDisabled={setDisabled}
-            disabled={disabled}
-            token={token}
-            postId={postId}
-            loggedUserId={userInfo.userId}
-          />
-          <TooltipWrapper tooltipId={postId}>
-            <LikesCount>
-              {likesCount} {likesCount === "1" ? "like" : "likes"}
-            </LikesCount>
-          </TooltipWrapper>
-          <Tooltip
-            id={postId}
-            content={handleLikedBy(likedBy, userInfo)}
-            place="bottom"
+          <UserPostActions
+            postInfo={{likedBy, postId, likesCount, repostsCount, commentsCount}}
+            user={{userInfo, token}}
+            disabledUseState={{setDisabled, disabled}}
           />
         </LeftContainer>
         <RightContainer>
           <TitleContainer>
             <UserName>{userName}</UserName>
             {userId === userInfo.userId && (
-              <ActionsContainer>
+              <LoggedUserActionsContainer>
                 <EditButton setEdit={setEdit} edit={edit} />
                 <DeleteButton
                   setPostToDelete={setPostToDelete}
                   setOpenModal={setOpenModal}
                   postId={postId}
                 />
-              </ActionsContainer>
+              </LoggedUserActionsContainer>
             )}
           </TitleContainer>
           {edit && userId === userInfo.userId ? (
