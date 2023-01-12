@@ -10,11 +10,13 @@ import {
 import IsLiked from "../../Services/CheckIfIsLiked";
 import handleLikedBy from "../../Services/handleLikedBy";
 import { Tooltip, TooltipWrapper } from "react-tooltip";
+import 'react-tooltip/dist/react-tooltip.css'
 
 export default function UserPostActions({ postInfo, user, disabledUseState }) {
   const { likedBy, postId, likesCount, repostsCount, commentsCount } = postInfo;
   const { userInfo, token } = user;
   const { setDisabled, disabled } = disabledUseState;
+  
 
   return (
     <UserActionsContainer>
