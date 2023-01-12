@@ -39,6 +39,12 @@ export const RepostArrows = styled(BiRepost)`
     cursor: pointer;
 `;
 
+export const RepostedArrows = styled(BiRepost)`
+    font-size: 20px;
+    cursor: pointer;
+    color: green;
+`
+
 export const Count = styled.h2`
   text-align: center;
   font-size: 10px;

@@ -17,6 +17,7 @@ import verifyIfPosts from "../Services/verifyPosts";
 import DeleteModal from "../Components/DeleteModal/DeleteModal";
 import NewPost from "../Components/TimelinePage/NewPosts";
 import useInterval from "use-interval";
+import RepostModal from "../Components/RepostModal/RepostModal";
 
 export default function TimelinePage() {
   const { width } = useWindowDimensions();
@@ -26,8 +27,10 @@ export default function TimelinePage() {
   const [error, setError] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [edit, setEdit] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [openRepostModal, setOpenRepostModal] = useState(false);
   const [postToDelete, setPostToDelete] = useState("");
+  const [postToRepost, setPostToRepost] = useState("");
   const [newPosts, setNewPosts] = useState([]);
   const [display, setDisplay] = useState("none");
   const [countNewPosts, setCountNewPosts] = useState(0);
@@ -51,16 +54,16 @@ export default function TimelinePage() {
     setDisabled,
     edit,
     setEdit,
-    openModal,
-    setOpenModal,
+    openDeleteModal,
+    setOpenDeleteModal,
   ]);
 
   useInterval(() => {
     axios
       .get("http://localhost:4000/all-posts", {
         params: {
-          _limit: 3
-        }
+          _limit: 3,
+        },
       })
       .then((a) => {
         setNewPosts(a.data);
@@ -73,7 +76,6 @@ export default function TimelinePage() {
           // setPosts(a.data);
           return;
         }
-
       })
       .catch((e) => {
         console.log(e);
@@ -82,6 +84,22 @@ export default function TimelinePage() {
       });
   }, 15000);
 
+  const modals = {
+    setOpenDeleteModal,
+    openDeleteModal,
+    setOpenRepostModal,
+    openRepostModal,
+  };
+  const states = {
+    setDisabled,
+    disabled,
+    loading,
+    error,
+    edit,
+    setEdit,
+    setPostToDelete,
+    setPostToRepost
+  };
   return (
     <PageContainer>
       <Header />
@@ -91,25 +109,25 @@ export default function TimelinePage() {
         <PageStyle>
           <PostsContainer>
             <PostPublicationForm loading={loading} setLoading={setLoading} />
-            <NewPost display={display} setDisplay={setDisplay}
-              setPosts={setPosts} newPosts={newPosts} countNewPosts={countNewPosts} />
-            {verifyIfPosts(
-              posts,
-              setDisabled,
-              disabled,
-              token,
-              loading,
-              error,
-              edit,
-              setEdit,
-              setOpenModal,
-              setPostToDelete
-            )}
+            <NewPost
+              display={display}
+              setDisplay={setDisplay}
+              setPosts={setPosts}
+              newPosts={newPosts}
+              countNewPosts={countNewPosts}
+            />
+            {verifyIfPosts(posts, token, modals, states)}
             <DeleteModal
-              openModal={openModal}
-              setOpenModal={setOpenModal}
+              openDeleteModal={openDeleteModal}
+              setOpenDeleteModal={setOpenDeleteModal}
               token={token}
               postToDelete={postToDelete}
+            />
+            <RepostModal 
+              openRepostModal={openRepostModal}
+              setOpenRepostModal={setOpenRepostModal}
+              token={token}
+              postToRepost={postToRepost}
             />
           </PostsContainer>
           {width > 1020 && <Trending />}

@@ -1,12 +1,11 @@
-import React from "react";
 import Modal from "react-modal";
 import {
   CancelButton,
   CancelContainer,
   DeleteMessage,
   ConfirmButton,
-} from "./DeleteModalStyles";
-import confirmDeletingPost from "../../Services/confirmDeletingPost";
+} from "../DeleteModal/DeleteModalStyles";
+import confirmRepostingPost from "../../Services/confirmRepostingPost";
 
 const customStyles = {
   content: {
@@ -26,32 +25,32 @@ const customStyles = {
   },
 };
 
-function DeleteModal({
-  openDeleteModal,
-  setOpenDeleteModal,
+function RepostModal({
+  openRepostModal,
+  setOpenRepostModal,
   token,
-  postToDelete,
+  postToRepost,
 }) {
   return (
     <Modal
-      isOpen={openDeleteModal}
+      isOpen={openRepostModal}
       style={customStyles}
       contentLabel="Example Modal"
     >
       <CancelContainer>
         <DeleteMessage>
-          Are you sure you want to delete this post?
+          Are you sure you want to re-post this link?
         </DeleteMessage>
         <div>
-          <CancelButton onClick={() => setOpenDeleteModal(false)}>
+          <CancelButton onClick={() => setOpenRepostModal(false)}>
             No, go back
           </CancelButton>
           <ConfirmButton
             onClick={() =>
-              confirmDeletingPost(postToDelete, setOpenDeleteModal, token)
+              confirmRepostingPost(postToRepost, setOpenRepostModal, token)
             }
           >
-            Yes, delete it
+            Yes, repost it
           </ConfirmButton>
         </div>
       </CancelContainer>
@@ -59,4 +58,4 @@ function DeleteModal({
   );
 }
 
-export default DeleteModal;
+export default RepostModal;
