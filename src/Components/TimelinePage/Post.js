@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { ReactTagify } from "react-tagify";
 import { TooltipProvider } from "react-tooltip";
 import handleEditInput from "../../Services/postEdition";
-import UserPostActions from "../UserPostActions/UserPostActions";
+import UserPostActions from "../../Components/UserPostActions/UserPostActions";
 
 function Post(props) {
   const { userId, userName, userImage } = props.user;
