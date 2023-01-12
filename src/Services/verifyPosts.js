@@ -33,7 +33,8 @@ export default function verifyIfPosts(posts, token, modals, states ) {
             url: post.url,
             repostsCount: post.repostsCount,
             commentsCount: post.commentsCount,
-            repostedBy: post.repostedBy
+            repostedBy: post.repostedBy,
+            posterId: post.userId
           }}
           metadata={{
             linkTitle: post.linkTitle,

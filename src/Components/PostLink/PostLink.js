@@ -9,7 +9,6 @@ import {
 } from "./PostLinkStyles";
 
 export default function PostLink(props) {
-  console.log(props)
 
   const { linkTitle, linkDescription, linkUrl, linkImage } = props.metadata;
 
