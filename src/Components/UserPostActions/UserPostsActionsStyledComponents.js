@@ -19,12 +19,13 @@ export const Comments = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 9px;
 `;
 
 export const CommentBalloons = styled(AiOutlineComment)`
   font-size: 20px;
   margin-bottom: 4px;
+  cursor: pointer;
 `;
 
 export const Repost = styled.div`
@@ -35,7 +36,7 @@ export const Repost = styled.div`
 
 export const RepostArrows = styled(BiRepost)`
   font-size: 20px;
-
+    cursor: pointer;
 `;
 
 export const Count = styled.h2`

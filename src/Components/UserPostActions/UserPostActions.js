@@ -12,7 +12,7 @@ import handleLikedBy from "../../Services/handleLikedBy";
 import { Tooltip, TooltipWrapper } from "react-tooltip";
 
 export default function UserPostActions({ postInfo, user, disabledUseState }) {
-  const { likedBy, postId, likesCount, repostsCount } = postInfo;
+  const { likedBy, postId, likesCount, repostsCount, commentsCount } = postInfo;
   const { userInfo, token } = user;
   const { setDisabled, disabled } = disabledUseState;
 
@@ -40,11 +40,11 @@ export default function UserPostActions({ postInfo, user, disabledUseState }) {
       </Like>
       <Comments>
         <CommentBalloons />
-        <Count>33</Count>
+        <Count>{commentsCount} {commentsCount === "1" ?  "comment" : "comments"}</Count>
       </Comments>
       <Repost>
         <RepostArrows />
-        <Count>{repostsCount} reposts</Count>
+        <Count>{repostsCount} re-posts</Count>
       </Repost>
     </UserActionsContainer>
   );

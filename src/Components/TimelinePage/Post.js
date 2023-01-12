@@ -23,7 +23,7 @@ import UserPostActions from "../UserPostActions/UserPostActions";
 
 function Post(props) {
   const { userId, userName, userImage } = props.user;
-  const { postId, likesCount, likedBy, postDescription, repostsCount } = props.content;
+  const { postId, likesCount, likedBy, postDescription, repostsCount, commentsCount } = props.content;
   const { disabled, setDisabled } = props.disable;
   const { edit, setEdit } = props.edition;
   const [editedDescription, setEditedDescription] = useState(postDescription);
@@ -33,13 +33,14 @@ function Post(props) {
   const token = props.token;
   const userInfo = jwtDecode(token);
 
+
   return (
     <TooltipProvider>
       <PostStyle>
         <LeftContainer>
           <UserProfilePicture src={userImage} />
           <UserPostActions
-            postInfo={{likedBy, postId, likesCount, repostsCount}}
+            postInfo={{likedBy, postId, likesCount, repostsCount, commentsCount}}
             user={{userInfo, token}}
             disabledUseState={{setDisabled, disabled}}
           />

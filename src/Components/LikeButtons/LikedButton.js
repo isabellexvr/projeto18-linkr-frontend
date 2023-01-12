@@ -9,7 +9,7 @@ export default function LikedButton({
 }) {
   return (
     <LikedIcon
-      isRequesting={disabled}
+    isrequesting={disabled}
       onClick={() => {
         setDisabled(true);
         dislikeFunction(postId, token, setDisabled);
