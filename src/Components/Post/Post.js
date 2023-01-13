@@ -41,6 +41,7 @@ function Post(props) {
     setDeleted,
     deleted
   } = props;
+  
   const {
     id,
     description,
