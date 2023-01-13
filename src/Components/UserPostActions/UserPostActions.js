@@ -31,7 +31,13 @@ export default function UserPostActions({
   const { setDisabled, disabled } = disabledUseState;
   const { setOpenRepostModal, setPostToRepost } = repostModal;
 
-  const repostsId = repostedBy.map((r) => r.userId);
+  let repostsId;
+
+  if (!repostedBy) {
+    repostsId = "Not Found";
+  } else {
+    repostsId = repostedBy.map((r) => r.userId);
+  }
 
   return (
     <UserActionsContainer>
@@ -68,7 +74,9 @@ export default function UserPostActions({
             //mostrar outro modal? ou simplesmente deixar de repostar?
             //
             />
-            <Count>{repostsCount > 1 ? "You and others reposted": "You reposted"}</Count>
+            <Count>
+              {repostsCount > 1 ? "You and others reposted" : "You reposted"}
+            </Count>
           </>
         ) : (
           <>

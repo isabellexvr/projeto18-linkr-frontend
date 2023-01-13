@@ -1,5 +1,9 @@
 export default function handleLikedBy(arr, userInfo) {
   let string;
+  if(!arr){
+    string = "Nobody liked this post yet.";
+    return string;
+  }
 
   if (arr.find((e) => e.userId === userInfo.userId)) {
     if (arr.length === 1 && arr[0].username === null) {
