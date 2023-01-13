@@ -12,12 +12,14 @@ import IsLiked from "../../Services/CheckIfIsLiked";
 import handleLikedBy from "../../Services/handleLikedBy";
 import { Tooltip, TooltipWrapper } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
+import { useState } from "react";
 
 export default function UserPostActions({
   postInfo,
   user,
   disabledUseState,
   repostModal,
+  handleComments,
 }) {
   const {
     likedBy,
@@ -30,7 +32,6 @@ export default function UserPostActions({
   const { userInfo, token } = user;
   const { setDisabled, disabled } = disabledUseState;
   const { setOpenRepostModal, setPostToRepost } = repostModal;
-
   const repostsId = repostedBy.map((r) => r.userId);
 
   return (
@@ -55,7 +56,7 @@ export default function UserPostActions({
           place="bottom"
         />
       </Like>
-      <Comments>
+      <Comments onClick={() => handleComments()}>
         <CommentBalloons />
         <Count>
           {commentsCount} {commentsCount === "1" ? "comment" : "comments"}
@@ -68,7 +69,9 @@ export default function UserPostActions({
             //mostrar outro modal? ou simplesmente deixar de repostar?
             //
             />
-            <Count>{repostsCount > 1 ? "You and others reposted": "You reposted"}</Count>
+            <Count>
+              {repostsCount > 1 ? "You and others reposted" : "You reposted"}
+            </Count>
           </>
         ) : (
           <>

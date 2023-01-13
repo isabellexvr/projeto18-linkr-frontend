@@ -21,7 +21,6 @@ export const PostStyle = styled.div`
   background-color: #171717;
   margin-top: 16px;
   display: flex;
-
   @media (min-width: 667px) {
     width: 611px;
     height: 276px;
@@ -187,3 +186,5 @@ export const RepostArrows = styled(BiRepost)`
   margin-bottom: 3px;
 `;
 //lembrar de componentizar o styled components do userpostactions
+
+export const Container = styled.div``;
