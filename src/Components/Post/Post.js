@@ -36,8 +36,8 @@ function Post(props) {
     userId,
     token,
     myUser,
-    deleted,
-    setDeleted,
+    setOpenDeleteModal,
+    setPostToDelete,
   } = props;
   const {
     id,
