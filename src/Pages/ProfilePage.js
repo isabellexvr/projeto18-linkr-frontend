@@ -23,6 +23,7 @@ import Searchbox from "../Components/Searchbox/Searchbox";
 import Trending from "../Components/Trending/Trending";
 import { followUser, unFollowUser } from "../Services/followUser";
 import DeleteModal from "../Components/DeleteModal/DeleteModal";
+import URL_API from "../Services/APIlink";
 
 function ProfilePage() {
   const { id } = useParams();
@@ -42,7 +43,7 @@ function ProfilePage() {
         Authorization: `Bearer ${token}`,
       },
     };
-    axios(`http://localhost:4000/user/${id}`, config)
+    axios(`${URL_API}/user/${id}`, config)
       .then((res) => {
         console.log(res.data);
         if (res.data.posts[0].id === null) {

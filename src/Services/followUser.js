@@ -1,4 +1,5 @@
 import axios from "axios";
+import URL_API from "../Services/APIlink"
 
 export function followUser(id, token, setDisabled) {
   const config = {
@@ -7,7 +8,7 @@ export function followUser(id, token, setDisabled) {
       Authorization: `Bearer ${token}`,
     },
   };
-  axios(`http://localhost:4000/follow/${id}`, config)
+  axios(`${URL_API}/follow/${id}`, config)
     .then(() => setDisabled(false))
     .catch(() =>
       alert("Não foi possível executar a operação, tente novamente mais tarde!")
@@ -21,7 +22,7 @@ export function unFollowUser(id, token, setDisabled) {
       Authorization: `Bearer ${token}`,
     },
   };
-  axios(`http://localhost:4000/unfollow/${id}`, config)
+  axios(`${URL_API}/unfollow/${id}`, config)
     .then(() => setDisabled(false))
     .catch(() =>
       alert("Não foi possível executar a operação, tente novamente mais tarde!")

@@ -14,6 +14,7 @@ import {
 } from "./SearchboxStyles";
 import jwtDecode from "jwt-decode";
 import { sortByFollowing } from "../../Services/sortByFollowing";
+import URL_API from "../../Services/APIlink";
 
 function Searchbox() {
   const [search, setSearch] = useState("");
@@ -32,7 +33,7 @@ function Searchbox() {
         },
       };
 
-      axios(`http://localhost:4000/user?username=${search}`, config)
+      axios(`${URL_API}/user?username=${search}`, config)
         .then((res) => {
           res.data.forEach((user) => {
             if (!followers.includes(user.id)) {

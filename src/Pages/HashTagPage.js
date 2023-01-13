@@ -6,6 +6,7 @@ import Header from "../Components/Header/Header";
 import Trending from "../Components/Trending/Trending";
 import { AuthContext } from "../Context/authContext";
 import verifyPostsHashtags from "../Services/verifyPostsHashtags";
+import URL_API from "../Services/APIlink";
 
 export default function HashTagsPage() {
   const { hashtag } = useParams();
@@ -24,7 +25,7 @@ export default function HashTagsPage() {
 
   useEffect(() => {
     const promisse = axios.get(
-      `http://localhost:4000/hashtag/${hashtag}`,
+      `${URL_API}/hashtag/${hashtag}`,
       {
         headers: {
           'Authorization': `Bearer ${token}`

@@ -1,9 +1,10 @@
 import axios from "axios";
+import URL_API from "./APIlink";
 
 export default function handleEditInput(e, postId, editedDescription, setEdit, token) {
     if (e.key === "Escape") setEdit(false);
     if (e.key === "Enter") {
-      axios(`http://localhost:4000/posts/${postId}`, {
+      axios(`${URL_API}/posts/${postId}`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,

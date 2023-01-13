@@ -18,6 +18,7 @@ import DeleteModal from "../Components/DeleteModal/DeleteModal";
 import NewPost from "../Components/TimelinePage/NewPosts";
 import useInterval from "use-interval";
 import RepostModal from "../Components/RepostModal/RepostModal";
+import URL_API from "../Services/APIlink";
 
 export default function TimelinePage() {
   const { width } = useWindowDimensions();
@@ -37,7 +38,7 @@ export default function TimelinePage() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/all-posts", {
+      .get(URL_API + "/all-posts", {
         headers: {
           Authorization: `Bearer ${token}`,
         }

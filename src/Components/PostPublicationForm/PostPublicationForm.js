@@ -10,6 +10,7 @@ import {
   SubmitButton,
 } from "./PostPublicationFormStyles";
 import jwtDecode from "jwt-decode";
+import URL_API from "../../Services/APIlink";
 
 //https://linkr-api-9ik9.onrender.com
 
@@ -28,7 +29,7 @@ export default function PostPublicationForm({ loading, setLoading }) {
     setLoading(true);
 
     axios
-      .post("http://localhost:4000/post", form, {
+      .post(URL_API + "/post", form, {
         headers: {
           Authorization: `Bearer ${token}
             `,
