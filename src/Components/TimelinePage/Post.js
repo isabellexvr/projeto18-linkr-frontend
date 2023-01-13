@@ -10,6 +10,7 @@ import {
   TitleContainer,
   UserName,
   UserProfilePicture,
+  Container,
 } from "../Post/PostStyledComponents";
 import PostLink from "../PostLink/PostLink";
 import jwtDecode from "jwt-decode";
@@ -20,6 +21,7 @@ import { ReactTagify } from "react-tagify";
 import { TooltipProvider } from "react-tooltip";
 import handleEditInput from "../../Services/postEdition";
 import UserPostActions from "../../Components/UserPostActions/UserPostActions";
+import Comments from "../Comments";
 
 function Post(props) {
   const { userId, userName, userImage } = props.user;
@@ -31,7 +33,7 @@ function Post(props) {
     repostsCount,
     commentsCount,
     repostedBy,
-    posterId
+    posterId,
   } = props.content;
   const { disabled, setDisabled } = props.disable;
   const { edit, setEdit } = props.edition;
@@ -43,73 +45,88 @@ function Post(props) {
   const token = props.token;
   const userInfo = jwtDecode(token);
 
+  const [openComments, setOpenComments] = useState(false);
+
+  const handleComments = () => {
+    if (openComments === false) {
+      setOpenComments(true);
+    } else setOpenComments(false);
+  };
+
   return (
     <TooltipProvider>
-      <PostStyle>
-        <LeftContainer>
-          <UserProfilePicture src={userImage} />
-          <UserPostActions
-            repostModal={{ setOpenRepostModal, setPostToRepost }}
-            postInfo={{
-              likedBy,
-              postId,
-              likesCount,
-              repostsCount,
-              commentsCount,
-              repostedBy,
-            }}
-            user={{ userInfo, token }}
-            disabledUseState={{ setDisabled, disabled }}
-          />
-        </LeftContainer>
-        <RightContainer>
-          <TitleContainer>
-            <span onClick={() => navigate(`/user/${posterId}`)}>
-              <UserName>{userName}</UserName>
-            </span>
-            {userId === userInfo.userId && (
-              <LoggedUserActionsContainer>
-                <EditButton setEdit={setEdit} edit={edit} />
-                <DeleteButton
-                  setPostToDelete={setPostToDelete}
-                  setOpenDeleteModal={setOpenDeleteModal}
-                  postId={postId}
-                />
-              </LoggedUserActionsContainer>
-            )}
-          </TitleContainer>
-          {edit && userId === userInfo.userId ? (
-            <EditContainer
-              type='text'
-              ref={(ref) => ref && ref.focus()}
-              value={editedDescription}
-              onChange={(event) => setEditedDescription(event.target.value)}
-              onKeyDown={(event) =>
-                handleEditInput(
-                  event,
-                  postId,
-                  editedDescription,
-                  setEdit,
-                  token
-                )
-              }
+      <Container>
+        <PostStyle>
+          <LeftContainer>
+            <UserProfilePicture src={userImage} />
+            <UserPostActions
+              handleComments={handleComments}
+              repostModal={{ setOpenRepostModal, setPostToRepost }}
+              postInfo={{
+                likedBy,
+                postId,
+                likesCount,
+                repostsCount,
+                commentsCount,
+                repostedBy,
+              }}
+              user={{ userInfo, token }}
+              disabledUseState={{ setDisabled, disabled }}
             />
-          ) : (
-            <Description>
-              <ReactTagify
-                tagStyle={{
-                  color: "white",
-                  fontWeight: 800,
-                  cursor: "pointer",
-                }}
-                tagClicked={(tag) => navigate(`/hashtag/${tag.substring(1)}`)}>
-                {postDescription}
-              </ReactTagify>
-            </Description>
-          )}
-          <PostLink metadata={props.metadata} />
-        </RightContainer>
-      </PostStyle>
+          </LeftContainer>
+          <RightContainer>
+            <TitleContainer>
+              <span onClick={() => navigate(`/user/${posterId}`)}>
+                <UserName>{userName}</UserName>
+              </span>
+              {userId === userInfo.userId && (
+                <LoggedUserActionsContainer>
+                  <EditButton setEdit={setEdit} edit={edit} />
+                  <DeleteButton
+                    setPostToDelete={setPostToDelete}
+                    setOpenDeleteModal={setOpenDeleteModal}
+                    postId={postId}
+                  />
+                </LoggedUserActionsContainer>
+              )}
+            </TitleContainer>
+            {edit && userId === userInfo.userId ? (
+              <EditContainer
+                type="text"
+                ref={(ref) => ref && ref.focus()}
+                value={editedDescription}
+                onChange={(event) => setEditedDescription(event.target.value)}
+                onKeyDown={(event) =>
+                  handleEditInput(
+                    event,
+                    postId,
+                    editedDescription,
+                    setEdit,
+                    token
+                  )
+                }
+              />
+            ) : (
+              <Description>
+                <ReactTagify
+                  tagStyle={{
+                    color: "white",
+                    fontWeight: 800,
+                    cursor: "pointer",
+                  }}
+                  tagClicked={(tag) => navigate(`/hashtag/${tag.substring(1)}`)}
+                >
+                  {postDescription}
+                </ReactTagify>
+              </Description>
+            )}
+            <PostLink metadata={props.metadata} />
+          </RightContainer>
+        </PostStyle>
+        <Comments
+          commentInfo={{ postId, userId, userName, userImage, openComments }}
+        />
+      </Container>
     </TooltipProvider>
   );
 }

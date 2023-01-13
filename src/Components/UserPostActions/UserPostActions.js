@@ -12,12 +12,14 @@ import IsLiked from "../../Services/CheckIfIsLiked";
 import handleLikedBy from "../../Services/handleLikedBy";
 import { Tooltip, TooltipWrapper } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
+import { useState } from "react";
 
 export default function UserPostActions({
   postInfo,
   user,
   disabledUseState,
   repostModal,
+  handleComments,
 }) {
   const {
     likedBy,
@@ -61,7 +63,7 @@ export default function UserPostActions({
           place="bottom"
         />
       </Like>
-      <Comments>
+      <Comments onClick={() => handleComments()}>
         <CommentBalloons />
         <Count>
           {commentsCount} {commentsCount === "1" ? "comment" : "comments"}

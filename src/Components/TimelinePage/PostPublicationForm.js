@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../Context/authContext";
-import URL from "../Services/APIlink";
+import URL_API from "../Services/APIlink";
 import jwtDecode from "jwt-decode";
 
 export default function PostPublicationForm({ loading, setLoading }) {
@@ -19,7 +19,7 @@ export default function PostPublicationForm({ loading, setLoading }) {
     setLoading(true);
 
     axios
-      .post(`${URL}/post`, form, {
+      .post(`${URL_API}/post`, form, {
         headers: {
           Authorization: `Bearer ${token}
             `,
@@ -42,10 +42,7 @@ export default function PostPublicationForm({ loading, setLoading }) {
   return (
     <FormContainer>
       <DesktopForm>
-        <img
-          alt="user"
-          src={userPicture}
-        />
+        <img alt="user" src={userPicture} />
       </DesktopForm>
       <div>
         <h1>What are you going to share today?</h1>

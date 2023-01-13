@@ -1,5 +1,5 @@
 import axios from "axios";
-import URL from "./APIlink";
+import URL_API from "./APIlink";
 
 export function postLikeFunction(postId, token, setDisabled = null) {
   const config = {
@@ -8,7 +8,7 @@ export function postLikeFunction(postId, token, setDisabled = null) {
       Authorization: `Bearer ${token}`,
     },
   };
-  axios(`${URL}/like/${postId}`, config)
+  axios(`${URL_API}/like/${postId}`, config)
     .then((res) => {
       if (setDisabled) {
         setDisabled(false);
@@ -25,7 +25,7 @@ export function dislikeFunction(postId, token, setDisabled = null) {
       Authorization: `Bearer ${token}`,
     },
   };
-  axios(`${URL}/unlike/${postId}`, config)
+  axios(`${URL_API}/unlike/${postId}`, config)
     .then((res) => {
       if (setDisabled) {
         setDisabled(false);
