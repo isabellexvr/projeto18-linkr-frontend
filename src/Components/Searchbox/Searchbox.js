@@ -23,9 +23,6 @@ function Searchbox() {
   const { token } = useContext(AuthContext);
   const { userId } = jwtDecode(token);
   const navigate = useNavigate();
-
-  console.log(followers);
-
   useEffect(() => {
     if (search.length >= 3) {
       const config = {

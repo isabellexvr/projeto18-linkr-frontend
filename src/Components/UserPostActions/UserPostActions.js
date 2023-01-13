@@ -12,7 +12,6 @@ import IsLiked from "../../Services/CheckIfIsLiked";
 import handleLikedBy from "../../Services/handleLikedBy";
 import { Tooltip, TooltipWrapper } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
-import { useState } from "react";
 
 export default function UserPostActions({
   postInfo,

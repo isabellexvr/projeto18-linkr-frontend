@@ -60,7 +60,6 @@ function Post(props) {
           <LeftContainer>
             <UserProfilePicture src={userImage} />
             <UserPostActions
-              handleComments={handleComments}
               repostModal={{ setOpenRepostModal, setPostToRepost }}
               postInfo={{
                 likedBy,
@@ -72,6 +71,7 @@ function Post(props) {
               }}
               user={{ userInfo, token }}
               disabledUseState={{ setDisabled, disabled }}
+              handleComments={handleComments}
             />
           </LeftContainer>
           <RightContainer>

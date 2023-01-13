@@ -24,7 +24,6 @@ export default function Header() {
   const payload = jwtDecode(token);
 
   function handleLogout() {
-    console.log("oi")
     localStorage.removeItem("userToken");
     navigate("/");
   }
