@@ -22,9 +22,7 @@ function Comments({ commentInfo }) {
   };
 
   useEffect(() => {
-    console.log("AAAAAAAAAAAAAAh que inferno");
 
-    console.log("Post ID:", postId);
     const promise = getComment(token, postId);
 
     promise.then((res) => {
@@ -35,7 +33,7 @@ function Comments({ commentInfo }) {
     promise.catch((err) => {
       console.log(err.response.data);
     });
-    console.log("Bora ver se chega aqui:", postId);
+
   }, [postId]);
 
   function saveComment(event) {

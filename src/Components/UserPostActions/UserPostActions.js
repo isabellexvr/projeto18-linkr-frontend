@@ -32,7 +32,14 @@ export default function UserPostActions({
   const { userInfo, token } = user;
   const { setDisabled, disabled } = disabledUseState;
   const { setOpenRepostModal, setPostToRepost } = repostModal;
-  const repostsId = repostedBy.map((r) => r.userId);
+
+  let repostsId;
+
+  if (!repostedBy) {
+    repostsId = "Not Found";
+  } else {
+    repostsId = repostedBy.map((r) => r.userId);
+  }
 
   return (
     <UserActionsContainer>

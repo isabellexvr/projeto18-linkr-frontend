@@ -37,7 +37,11 @@ export default function TimelinePage() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/all-posts")
+      .get("http://localhost:4000/all-posts", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
       .then((ans) => {
         setLoading(false);
         setPosts(ans.data);
