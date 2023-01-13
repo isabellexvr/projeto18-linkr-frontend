@@ -1,13 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import URL_API from "../../Services/APIlink";
 import Trend from "./Trend";
 
 export default function Trending() {
   const [trends, setTrends] = useState([]);
 
   useEffect(() => {
-    const URL = "https://linkr-api-9ik9.onrender.com/trends";
+    const URL = `${URL_API}/trends`;
     const promise = axios.get(URL);
 
     promise.then((res) => {

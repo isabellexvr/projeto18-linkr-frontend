@@ -26,6 +26,7 @@ import {
 } from "../../Services/LikeFunctions";
 import { Tooltip, TooltipWrapper } from "react-tooltip";
 import axios from "axios";
+import URL_API from "../../Services/APIlink";
 
 function Post(props) {
   const {
@@ -104,7 +105,7 @@ function Post(props) {
           description: postDescription,
         },
       };
-      axios(`https://linkr-api-9ik9.onrender.com/posts/${id}`, config)
+      axios(`${URL_API}/posts/${id}`, config)
         .then(() => {
           setEdit(false);
         })
@@ -118,7 +119,7 @@ function Post(props) {
         Authorization: `Bearer ${token}`,
       },
     };
-    axios(`https://linkr-api-9ik9.onrender.com/posts/${id}`, config)
+    axios(`${URL_API}/posts/${id}`, config)
       .then(() => setDeleted(!deleted))
       .catch((err) => err.response.data);
   }
@@ -158,13 +159,13 @@ function Post(props) {
   return (
     <PostStyle>
       <LeftContainer>
-        <UserProfilePicture alt='user-profile' src={userImage} />
+        <UserProfilePicture alt="user-profile" src={userImage} />
         {liked ? (
           <LikedIcon onClick={handleLikes} />
         ) : (
           <LikeIcon onClick={handleLikes} />
         )}
-        <TooltipWrapper content={tooltip} place='bottom'>
+        <TooltipWrapper content={tooltip} place="bottom">
           <Count>{postLikeCount} likes</Count>
         </TooltipWrapper>
         <Tooltip style={tooltipStyle} />
@@ -183,7 +184,8 @@ function Post(props) {
           {!edit ? (
             <ReactTagify
               tagStyle={tagStyle}
-              tagClicked={(tag) => navigate(`/hashtag/${tag.substring(1)}`)}>
+              tagClicked={(tag) => navigate(`/hashtag/${tag.substring(1)}`)}
+            >
               {postDescription}
             </ReactTagify>
           ) : (
@@ -197,11 +199,7 @@ function Post(props) {
           )}
         </Description>
         <PostLink
-
-metadata={{linkTitle, linkDescription, linkUrl, linkImage}}
-
-       
-
+          metadata={{ linkTitle, linkDescription, linkUrl, linkImage }}
         />
       </RightContainer>
     </PostStyle>
