@@ -11,6 +11,9 @@ export default function SignIn() {
   const { token, setToken, setAndPersistToken } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    if (token !== null) navigate("/timeline");
+  }, [token]);
 
   function login(event) {
     event.preventDefault();
@@ -51,24 +54,24 @@ export default function SignIn() {
         <S.ContainerInformation>
           <S.ContainerForm onSubmit={login}>
             <input
-              type='email'
-              placeholder=' e-mail'
-              name='email'
+              type="email"
+              placeholder=" e-mail"
+              name="email"
               value={form.email}
               onChange={handleForm}
             />
             <input
-              type='password'
-              placeholder=' password'
-              name='password'
+              type="password"
+              placeholder=" password"
+              name="password"
               value={form.password}
               onChange={handleForm}
             />
-            <S.Button type='submit' disabled={loading}>
+            <S.Button type="submit" disabled={loading}>
               Log In
             </S.Button>
           </S.ContainerForm>
-          <Link to='sign-up'>
+          <Link to="sign-up">
             <S.RedirecitonText>
               First time? Create an account!
             </S.RedirecitonText>
