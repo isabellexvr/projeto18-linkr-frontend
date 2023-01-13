@@ -35,8 +35,8 @@ function Post(props) {
     userId,
     token,
     myUser,
-    deleted,
-    setDeleted,
+    setOpenDeleteModal,
+    setPostToDelete,
   } = props;
   const {
     id,
@@ -112,15 +112,17 @@ function Post(props) {
     }
   }
   function handleDelete() {
-    const config = {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    axios(`https://linkr-api-9ik9.onrender.com/posts/${id}`, config)
-      .then(() => setDeleted(!deleted))
-      .catch((err) => err.response.data);
+    // const config = {
+    //   method: "DELETE",
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // };
+    // axios(`https://linkr-api-9ik9.onrender.com/posts/${id}`, config)
+    //   .then(() => setDeleted(!deleted))
+    //   .catch((err) => err.response.data);
+    setOpenDeleteModal(true);
+    setPostToDelete(id);
   }
   function createTooltip() {
     const length = likedArray.length;
@@ -197,11 +199,7 @@ function Post(props) {
           )}
         </Description>
         <PostLink
-
-metadata={{linkTitle, linkDescription, linkUrl, linkImage}}
-
-       
-
+          metadata={{ linkTitle, linkDescription, linkUrl, linkImage }}
         />
       </RightContainer>
     </PostStyle>

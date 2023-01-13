@@ -22,14 +22,16 @@ import { NoPostsMessage } from "../Components/Post/PostStyledComponents";
 import Searchbox from "../Components/Searchbox/Searchbox";
 import Trending from "../Components/Trending/Trending";
 import { followUser, unFollowUser } from "../Services/followUser";
+import DeleteModal from "../Components/DeleteModal/DeleteModal";
 
 function ProfilePage() {
   const { id } = useParams();
   const { token } = useContext(AuthContext);
   const [user, setUser] = useState(null);
-  const [deleted, setDeleted] = useState(false);
   const [follow, setFollow] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [postToDelete, setPostToDelete] = useState(null);
   const { width } = useWindowDimensions();
   const myUser = jwtDecode(token);
 
@@ -59,7 +61,7 @@ function ProfilePage() {
         return;
       })
       .catch((err) => console.log(err));
-  }, [id, deleted]);
+  }, [id, openDeleteModal]);
 
   function handleFollow() {
     setDisabled(true);
@@ -100,8 +102,8 @@ function ProfilePage() {
                     userImage={user.userImage}
                     userId={Number(id)}
                     post={post}
-                    deleted={deleted}
-                    setDeleted={setDeleted}
+                    setOpenDeleteModal={setOpenDeleteModal}
+                    setPostToDelete={setPostToDelete}
                   />
                 ))
               ) : (
@@ -114,6 +116,12 @@ function ProfilePage() {
                   </button>
                 </NoPostsMessage>
               )}
+              <DeleteModal
+                openDeleteModal={openDeleteModal}
+                setOpenDeleteModal={setOpenDeleteModal}
+                token={token}
+                postToDelete={postToDelete}
+              />
             </PostsContainer>
             {width > 1020 && <Trending />}
           </PageStyle>
