@@ -41,7 +41,7 @@ export default function TimelinePage() {
       .get(URL_API + "/all-posts", {
         headers: {
           Authorization: `Bearer ${token}`,
-        }
+        },
       })
       .then((ans) => {
         setLoading(false);
@@ -65,7 +65,7 @@ export default function TimelinePage() {
 
   useInterval(() => {
     axios
-      .get("http://localhost:4000/all-posts", {
+      .get(URL_API + "/all-posts", {
         params: {
           _limit: 3,
         },
@@ -103,7 +103,7 @@ export default function TimelinePage() {
     edit,
     setEdit,
     setPostToDelete,
-    setPostToRepost
+    setPostToRepost,
   };
   return (
     <PageContainer>
@@ -128,7 +128,7 @@ export default function TimelinePage() {
               token={token}
               postToDelete={postToDelete}
             />
-            <RepostModal 
+            <RepostModal
               openRepostModal={openRepostModal}
               setOpenRepostModal={setOpenRepostModal}
               token={token}
